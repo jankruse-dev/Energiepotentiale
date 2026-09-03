@@ -9,7 +9,13 @@ from pathlib import Path
 
 from .building import VirtuellesGebaeude
 from .load_duration import jahresdauerlinie, plot_jahresdauerlinie, volllaststunden
-from .ventilation import jahresenergiemenge_kwh, stuendlicher_waermeverlust_kw
+from .ventilation import (
+    jahresenergiemenge_kwh,
+    stuendliche_befeuchtungsleistung_kw,
+    stuendliche_kaelteleistung_kw,
+    stuendliche_ventilatorleistung_kw,
+    stuendlicher_waermeverlust_kw,
+)
 from .weather import read_try_file
 
 
@@ -38,22 +44,31 @@ def main(argv=None) -> None:
     weather_df = read_try_file(args.try_file)
     gebaeude = VirtuellesGebaeude.from_json(args.profile)
 
-    stuendlich_kw = stuendlicher_waermeverlust_kw(weather_df, gebaeude)
-    q_jahr_kwh = jahresenergiemenge_kwh(stuendlich_kw)
-    jdl = jahresdauerlinie(stuendlich_kw)
-    vlh = volllaststunden(stuendlich_kw)
-
-    stuendlich_kw.to_csv(output_dir / f"{gebaeude.name}_stundenwerte.csv")
-    jdl.to_csv(output_dir / f"{gebaeude.name}_jahresdauerlinie.csv")
-    plot_jahresdauerlinie(
-        jdl,
-        titel=f"Jahresdauerlinie Lüftungswärmeverlust – {gebaeude.name}",
-        output_path=output_dir / f"{gebaeude.name}_jahresdauerlinie.png",
-    )
+    groessen = {
+        "heizen": ("Heizen", stuendlicher_waermeverlust_kw),
+        "kuehlen": ("Kühlen", stuendliche_kaelteleistung_kw),
+        "befeuchten": ("Befeuchten", stuendliche_befeuchtungsleistung_kw),
+        "ventilatoren": ("Ventilatoren", stuendliche_ventilatorleistung_kw),
+    }
 
     print(f"Gebäude: {gebaeude.name} ({gebaeude.nutzungsprofil})")
-    print(f"Jahresenergiemenge Lüftung: {q_jahr_kwh:.0f} kWh")
-    print(f"Rechnerische Volllaststunden: {vlh:.0f} h")
+    for schluessel, (bezeichnung, berechnungsfunktion) in groessen.items():
+        stuendlich_kw = berechnungsfunktion(weather_df, gebaeude)
+        q_jahr_kwh = jahresenergiemenge_kwh(stuendlich_kw)
+        jdl = jahresdauerlinie(stuendlich_kw)
+        vlh = volllaststunden(stuendlich_kw)
+
+        stuendlich_kw.to_csv(output_dir / f"{gebaeude.name}_{schluessel}_stundenwerte.csv")
+        jdl.to_csv(output_dir / f"{gebaeude.name}_{schluessel}_jahresdauerlinie.csv")
+        plot_jahresdauerlinie(
+            jdl,
+            titel=f"Jahresdauerlinie {bezeichnung} – {gebaeude.name}",
+            output_path=output_dir / f"{gebaeude.name}_{schluessel}_jahresdauerlinie.png",
+        )
+
+        print(f"  Jahresenergiemenge {bezeichnung}: {q_jahr_kwh:.0f} kWh")
+        print(f"  Rechnerische Volllaststunden {bezeichnung}: {vlh:.0f} h")
+
     print(f"Ergebnisse gespeichert in: {output_dir.resolve()}")
 
 

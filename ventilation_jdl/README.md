@@ -27,27 +27,46 @@ ventilation_jdl/
 
 ## Methodischer Ansatz
 
-Für jede Stunde des TRY-Jahres wird der Lüftungswärmeverlust nach der
-Bilanzgleichung 
+Für jede Stunde des TRY-Jahres wird der sensible Lüftungswärme- bzw.
+-kälteverlust nach der Bilanzgleichung
 
-$$
-    Q̇_V(t) = ρ · c_p · \dot{V}_{a(t)} · (\theta_i − \theta_e(t))
-$$
+    Q̇_h(t) = ρ · c_p · V̇_a(t) · (θ_i − θ_e(t))          (Heizfall, θ_e(t) < θ_i)
+    Q̇_c(t) = ρ · c_p · V̇_a(t) · (θ_e(t) − θ_i,c)         (Kühlfall, θ_e(t) > θ_i,c)
 
 berechnet, sofern sich die Stunde innerhalb der Betriebszeit des Gebäudes
 befindet. Eine ggf. vorhandene Wärmerückgewinnung wird über den
-Temperaturänderungsgrad $\eta_{WRG}$ durch Reduktion der wirksamen
-Temperaturdifferenz berücksichtigt:
-$$
-    \Delta \theta_{eff} = (1 − \eta_{WRG}) · (\theta_i − \theta_e(t)) \quad  für~~ \theta_e(t) < \theta_i
-$$
+Temperaturänderungsgrad η_WRG durch Reduktion der wirksamen
+Temperaturdifferenz berücksichtigt (analog für Heiz- und Kühlfall). Der
+Kühlfall wird nur berechnet, wenn im Gebäudeprofil eine
+Kühl-Solltemperatur `solltemperatur_kuehlung_c` hinterlegt ist.
 
-Die stündlichen Werte werden zur Jahresenergiemenge $Q_V$ aufsummiert und
-absteigend sortiert zur Jahresdauerlinie zusammengeführt.
+Zusätzlich kann eine latente Befeuchtungsleistung berechnet werden, sofern
+im Gebäudeprofil ein Mindest-Wasserdampfgehalt der Zuluft
+`feuchte_soll_gpkg` hinterlegt ist:
+
+    Q̇_st(t) = ṁ_tL · (h(θ_i, x_soll) − h(θ_i, x_e(t)))   für x_e(t) < x_soll
+
+mit h = spezifischer Enthalpie feuchter Luft (berechnet mit der Bibliothek
+CoolProp/HumidAirProp). Die Außenluftfeuchte x_e(t) wird direkt der
+TRY-Spalte `x` entnommen.
+
+Zusätzlich kann die elektrische Jahresenergiemenge der Zu- und
+Abluftventilatoren berechnet werden, sofern im Gebäudeprofil
+Druckerhöhungen und ein Ventilatorwirkungsgrad hinterlegt sind:
+
+    P_V(t) = V̇_a · (Δp_ZUL + Δp_ABL) / η_V                    (während Betrieb, sonst 0)
+
+Dies ist der Sonderfall konstanten Volumenstroms (keine VAV-Teillast) der
+allgemeinen Ventilatorleistungsgleichung nach DIN V 18599-3, Gl. (15)/(16).
+
+Die stündlichen Werte werden je Energieart (Heizen/Kühlen/Befeuchten/
+Ventilatoren) zur
+Jahresenergiemenge aufsummiert und absteigend sortiert zur jeweiligen
+Jahresdauerlinie zusammengeführt.
 
 Dies ist ein überschlägiges Verfahren (direkte Bilanzierung mit
-Stundenmittelwerten der Außenlufttemperatur) und ersetzt nicht das
-detaillierte Kennwertverfahren nach DIN V 18599-3, Abschnitt 4.4.1.
+Stundenmittelwerten) und ersetzt nicht das detaillierte Kennwertverfahren
+nach DIN V 18599-3, Abschnitt 4.4.1.
 
 ## Installation
 

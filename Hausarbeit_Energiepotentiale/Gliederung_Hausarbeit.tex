@@ -1,0 +1,556 @@
+\documentclass{scrreprt}
+\usepackage{fhmsegu}
+\usepackage{longtable}
+\usepackage{booktabs}
+\usepackage[all, defaultlines=5]{nowidow}
+\usepackage{import}
+\usepackage{setspace}
+
+\addbibresource{quellen_methodik.bib}
+
+\DeclareSIUnit{\euro}{\text{\euro}}
+\DeclareSIUnit{\year}{a}
+\DeclareSIUnit{\kwh}{kWh}
+\DeclareSIUnit{\mwh}{MWh}
+
+\makenomenclature
+\graphicspath{{images/}}
+
+\setlength{\parindent}{1.5em}
+\setlength{\parskip}{1.0em}
+
+\pgfplotsset{compat=1.18}
+\pagestyle{scrheadings}
+\clearpairofpagestyles
+
+\ihead{\headmark}
+\ohead{\getfhmsauthor}
+\cfoot{\pagemark}
+\pagestyle{scrheadings}
+\setheadsepline{0.4pt}
+\renewcommand*{\chapterpagestyle}{scrheadings}
+
+\begin{document}
+
+%Titeldefinition
+\fhmstitle{Energetische Bewertung virtueller Gebäude anhand von Jahresdauerlinien der Lüftungswärmeverluste nach DIN V 18599}
+\fhmssubtitle{Hausarbeit im Fach Energiepotentiale}
+\fhmsauthor{Jan Kruse}
+\fhmsdate{\today}
+\fhmsemail{jan.kruse@kampmann.de}
+
+\fhmsmaketitlepage
+\pagestyle{empty}
+\clearpage
+
+\chapter*{Abstract}
+% TODO: Kurzfassung DE + EN nach Fertigstellung
+
+\pagestyle{scrheadings}
+\pagenumbering{gobble}
+\begin{spacing}{1.1}
+\tableofcontents
+\end{spacing}
+\clearpage
+
+\pagenumbering{Roman}
+\setcounter{page}{0}
+\listoffigures
+\addcontentsline{toc}{chapter}{Abbildungsverzeichnis}
+\listoftables
+\addcontentsline{toc}{chapter}{Tabellenverzeichnis}
+
+\par\vspace{1.0em}
+\phantomsection
+\addcontentsline{toc}{chapter}{Nomenklatur}
+\markboth{Nomenklatur}{Nomenklatur}
+{\parindent0pt
+ \usekomafont{chapter}\usekomafont{chapterprefix}%
+ \textsf{\textbf{Nomenklatur}}\par
+}
+\vspace{0.6em}
+{
+\renewcommand{\arraystretch}{1.4}
+\begin{tabular}{ll}
+    $\varPhi_{\mathrm{V}}$ & Lüftungswärmeverlust in \si{\kilo\watt} \\
+    $\dot q_{\mathrm{v}}$ & Außenluftvolumenstrom in \si{\cubic\meter\per\hour} \\
+    $\theta_{\mathrm{i}}$ & Raum-Solltemperatur in \si{\celsius} \\
+    $\theta_{\mathrm{e}}$ & Außenlufttemperatur in \si{\celsius} \\
+    $\theta_{\mathrm{v,mech}}$ & Zulufttemperatur-Sollwert der RLT-Anlage in \si{\celsius} \\
+    $\rho$ & Dichte der Luft in \si{\kilo\gram\per\cubic\meter} \\
+    $c_{\mathrm{p}}$ & spez. Wärmekapazität der Luft in \si{\kilo\joule\per\kilo\gram\per\kelvin} \\
+    $Q_{\mathrm{V}}$ & Jahresenergiemenge Lüftung in \si{\kwh} \\
+    $q_{\mathrm{h,18°C,12h,mth}}$ & normierter monatlicher Heizenergiekennwert nach DIN V 18599-3 \\
+    $g_{\mathrm{h,u/o,mth}}$ & Gradient des monatlichen Heizenergiekennwerts nach DIN V 18599-3 \\
+    $f_{\mathrm{T,h}}$ & Korrekturfaktor Betriebszeit (Heizfall) nach DIN V 18599-3 \\
+    $\theta_{\mathrm{hc}}$ & Zulufttemperatur-Sollwert im Kennwertverfahren nach DIN V 18599-3 in \si{\celsius} \\
+    $t_{\mathrm{v,mech}}$ & tägliche Betriebszeit der RLT-Anlage nach DIN V 18599-3 in \si{\hour} \\
+    $d_{\mathrm{v,mech}}$ & jährliche Betriebstage der RLT-Anlage nach DIN V 18599-3 in \si{\day\per\year} \\
+    $\eta_{\mathrm{WRG}}$ & Temperaturänderungsgrad der Wärmerückgewinnung (-) \\
+    $\theta_{\mathrm{i,c}}$ & Raum-Solltemperatur Kühlung in \si{\celsius} \\
+    $q_{\mathrm{c,18°C,12h,mth}}$ & normierter monatlicher Kühlenergiekennwert nach DIN V 18599-3 \\
+    $g_{\mathrm{c,u/o,mth}}$ & Gradient des monatlichen Kühlenergiekennwerts nach DIN V 18599-3 \\
+    $f_{\mathrm{T,c}}$ & Korrekturfaktor Betriebszeit (Kühlfall) nach DIN V 18599-3 \\
+    $x$ & Wasserdampfgehalt der Luft in \si{\gram\per\kilo\gram} \\
+    $x_{\mathrm{soll}}$ & Mindest-Wasserdampfgehalt der Zuluft in \si{\gram\per\kilo\gram} \\
+    $h$ & spezifische Enthalpie feuchter Luft in \si{\kilo\joule\per\kilo\gram} \\
+    $P_{\mathrm{V}}$ & elektrische Ventilatorleistung in \si{\kilo\watt} \\
+    $\Delta p_{\mathrm{ZUL/ABL}}$ & Druckerhöhung Zu-/Abluftventilator in \si{\pascal} \\
+    $\eta_{\mathrm{V}}$ & Gesamtwirkungsgrad Ventilator/Motor/Antrieb (-) \\
+    $f_{\mathrm{p}}$ & Druckverhältnis-Zahl (Teillast) nach DIN V 18599-3 (-) \\
+    $W_{\mathrm{V}}$ & Jahresenergiemenge Ventilatoren in \si{\kwh} \\
+    % TODO: weitere Symbole ergänzen
+\end{tabular}
+}
+
+\addchap{Abkürzungsverzeichnis}
+\begin{acronym}[ASHRAE]
+    \acro{RLT}{Raumlufttechnik}
+    \acro{NWG}{Nichtwohngebäude}
+    \acro{TRY}{Testreferenzjahr}
+    \acro{TRJ}{Testreferenzjahr-Datensatz}
+    \acro{DWD}{Deutscher Wetterdienst}
+    \acro{BBR}{Bundesamt für Bauwesen und Raumordnung}
+    \acro{JDL}{Jahresdauerlinie}
+    \acro{WRG}{Wärmerückgewinnung}
+    \acro{SFP}{Specific Fan Power}
+    \acro{VAV}{Variable Air Volume}
+    % TODO: weitere Abkürzungen bei Einbau in Fließtext ergänzen
+\end{acronym}
+
+\pagestyle{scrheadings}
+
+\chapter{Einleitung}
+\pagenumbering{arabic}
+% Motivation: Anteil Lüftungswärmeverluste am Energiebedarf von NWG
+% Ziel: Python-Tool zur überschlägigen Jahresenergiemenge Lüftung + JDL
+% Aufbau der Arbeit (Verweis auf Kap. 2-5)
+
+\chapter{Theoretischer Hintergrund}\label{chap:Theorie}
+
+\section{Energetische Bewertung von Gebäuden nach DIN V 18599}
+Die Vornormenreihe DIN V 18599 regelt die energetische Bewertung von
+Gebäuden hinsichtlich des Nutz-, End- und Primärenergiebedarfs für
+Heizung, Kühlung, Lüftung, Trinkwarmwasser und Beleuchtung
+\parencite{DIN1859910}. Sie gliedert sich in zwölf aufeinander
+aufbauende Teile: Teil 1 stellt das allgemeine Bilanzierungsverfahren
+und die Verknüpfung der übrigen Teile bereit, Teil 2 behandelt den
+Nutzenergiebedarf für Heizen und Kühlen von Gebäudezonen, Teil 3 den
+Nutzenergiebedarf für die energetische Luftaufbereitung, Teil 7 den
+Endenergiebedarf von \ac{RLT}- und Klimakältesystemen für den
+Nichtwohnungsbau sowie Teil 10 die Nutzungsrandbedingungen und
+Klimadaten \parencite{DIN1859910}. Die energetische Bilanzierung
+erfolgt dabei grundsätzlich monatsweise auf Basis eines
+Referenzklimas für Deutschland \parencite{DIN185993}.
+
+\section{Das Kennwertverfahren nach DIN V 18599-3}
+Für die Ermittlung des Nutzenergiebedarfs raumlufttechnischer Anlagen
+stellt DIN V 18599-3 ein sogenanntes Kennwertverfahren bereit
+\parencite{DIN185993}. Diesem liegt folgender Grundgedanke zugrunde:
+Für die in der Praxis häufigsten \ac{RLT}-Systeme wurde eine
+umfangreiche Variantenmatrix aus 46 Anlagenvarianten gebildet, die
+sich hinsichtlich Feuchteanforderung, Befeuchtertyp,
+\ac{WRG}-Typ und \ac{WRG}-Größe unterscheiden \parencite{DIN185993}.
+Für jede dieser Varianten wurde der Nutzenergiebedarf vorab in einer
+stündlichen Simulation für einen festgelegten Basisfall (Referenzklima,
+Zulufttemperatur-Sollwert $\theta_{\mathrm{v,mech}}=\SI{18}{\celsius}$,
+tägliche Betriebszeit $t_{\mathrm{v,mech}}=\SI{12}{\hour}$) ermittelt und
+als normierter, monatlicher Energiekennwert (z.\,B.
+$q_{\mathrm{h,18°C,12h,mth}}$) tabellarisch hinterlegt
+\parencite{DIN185993}.
+
+Zur Anwendung auf ein konkretes Gebäude wird aus der Variantenmatrix
+die zutreffende Anlagenvariante ausgewählt und der zugehörige
+Kennwert mithilfe von Gradienten (für abweichende
+Zulufttemperatur-Sollwerte) sowie Korrekturfaktoren (für abweichende
+tägliche Betriebszeiten) auf die tatsächlichen Randbedingungen
+umgerechnet und auf den tatsächlichen Volumenstrom denormiert
+\parencite{DIN185993}. Der Wärmerückgewinnungsgrad einer Anlage kann
+dabei durch lineare Interpolation zwischen den in der Variantenmatrix
+hinterlegten Stützstellen (45\,\%, 60\,\%, 75\,\%) berücksichtigt
+werden \parencite{DIN185993}. Das Verfahren erlaubt damit eine
+monatsweise, überschlägige Bilanzierung, ohne dass für jedes Gebäude
+eine vollständige stündliche Simulation der Anlagentechnik
+durchgeführt werden muss. Alternativ lässt die Norm für nicht durch
+die Variantenmatrix abgebildete Anlagenkonzepte auch ein direktes
+Stundenschrittverfahren zu \parencite{DIN185993}.
+
+\section{Testreferenzjahre als Wetterdatengrundlage}
+Für die energetische Bewertung von Gebäuden und ihrer technischen
+Anlagen werden repräsentative, stündlich aufgelöste Wetterdatensätze
+benötigt, die sogenannten \acp{TRY}. Diese liefern für ein
+vollständiges Jahr klimatologische Randbedingungen, ohne die
+Extremwerte eines einzelnen realen Messjahres widerzuspiegeln
+\parencite{DWDBBR2017}. Während frühere Testreferenzjahre auf 15
+Klimaregionen mit jeweils einer Repräsentanzstation beruhten
+\parencite[vgl.][]{DIN1859910}, wurden diese im Rahmen der
+TRY-Weiterentwicklung durch ortsgenaue Datensätze mit einer
+räumlichen Auflösung von etwa \SI{1}{\square\kilo\meter} für ganz
+Deutschland abgelöst \parencite{Spekat2011,DWDBBR2017}. Die
+Interpolation der Basisgrößen (u.\,a. Lufttemperatur,
+Windgeschwindigkeit, kurz- und langwellige Strahlung) auf dieses
+Zielraster erfolgt unter Verwendung von Stations-, Satelliten- und
+Modelldaten, u.\,a. des Regionalklimamodells COSMO-CLM
+\parencite{Krähenmann2016,DWDBBR2017}.
+
+Ein mittleres \ac{TRJ} wird dabei nicht künstlich erzeugt, sondern
+aus realen, mehrtägigen Witterungsabschnitten des Zeitraums 1995 bis
+2012 zusammengesetzt, die so ausgewählt werden, dass Mittelwert und
+Streuung der stündlichen Lufttemperatur sowie der Mittelwert der
+Globalstrahlung im Vergleich zum langjährigen Jahresgang
+bestmöglich getroffen werden \parencite{DWDBBR2017}. Neben den
+mittleren \acp{TRJ} werden zusätzlich extreme \acp{TRJ} (ein
+sommer-fokussiertes, extrem warmes und ein winter-fokussiertes,
+extrem kaltes Jahr) sowie Zukunfts-\acp{TRJ} auf Basis regionaler
+Klimaprojektionen für den Zeitraum 2031 bis 2060 bereitgestellt
+\parencite{DWDBBR2017}. Für die vorliegende Arbeit wird ausschließlich
+das mittlere, gegenwärtige \ac{TRJ} verwendet, da eine überschlägige
+Jahresenergiemenge unter heutigen, repräsentativen
+Witterungsbedingungen ermittelt werden soll.
+
+\section{Lüftungswärmeverluste und Jahresdauerlinie}
+% Definition Lüftungswärmeverlust (Gleichung), Mindestaußenluftvolumenstrom
+% Definition Jahresdauerlinie und Nutzen zur energetischen Bewertung
+
+\chapter{Methodik}\label{chap:Methodik}
+
+Zur überschlägigen Ermittlung der Jahresenergiemenge der Lüftung und zur
+Erstellung der zugehörigen \ac{JDL} wurde im Rahmen dieser Arbeit ein
+Python-Werkzeug entwickelt. Es berechnet auf Basis stündlicher
+Wetterdaten und definierter Nutzungsrandbedingungen den
+Lüftungswärmeverlust virtueller \ac{NWG} und stellt diesen als
+Jahresdauerlinie dar.
+
+\section{Aufbau des Berechnungstools}
+Das Tool ist als Python-Paket \texttt{ventilation\_jdl} mit folgender
+Modulstruktur aufgebaut:
+
+\begin{itemize}
+    \item \texttt{weather.py}: Einlesen der \ac{TRY}-Datensätze
+    \item \texttt{building.py}: Definition virtueller Gebäude und
+        Nutzungsrandbedingungen
+    \item \texttt{ventilation.py}: stündliche Berechnung des
+        Lüftungswärmeverlusts
+    \item \texttt{load\_duration.py}: Sortierung und Darstellung der
+        \ac{JDL}
+    \item \texttt{kennwertverfahren.py}: Vergleichsrechnung nach dem
+        Kennwertverfahren der DIN V 18599-3 (Abschnitt~\ref{sec:Vergleichsrechnung})
+    \item \texttt{cli.py}: Kommandozeilen-Schnittstelle zur
+        Zusammenführung der Berechnungsschritte
+\end{itemize}
+
+Als Eingabeparameter dienen eine \ac{TRY}-Datei sowie ein
+Gebäudeprofil (Außenluftvolumenstrom, Raum-Solltemperatur,
+Betriebszeiten, Wärmerückgewinnungsgrad) in Form einer JSON-Datei.
+Ausgabegrößen sind die Jahresenergiemenge Lüftung $Q_{\mathrm{V}}$, die
+rechnerischen Volllaststunden sowie die \ac{JDL} als Diagramm und
+CSV-Datei. Die Datenverarbeitung erfolgt mit den Python-Bibliotheken
+\texttt{pandas} und \texttt{numpy}, die grafische Auswertung mit
+\texttt{matplotlib}. Die Berechnungslogik ist durch automatisierte
+Tests (\texttt{pytest}) auf Basis synthetischer Wetterdaten abgesichert.
+
+\section{Wetterdaten}
+Als Wetterdatenbasis werden die ortsgenauen \acp{TRY} des \ac{DWD}
+verwendet, die 2017 im Auftrag des \ac{BBR} in Zusammenarbeit mit dem
+\ac{DWD} veröffentlicht wurden \parencite{DWDBBR2017}. Im Unterschied
+zu den älteren, auf 15 Klimaregionen mit Repräsentanzstationen
+basierenden Testreferenzjahren nach DIN V 18599-10, Anhang E
+\parencite[vgl.][]{DIN1859910}, liegen die ortsgenauen \acp{TRY} für
+ein Raster von etwa \SI{1}{\square\kilo\meter} über ganz Deutschland
+vor \parencite{DWDBBR2017}. Jeder Datensatz enthält 8760 Stundenwerte
+meteorologischer Größen (u.\,a. Lufttemperatur, Windgeschwindigkeit,
+Global- und Wärmestrahlung) für ein Jahr \parencite{DWDBBR2017}. Für
+das Berechnungstool wird ausschließlich die stündliche
+Außenlufttemperatur $\theta_{\mathrm{e}}$ ausgewertet.
+
+Die TRY-Rohdaten liegen als ASCII-Dateien mit einem Metadaten-Header,
+einer Zeile mit Parameterabkürzungen als Spaltennamen und 8760
+Datenzeilen vor. Da sich die genaue Spaltenreihenfolge zwischen
+TRY-Varianten leicht unterscheiden kann, sucht das Modul
+\texttt{weather.py} die Spaltennamenzeile in der Datei selbst
+(anhand bekannter Parameterabkürzungen wie \texttt{RW}, \texttt{HW},
+\texttt{MM}, \texttt{DD}, \texttt{HH}, \texttt{t}), anstatt eine feste
+Spaltenreihenfolge anzunehmen. Dadurch bleibt das Tool robust
+gegenüber unterschiedlichen TRY-Dateiformaten.
+
+\section{Definition der virtuellen Gebäude}
+Die virtuellen Gebäude werden anhand der Nutzungsrandbedingungen für
+\ac{NWG} nach DIN V 18599-10 definiert \parencite{DIN1859910}. Für
+jedes virtuelle Gebäude werden das zugeordnete Nutzungsprofil (z.\,B.
+Einzelbüro, Lagerhalle), der Außenluftvolumenstrom, die
+Raum-Solltemperatur, die täglichen Betriebszeiten sowie ein
+Wärmerückgewinnungsgrad hinterlegt. Die konkreten Zahlenwerte werden
+den Tabellen der DIN V 18599-10 entnommen bzw. für die untersuchten
+Varianten projektspezifisch festgelegt. Im Berechnungstool werden
+diese Randbedingungen als JSON-Profil abgelegt (siehe
+\texttt{data/profiles/}), sodass weitere Gebäudevarianten ohne
+Codeänderung ergänzt werden können.
+
+\section{Berechnung der Jahresenergiemenge Lüftung}
+Die energetische Bewertung von Gebäuden nach DIN V 18599 erfolgt im
+Regelfall über ein monatliches Bilanzverfahren
+\parencite{DIN1859910}; für die Lüftungswärme- und -kältebedarfe
+raumlufttechnischer Anlagen stellt DIN V 18599-3 hierzu das in
+Abschnitt~\ref{chap:Theorie} beschriebene Kennwertverfahren bereit,
+das auf einer Variantenmatrix von 46 RLT-Anlagen-Varianten mit
+monatlich normierten Energiekennwerten sowie Korrekturfaktoren für
+Betriebszeit, Zulufttemperatur und Wärmerückgewinnungsgrad beruht
+\parencite{DIN185993}.
+
+Für die vorliegende, überschlägige Betrachtung wird stattdessen eine
+vereinfachte stündliche Energiebilanz auf Basis der \ac{TRY}-Daten
+angesetzt. Diese folgt dem Grundprinzip der Lüftungswärmeverlustbilanz
+nach DIN V 18599-2 \parencite{DIN185992}, wird jedoch nicht mit
+Monatsmittelwerten, sondern mit stündlichen Temperaturwerten
+ausgewertet, um im Anschluss eine \ac{JDL} bilden zu können. Der
+Lüftungswärmeverlust einer Stunde $t$ berechnet sich zu
+
+\begin{equation}\label{eq:QdotV}
+    \dot Q_{\mathrm{V}}(t) = \rho \, c_{\mathrm{p}} \, \dot q_{\mathrm{v}}(t) \, \Delta\theta_{\mathrm{eff}}(t)
+\end{equation}
+
+mit
+
+\begin{equation}\label{eq:dtheta}
+    \Delta\theta_{\mathrm{eff}}(t) =
+    \begin{cases}
+        (1 - \eta_{\mathrm{WRG}}) \, \bigl(\theta_{\mathrm{i}} - \theta_{\mathrm{e}}(t)\bigr) & \text{für } \theta_{\mathrm{e}}(t) < \theta_{\mathrm{i}} \text{ und Betriebszeit} \\
+        0 & \text{sonst.}
+    \end{cases}
+\end{equation}
+
+Der Außenluftvolumenstrom $\dot q_{\mathrm{v}}(t)$ wird nur innerhalb
+der hinterlegten Betriebszeit des jeweiligen virtuellen Gebäudes
+angesetzt, eine vorhandene \ac{WRG} wird über den
+Temperaturänderungsgrad $\eta_{\mathrm{WRG}}$ vereinfacht durch
+Reduktion der wirksamen Temperaturdifferenz berücksichtigt. Die
+Jahresenergiemenge Lüftung $Q_{\mathrm{V}}$ ergibt sich als Summe der
+8760 Stundenwerte nach Gleichung \eqref{eq:QdotV}.
+
+Diese Vereinfachung unterscheidet sich in zwei wesentlichen Punkten
+vom Kennwertverfahren nach DIN V 18599-3: Erstens erfolgt die
+Bilanzierung stündlich statt monatlich, wodurch auf eine gesonderte
+Umrechnung über Gradienten $g_{\mathrm{h,u/o,mth}}$
+\parencite{DIN185993} verzichtet werden kann, da die tatsächliche
+Zulufttemperatur stündlich in die Bilanz eingeht. Zweitens wird der
+Einfluss der täglichen Betriebszeit nicht über einen empirischen
+Korrekturfaktor $f_{\mathrm{T,h}}$ \parencite{DIN185993} abgebildet,
+sondern unmittelbar über die stundengenaue Betriebszeitmaske
+berücksichtigt.
+
+Analog zum Heizfall wird ein sensibler Kühlfall berechnet, sofern für
+das virtuelle Gebäude eine Kühl-Solltemperatur $\theta_{\mathrm{i,c}}$
+hinterlegt ist:
+
+\begin{equation}\label{eq:QdotC}
+    \dot Q_{\mathrm{C}}(t) = \rho \, c_{\mathrm{p}} \, \dot q_{\mathrm{v}}(t) \, (1-\eta_{\mathrm{WRG}}) \, \bigl(\theta_{\mathrm{e}}(t) - \theta_{\mathrm{i,c}}\bigr)
+    \quad \text{für } \theta_{\mathrm{e}}(t) > \theta_{\mathrm{i,c}} \text{ und Betriebszeit.}
+\end{equation}
+
+Zusätzlich wird eine latente Befeuchtungsbilanz gebildet, sofern für
+das virtuelle Gebäude ein Mindest-Wasserdampfgehalt der Zuluft
+$x_{\mathrm{soll}}$ hinterlegt ist:
+
+\begin{equation}\label{eq:Qst}
+    \dot Q_{\mathrm{st}}(t) = \dot m_{\mathrm{tL}} \, \bigl(h(\theta_{\mathrm{i}}, x_{\mathrm{soll}}) - h(\theta_{\mathrm{i}}, x_{\mathrm{e}}(t))\bigr)
+    \quad \text{für } x_{\mathrm{e}}(t) < x_{\mathrm{soll}} \text{ und Betriebszeit,}
+\end{equation}
+
+wobei $h$ die spezifische Enthalpie feuchter Luft je kg trockener Luft
+bezeichnet. Der Wasserdampfgehalt der Außenluft $x_{\mathrm{e}}(t)$
+wird direkt der \ac{TRY}-Datei entnommen; die Enthalpiewerte werden
+mit der Stoffdatenbibliothek CoolProp \parencite{Bell2014} berechnet,
+um belastbare Stoffwerte feuchter Luft ohne eigene, fehleranfällige
+Psychrometrie-Näherungsformeln zu erhalten.
+
+Neben dem Nutzenergiebedarf für Heizen, Kühlen und Befeuchten wird
+zusätzlich der elektrische Endenergiebedarf der Zu- und
+Abluftventilatoren abgeschätzt. Nach DIN V 18599-3 berechnet sich die
+elektrische Ventilatorleistung allgemein aus dem geförderten
+Volumenstrom, der Druckerhöhung, dem Ventilatorwirkungsgrad sowie
+einer Druckverhältnis-Zahl $f_{\mathrm{p}}$, die den Einfluss einer
+Volumenstromregelung (\ac{VAV}) bei Teillast abbildet
+\parencite{DIN185993}. Für Anlagen mit konstantem Volumenstrom, wie
+sie den in dieser Arbeit betrachteten virtuellen Gebäuden zugrunde
+liegen, entfällt die Teillastregelung ($f_{\mathrm{p}}=1$), sodass
+sich die Gleichung auf den bekannten Sonderfall
+
+\begin{equation}\label{eq:PV}
+    P_{\mathrm{V}}(t) = \dot q_{\mathrm{v}}(t) \, \frac{\Delta p_{\mathrm{ZUL}} + \Delta p_{\mathrm{ABL}}}{\eta_{\mathrm{V}}}
+    \quad \text{für Betriebszeit,}
+\end{equation}
+
+reduziert \parencite{DIN185993}. Der Wirkungsgrad $\eta_{\mathrm{V}}$
+fasst dabei, analog zum \ac{SFP}-Wert nach DIN V 18599-7,
+Abschnitt~3.1.2 (spezifische elektrische Leistungsaufnahme je
+Volumenstrom), Ventilator-, Motor- und ggf. Antriebswirkungsgrad
+zusammen \parencite{DIN185997}. Die Jahresenergiemenge der
+Ventilatoren $W_{\mathrm{V}}$ ergibt sich, analog zu Gleichung~(25)
+der DIN V 18599-3, als Summe der stündlichen Leistungswerte nach
+Gleichung~\eqref{eq:PV} über die Betriebsstunden des Jahres
+\parencite{DIN185993}. Die für die virtuellen Gebäude angesetzten
+Druckerhöhungen und Wirkungsgrade sind projektspezifische, plausible
+Auslegungswerte und keine Normwerte, da DIN V 18599-7 hierfür primär
+Kennwerte für die anlagentechnische Bewertung von Bestandsanlagen
+(Anhang~F) bereitstellt \parencite{DIN185997}.
+
+Diese Erweiterungen sind für eine überschlägige Betrachtung
+vertretbar, vernachlässigen jedoch weiterhin anlagenspezifische
+Regelungseffekte sowie – im Fall der Befeuchtung – die Unterscheidung
+zwischen Dampf- und Verdunstungsbefeuchtung, die im vollständigen
+Kennwertverfahren über die Variantenmatrix erfasst werden
+\parencite{DIN185993}.
+
+\section{Erstellung der Jahresdauerlinie}
+Zur Erstellung der \ac{JDL} werden die 8760 Stundenwerte des
+Lüftungswärmeverlusts nach Gleichung \eqref{eq:QdotV} absteigend
+sortiert. Die Abszisse der \ac{JDL} gibt dabei die Anzahl der
+Jahresstunden an, in denen der jeweilige Leistungswert erreicht oder
+überschritten wird. Aus der \ac{JDL} lassen sich zusätzlich die
+rechnerischen Volllaststunden als Quotient aus Jahresenergiemenge und
+Spitzenlast ableiten.
+
+\section{Vergleichsrechnung mit dem Kennwertverfahren nach DIN V 18599-3}\label{sec:Vergleichsrechnung}
+Um die Ergebnisse des stündlichen Bilanzverfahrens einordnen zu
+können, wird für das Einzelbüro-Gebäudeprofil zusätzlich eine
+Vergleichsrechnung nach dem normativen Kennwertverfahren der DIN V
+18599-3 (Jahresverfahren für Anlagen mit konstantem Volumenstrom,
+Abschnitt~4.4.1 i.\,V.\,m. Tabelle~A.1) durchgeführt
+\parencite{DIN185993}. Diese Gegenüberstellung erfolgt exemplarisch
+für ein Gebäude und eine Anlagenvariante und erhebt keinen Anspruch
+auf eine vollständige Anwendung der gesamten Variantenmatrix.
+
+Aus der Variantenmatrix nach DIN V 18599-3, Tabelle~7, wird zunächst
+die zum Einzelbüro-Profil passende Anlagenvariante identifiziert. Das
+Profil sieht keine Feuchteanforderung sowie einen
+Wärmerückgewinnungsgrad von $\eta_{\mathrm{WRG}}=0{,}6$ vor; dies
+entspricht der Variante~3 (keine Feuchteanforderung,
+\ac{WRG}-Typ „nur Wärme“, Wärmerückgewinnungsgrad $60\,\%$)
+\parencite{DIN185993}. Für diese Variante weist Tabelle~A.1
+(Gesamtjahr) einen Heizenergiekennwert von
+$q_{\mathrm{h,18°C,12h}}=\SI{1148}{\watthour\per(\cubic\meter\per\hour)}$
+sowie die Gradienten $g_{\mathrm{h,u}}=\SI{274}{\watthour\per(\kelvin\cubic\meter\per\hour)}$
+(für $\theta_{\mathrm{hc}}<\SI{18}{\celsius}$) und
+$g_{\mathrm{h,o}}=\SI{783}{\watthour\per(\kelvin\cubic\meter\per\hour)}$
+(für $\theta_{\mathrm{hc}}>\SI{18}{\celsius}$) aus
+\parencite{DIN185993}.
+
+Für das Einzelbüro-Profil ($\theta_{\mathrm{hc}}=\SI{20}{\celsius}$,
+tägliche Betriebszeit $t_{\mathrm{v,mech}}=\SI{11}{\hour}$
+[7--18\,Uhr], $d_{\mathrm{v,mech}}=\SI{260}{\day\per\year}$
+[Mo--Fr], $\dot q_{\mathrm{v}}=\SI{500}{\cubic\meter\per\hour}$)
+ergibt sich der Heizenergiekennwert nach Umrechnung auf die
+abweichende Zulufttemperatur zu
+
+\begin{equation}
+    q_{\mathrm{h}}(\theta_{\mathrm{hc}}) = q_{\mathrm{h,18°C,12h}} + g_{\mathrm{h,o}} \, (\theta_{\mathrm{hc}} - \SI{18}{\celsius}) \approx \SI{2714}{\watthour\per(\cubic\meter\per\hour)}
+\end{equation}
+
+Die Umrechnung auf die tatsächliche tägliche Betriebszeit erfolgt
+über den Korrekturfaktor $f_{\mathrm{T,h}}$, der für
+$t_{\mathrm{v,mech}}=\SI{11}{\hour}$ nahe $1{,}0$ liegt
+\parencite{DIN185993}. Nach Skalierung auf die tägliche Betriebszeit,
+die tatsächliche Anzahl jährlicher Betriebstage (Tabelle~A.1 basiert
+auf $365$~Tagen) sowie Denormierung auf den Außenluftvolumenstrom von
+$\SI{500}{\cubic\meter\per\hour}$ ergibt sich ein jährlicher
+Nutzenergiebedarf Heizen von rund $Q_{\mathrm{h,Kennwert}}\approx
+\SI{880}{\kwh\per\year}$. Die Berechnung wurde im Rahmen des
+Python-Tools als eigenständiges Modul
+(\texttt{kennwertverfahren.py}) nachgebildet und durch einen Test
+gegen den von Hand nachvollzogenen Wert abgesichert.
+
+Analog wird für den Kühlfall der Kühlenergiekennwert
+$q_{\mathrm{c,18°C,12h}}=\SI{2309}{\watthour\per(\cubic\meter\per\hour)}$
+sowie die Gradienten $g_{\mathrm{c,u}}=\SI{856}{\watthour\per(\kelvin\cubic\meter\per\hour)}$
+und $g_{\mathrm{c,o}}=\SI{389}{\watthour\per(\kelvin\cubic\meter\per\hour)}$
+der Variante~3 herangezogen \parencite{DIN185993}. Die reale
+Raum-Kühlsolltemperatur des Einzelbüro-Profils nach DIN V 18599-10
+beträgt $\theta_{\mathrm{i,c}}=\SI{24}{\celsius}$
+\parencite{DIN1859910}; dieser Wert liegt jedoch außerhalb des in
+Gleichung~(31)/(32) der DIN V 18599-3 festgelegten
+Gültigkeitsbereichs von $\SI{14}{\celsius}$ bis $\SI{22}{\celsius}$
+für den Zulufttemperatur-Sollwert \parencite{DIN185993}. Um eine
+unzulässige Extrapolation zu vermeiden, wird für die
+Vergleichsrechnung ersatzweise der obere Rand des Gültigkeitsbereichs
+($\SI{22}{\celsius}$) angesetzt. Mit dem zugehörigen Korrekturfaktor
+$f_{\mathrm{T,c}}$ für $t_{\mathrm{v,mech}}=\SI{11}{\hour}$
+\parencite{DIN185993} ergibt sich nach gleichem Rechengang wie beim
+Heizfall ein jährlicher Nutzenergiebedarf Kühlen von rund
+$Q_{\mathrm{c,Kennwert}}\approx\SI{249}{\kwh\per\year}$. Für die
+Befeuchtung ist innerhalb der Variante~3 kein Vergleich möglich, da
+diese Variante keine Feuchteanforderung vorsieht und der zugehörige
+Dampfkennwert $q_{\mathrm{st,12h}}=0$ ist \parencite{DIN185993}; ein
+normkonformer Vergleich der im Tool implementierten latenten
+Befeuchtungsbilanz würde eine Anlagenvariante mit Feuchteanforderung
+voraussetzen und wird im Rahmen dieser Arbeit nicht weiter verfolgt.
+
+\chapter{Ergebnisse \& Diskussion}\label{chap:Ergebnisse}
+
+\section{Jahresdauerlinien der virtuellen Gebäude}
+
+\section{Sensitivitätsbetrachtung}
+% z. B. Einfluss Luftwechsel, Standort, WRG-Grad
+
+\section{Einordnung und Grenzen der überschlägigen Methode}
+Der Vergleich des stündlichen Bilanzverfahrens mit dem
+Kennwertverfahren nach DIN V 18599-3 (Abschnitt~\ref{sec:Vergleichsrechnung})
+zeigt, in welcher Größenordnung sich die überschlägige Methode
+gegenüber dem normativen Verfahren bewegt. % TODO: Vergleich mit tatsächlichem TRY-Tool-Ergebnis ergänzen, sobald ein reales TRY für den betrachteten Standort ausgewertet wurde.
+
+Bei der Interpretation der Abweichung ist zu berücksichtigen, dass
+die in DIN V 18599-3, Tabelle~A.1 hinterlegten Energiekennwerte
+selbst auf Grundlage eines Testreferenzjahres für die
+„Region~4“ des früheren, auf 15 Klimaregionen basierenden
+Referenzklimasystems nach DIN V 18599-10, Anhang~E ermittelt wurden
+\parencite{DIN185993,DIN1859910}. Das im Rahmen dieser Arbeit
+verwendete Berechnungstool greift hingegen auf die seit 2017
+verfügbaren, ortsgenauen \acp{TRY} zurück
+\parencite{DWDBBR2017,Spekat2011}. Eine Abweichung zwischen beiden
+Verfahren ist daher nicht ausschließlich auf die methodische
+Vereinfachung der stündlichen Bilanz zurückzuführen, sondern auch auf
+eine unterschiedliche Wetterdatengrundlage. Für eine methodisch
+sauberere Gegenüberstellung müssten beide Verfahren auf denselben
+Klimadatensatz angewendet werden.
+
+Darüber hinaus vernachlässigt das im Tool implementierte
+Bilanzverfahren, wie in Abschnitt~\ref{chap:Methodik} dargelegt, den
+latenten Wärmeanteil sowie anlagenspezifische Regelungseffekte, die
+im Kennwertverfahren über die Variantenmatrix und die zugehörigen
+Korrekturfaktoren implizit erfasst werden. Die überschlägige Methode
+ist damit als Orientierungsrechnung zu verstehen, die für einen
+schnellen Vergleich mehrerer Gebäudevarianten und Standorte sowie zur
+Erstellung einer \ac{JDL} geeignet ist, jedoch keinen Ersatz für eine
+normkonforme Nachweisführung nach DIN V 18599 darstellt.
+
+Für den Kühlfall kommt als zusätzliche Einschränkung hinzu, dass die
+reale Raum-Kühlsolltemperatur des betrachteten Gebäudeprofils
+($\SI{24}{\celsius}$) außerhalb des Gültigkeitsbereichs der
+Umrechnungsgleichungen des Kennwertverfahrens liegt
+(Abschnitt~\ref{sec:Vergleichsrechnung}); die Vergleichsrechnung
+Kühlen ist daher nur eingeschränkt aussagekräftig. Für die
+Befeuchtung wurde im Tool zwar eine latente Bilanz auf Basis
+realer Wasserdampfgehalte implementiert, ein normkonformer Abgleich
+mit dem Kennwertverfahren konnte im Rahmen dieser Arbeit mangels
+einer geeigneten, Feuchteanforderungen berücksichtigenden
+Anlagenvariante für das betrachtete Gebäude nicht durchgeführt
+werden.
+
+Für die berechnete Jahresenergiemenge der Ventilatoren gilt
+einschränkend, dass die verwendeten Druckerhöhungen und der
+Ventilatorwirkungsgrad projektspezifisch angenommen und nicht aus
+DIN V 18599-7 entnommen wurden, da die Norm hierfür primär auf
+anlagenspezifische Bestandsdaten (Inspektionswerte) verweist
+\parencite{DIN185997}. Zudem wird mit $f_{\mathrm{p}}=1$ nur der
+Sonderfall konstanten Volumenstroms abgebildet; für Anlagen mit
+\ac{VAV}-Teillastregelung wäre die vollständige Gleichung nach
+DIN V 18599-3 heranzuziehen \parencite{DIN185993}.
+
+\chapter{Fazit \& Ausblick}\label{chap:Fazit}
+
+\printbibliography
+
+\appendix
+\chapter{Parameterübersicht virtuelle Gebäude}
+\chapter{Programmübersicht Python-Tool}
+
+\end{document}

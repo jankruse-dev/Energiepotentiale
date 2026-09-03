@@ -25,6 +25,8 @@ KNOWN_COLUMNS = {
 }
 
 TEMPERATURE_COLUMN = "t"
+HUMIDITY_COLUMN = "x"  # Wasserdampfgehalt (Mischungsverhältnis) in g/kg trockener Luft
+PRESSURE_COLUMN = "p"  # Luftdruck in Stationshöhe in hPa
 
 
 @dataclass
@@ -107,3 +109,29 @@ def read_try_file(path: str | Path) -> pd.DataFrame:
 def outdoor_temperature(df: pd.DataFrame) -> pd.Series:
     """Gibt die stündliche Außenlufttemperatur (°C) als Series zurück."""
     return df[TEMPERATURE_COLUMN]
+
+
+def absolute_humidity(df: pd.DataFrame) -> pd.Series:
+    """Gibt den stündlichen Wasserdampfgehalt der Außenluft (g/kg trockener
+    Luft) als Series zurück.
+
+    Der Wert wird direkt der TRY-Spalte ``x`` entnommen (Mischungsverhältnis
+    nach TRY-Handbuch, Tab. 2), nicht aus der relativen Feuchte
+    zurückgerechnet, da der Wasserdampfgehalt bereits Bestandteil der
+    DWD-TRY-Datensätze ist.
+    """
+    if HUMIDITY_COLUMN not in df.columns:
+        raise ValueError(
+            "Spalte 'x' (Wasserdampfgehalt) nicht in der TRY-Datei gefunden."
+        )
+    return df[HUMIDITY_COLUMN]
+
+
+def air_pressure_pa(df: pd.DataFrame) -> pd.Series:
+    """Gibt den stündlichen Luftdruck in Stationshöhe (Pa) als Series
+    zurück (TRY-Spalte ``p`` in hPa, siehe TRY-Handbuch, Tab. 2)."""
+    if PRESSURE_COLUMN not in df.columns:
+        raise ValueError(
+            "Spalte 'p' (Luftdruck) nicht in der TRY-Datei gefunden."
+        )
+    return df[PRESSURE_COLUMN] * 100.0

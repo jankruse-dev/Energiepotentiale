@@ -34,7 +34,15 @@ class Betriebszeit:
 
 @dataclass
 class VirtuellesGebaeude:
-    """Virtuelles Nichtwohngebäude für die Lüftungsberechnung."""
+    """Virtuelles Nichtwohngebäude für die Lüftungsberechnung.
+
+    ``solltemperatur_kuehlung_c`` und ``feuchte_soll_gpkg`` sind optional
+    (``None`` = kein Kühl- bzw. Befeuchtungsfall wird berechnet), da nicht
+    jedes Gebäude über eine RLT-Kühlung oder eine Luftbefeuchtung verfügt.
+    Analog sind ``druckerhoehung_zuluft_pa``, ``druckerhoehung_abluft_pa``
+    und ``wirkungsgrad_ventilator`` optional (``None`` = keine
+    Ventilator-Jahresenergiemenge wird berechnet).
+    """
 
     name: str
     nutzungsprofil: str  # z. B. "Einzelbüro", "Lagerhalle" (DIN V 18599-10)
@@ -42,6 +50,11 @@ class VirtuellesGebaeude:
     solltemperatur_innen_c: float
     betriebszeit: Betriebszeit
     waermerueckgewinnungsgrad: float = 0.0  # 0 = keine WRG
+    solltemperatur_kuehlung_c: float | None = None  # theta_i,c ; None = keine Kühlung
+    feuchte_soll_gpkg: float | None = None  # Mindest-Wasserdampfgehalt Zuluft (g/kg); None = keine Befeuchtung
+    druckerhoehung_zuluft_pa: float | None = None  # Delta p_ZUL (Pa); None = keine Ventilatorberechnung
+    druckerhoehung_abluft_pa: float | None = None  # Delta p_ABL (Pa); None = keine Ventilatorberechnung
+    wirkungsgrad_ventilator: float | None = None  # eta_V, Gesamtwirkungsgrad Ventilator/Motor/Antrieb
 
     def to_dict(self) -> dict:
         return {
@@ -55,6 +68,11 @@ class VirtuellesGebaeude:
                 "wochentage": list(self.betriebszeit.wochentage),
             },
             "waermerueckgewinnungsgrad": self.waermerueckgewinnungsgrad,
+            "solltemperatur_kuehlung_c": self.solltemperatur_kuehlung_c,
+            "feuchte_soll_gpkg": self.feuchte_soll_gpkg,
+            "druckerhoehung_zuluft_pa": self.druckerhoehung_zuluft_pa,
+            "druckerhoehung_abluft_pa": self.druckerhoehung_abluft_pa,
+            "wirkungsgrad_ventilator": self.wirkungsgrad_ventilator,
         }
 
     @classmethod
@@ -71,6 +89,11 @@ class VirtuellesGebaeude:
                 wochentage=tuple(bz["wochentage"]),
             ),
             waermerueckgewinnungsgrad=data.get("waermerueckgewinnungsgrad", 0.0),
+            solltemperatur_kuehlung_c=data.get("solltemperatur_kuehlung_c"),
+            feuchte_soll_gpkg=data.get("feuchte_soll_gpkg"),
+            druckerhoehung_zuluft_pa=data.get("druckerhoehung_zuluft_pa"),
+            druckerhoehung_abluft_pa=data.get("druckerhoehung_abluft_pa"),
+            wirkungsgrad_ventilator=data.get("wirkungsgrad_ventilator"),
         )
 
     @classmethod

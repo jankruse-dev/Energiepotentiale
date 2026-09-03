@@ -1,0 +1,138 @@
+\usepackage[utf8]{inputenc}	%Ermöglicht die Eingabe von Umlauten.
+\usepackage[T1]{fontenc}	%Ermöglicht die Ausgabe von Umlauten.
+\usepackage[ngerman]{babel}	%Silbentrennung nach Rechtschreibreform.
+\usepackage{amsmath}		%Verbesserter Formelsatz.
+\usepackage{url}			%Formatierung von Internet-Adressen.
+\usepackage{makeidx}		%Erstellen eines Index.
+\usepackage{graphicx}		%Einbindung von Grafiken.
+\usepackage{tikz}			%Zeichnungen direkt in LaTeX erstellen.
+\usetikzlibrary{calc}
+\usetikzlibrary{arrows.meta, positioning} % positioning für z.B. below=of x, arrows.meta für die Pfeile
+\usetikzlibrary{shapes.geometric} % Formen wie Raute etc.
+\usepackage{ifthen}			%Bedingte Ausführung.
+\usepackage{blindtext}
+\usepackage{hyperref}		%Unterstützung von Hyperlinks im PDF.
+\usepackage{textcomp}
+\usepackage{acronym}
+\usepackage{svg}
+\usepackage{siunitx}
+\sisetup{
+    locale = DE, % Einheiten als Bruch werden mit Slash geschrieben --> W/mK
+    range-phrase = {\,-\,}, % Trennzeichen bei SIrange --> 35-45 °C
+    range-units = single, % Bei SI range wird nur einmal eine Einheit platziert
+    group-separator = {\,}, % Abstand bei Tausender setzen --> 1 000
+    group-minimum-digits = 4, % Ab 4 Stellen wird ein Abstand gesetzt --> 1 234 567
+    per-mode = symbol, % Einheiten als Bruch werden mit Slash geschrieben --> W/mK
+    product-symbol = \times, % Multiplikationssymbol bei \qtyproduct --> \qtyproduct{1 x 2x 3}\,\si{meter}
+    table-number-alignment = center % TAbelleneinträge werden immer zentriert nicht am Dezimalzeichen ausgerichtet
+}
+\usepackage{subcaption} % Mehrere Abbildungen mit einzelnen Captions
+\usepackage{nomencl}
+\usepackage{float}
+\usepackage{xcolor}
+\usepackage{transparent}
+\usepackage{threeparttable}
+\usepackage{booktabs}
+\usepackage{csquotes}
+\usepackage[gen]{eurosym}  % "gen" für generisches Euro-Symbol
+\usepackage{pgfplotstable}  %Plots aus CSV Dateien erstellen
+\usepackage{comment}%Für aufrechte, griechische Buchstaben wie \textmu.
+\usepackage[automark]{scrlayer-scrpage}  %Für Kopfzeilen. 
+\usepackage[backend=biber, style=apa]{biblatex}  %Literatur verarbeiten
+\DefineBibliographyStrings{ngerman}{
+  andothers = {et al.}, % Überschreibt "u. a." mit "et al."
+}
+
+
+\setkomafont{pagehead}{\normalfont\normalcolor}
+
+%\pagestyle{scrheadings}
+% Kopfzeile 
+%\ihead{\headmark}
+%\ohead{\getfhmsauthor}
+%\cfoot{\pagemark}
+
+%Zeichnet das Bildlogo der FH-Münster. Parameter: Skalierungsfaktor.
+ \newcommand{\fhmspictogram}[1]{
+ \begin{tikzpicture}
+  %kleine Fläche links
+  \fill[fill=blue, scale=#1/5.5, line width=0.1pt] (12mm,27mm) -- (6mm,33mm) arc (135:225:{sqrt(2*6^2)*1mm}) -- cycle
+  %Fläche unten links
+  (21mm,6mm) arc (225:315:{sqrt(2*6^2)*1mm}) -- (16mm,23mm) arc (45:135:{sqrt(2*3^2)*1mm}) -- (7mm,20mm) -- cycle
+  %Fläche oben
+  (38mm,31mm) arc (225:315:{sqrt(2*3^2)*1mm}) -- (47mm,34mm) -- (33mm,48mm) arc (45:135:{sqrt(2*6^2)*1mm}) -- cycle
+  %Fläche unten rechts
+  (34mm,7mm) -- (48mm,21mm) arc (315:405:{sqrt(2*6^2)*1mm}) -- (28mm,13mm) -- cycle
+  %zwei gleiche Flächen
+  (24mm,17mm) arc (225:315:{sqrt(2*3^2)*1mm}) -- (33mm,20mm) -- (13mm,40mm) -- (7mm,34mm) -- cycle
+  [xshift=7mm,yshift=7mm] (24mm,17mm) arc (225:315:{sqrt(2*3^2)*1mm}) -- (33mm,20mm) -- (13mm,40mm) -- (7mm,34mm) -- cycle;
+ \end{tikzpicture}
+ }
+
+%Texthöhe für bessere Papierausnutzung anpassen.
+\setlength{\textheight}{230mm}
+    
+%Erzeugt eine Titelseite mit dem FH-Münster und Kampmann Logo.
+\newcommand{\fhmsmaketitlepage}{
+\begin{titlepage}
+\thispagestyle{empty}
+% Logo
+\begin{minipage}[c]{0.5\textwidth}
+    \hspace*{-5mm}\vspace*{10mm}\includegraphics[scale=0.35]{Logo Kampmann.JPG.pdf}
+\end{minipage}
+\begin{minipage}[c]{0.5\textwidth}
+    \hspace*{10mm}\vspace*{7mm}\includegraphics[scale=0.6]{fhm_Logo_CMYK_17mm.pdf}
+\end{minipage}
+
+\vspace{3cm}
+
+% Titel - Table + Tabular damit zentriert auf der Seite
+\begin{table}[h]
+\centering
+    \begin{tabular}{p{15cm}}
+        \centering
+        \LARGE {\textbf{\getfhmssubtitle}}\\
+        \vspace{2cm}
+        \Huge {\textbf{\getfhmstitle}}
+        
+    \end{tabular}
+\end{table}
+
+\vspace{4cm}
+\begin{table}[h]
+\centering
+    \begin{tabular}{c}
+        \getfhmsauthor \\
+        \getfhmsemail \\
+        \getfhmsmatrikelnr \\
+        vorgelegt am: \getfhmsdate \\
+        \\
+        Gebäudetechnik M.Eng.\\
+        Fachbereich Energie - Gebäude - Umwelt \\
+        Fachhochschule Münster\\
+        \\
+        \getfhmsfirstexaminer \\
+        \getfhmssecondexaminer
+    
+    \end{tabular}
+\end{table}
+\end{titlepage}
+}
+
+%Variablen
+\newcommand{\getfhmstitle}{Titel der Bachelorarbeit}
+\newcommand{\getfhmssubtitle}{Bachelorarbeit}
+\newcommand{\getfhmsauthor}{Autor}
+\newcommand{\getfhmsmatrikelnr}{Matr. Nr.}
+\newcommand{\getfhmsdate}{\today}
+\newcommand{\getfhmsfirstexaminer}{Erstprüfer: Titel Vorname Nachname}
+\newcommand{\getfhmssecondexaminer}{Zweitprüfer: Titel Vorname Nachname}
+\newcommand{\getfhmsemail}{autor@fh-muenster.de}
+\newcommand{\fhmstitle}[1]{\renewcommand{\getfhmstitle}{#1}}
+\newcommand{\fhmssubtitle}[1]{\renewcommand{\getfhmssubtitle}{#1}}
+\newcommand{\fhmsauthor}[1]{\renewcommand{\getfhmsauthor}{#1}}
+\newcommand{\fhmsdate}[1]{\renewcommand{\getfhmsdate}{#1}}
+\newcommand{\fhmsfirstexaminer}[1]{\renewcommand{\getfhmsfirstexaminer}{#1}}
+\newcommand{\fhmssecondexaminer}[1]{\renewcommand{\getfhmssecondexaminer}{#1}}
+\newcommand{\fhmsemail}[1]{\renewcommand{\getfhmsemail}{#1}}
+\newcommand{\fhmsmatrikelnr}[1]{\renewcommand{\getfhmsmatrikelnr}{#1}}

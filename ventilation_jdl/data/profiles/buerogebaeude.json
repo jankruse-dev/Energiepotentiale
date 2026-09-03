@@ -8,5 +8,9 @@
     "end_stunde": 18,
     "wochentage": [0, 1, 2, 3, 4]
   },
-  "waermerueckgewinnungsgrad": 0.6
+  "waermerueckgewinnungsgrad": 0.6,
+  "solltemperatur_kuehlung_c": 24.0,
+  "druckerhoehung_zuluft_pa": 300.0,
+  "druckerhoehung_abluft_pa": 250.0,
+  "wirkungsgrad_ventilator": 0.6
 }

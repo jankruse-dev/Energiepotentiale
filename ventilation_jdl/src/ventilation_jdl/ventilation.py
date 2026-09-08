@@ -16,6 +16,14 @@ V_dot_a(t) ist der Außenluftvolumenstrom, der nur während der Betriebszeit
 des Gebäudes ungleich null angesetzt wird. Der Kühlfall wird nur berechnet,
 wenn im Gebäudeprofil eine Kühl-Solltemperatur hinterlegt ist.
 
+Für den Kühlfall kann zusätzlich die latente Kondensation am Luftkühler
+berücksichtigt werden (siehe ``stuendliche_kaelteleistung_gesamt_kw`` und
+``stuendliche_latente_kuehlleistung_kw``), nach dem Komponentenmodell
+"Luftkühler" der DIN V 18599-3, Anhang C (Gl. C.3/C.4): Kondensation
+tritt auf, sobald die relative Feuchte an der Kühler-Austrittsisotherme
+95 % überschreiten würde; die Zuluft folgt dann der Isohygre phi = 0,95
+statt der Isothermen bei konstantem x.
+
 Für die Luftbefeuchtung wird zusätzlich eine latente Bilanz auf Basis der
 spezifischen Enthalpie feuchter Luft gebildet (siehe
 ``stuendliche_befeuchtungsleistung_kw``), sofern im Gebäudeprofil ein
@@ -118,6 +126,166 @@ def stuendliche_kaelteleistung_kw(
 
     q_dot_kw = q_dot_kw.where(betrieb, other=0.0)
     q_dot_kw.name = "kaelteleistung_kw"
+    return q_dot_kw
+
+
+def stuendliche_kaelteleistung_gesamt_kw(
+    weather_df: pd.DataFrame, gebaeude: VirtuellesGebaeude
+) -> pd.Series:
+    """Stündliche Kälteleistung am Luftkühler (sensibel + latent) in kW
+    über das TRY-Jahr, nach dem Komponentenmodell "Luftkühler" der
+    DIN V 18599-3, Anhang C (normativ), Gleichungen (C.3)/(C.4).
+
+    Liefert eine Nullreihe, wenn im Gebäudeprofil keine
+    Kühl-Solltemperatur hinterlegt ist.
+
+    Nach Anhang C wird die Richtung der Zustandsänderung am Kühler über
+    die relative Feuchte phi_L geprüft, die sich einstellen würde, wenn
+    die Luft bei unverändertem Wasserdampfgehalt x auf die
+    Kühler-Austrittstemperatur (hier: Kühl-Solltemperatur theta_i,c)
+    gebracht würde:
+
+    - phi_L <= 0,95: reine sensible Kühlung (Delta x = 0). In diesem
+      Fall stimmt das Ergebnis mit ``stuendliche_kaelteleistung_kw``
+      überein.
+    - phi_L > 0,95: es tritt Kondensation am Kühler auf. Der
+      Zuluftzustand ergibt sich als Schnittpunkt der Isotherme
+      theta_i,c mit der Isohygre phi_L = 0,95 (praxisnahe Näherung an
+      die Sättigungslinie, berücksichtigt den realen "Bypass-Faktor"
+      des Kühlers). Die Kälteleistung folgt dann aus der
+      Enthalpiedifferenz zwischen Kühler-Eintritt und Kühler-Austritt:
+
+        Q_dot_c(t) = m_dot_tL * (h(theta_coil,in(t), x_e(t))
+                                  - h(theta_i,c, x_out(t)))
+
+    Die Kühler-Eintrittstemperatur theta_coil,in(t) berücksichtigt die
+    Vorkühlung der Außenluft durch die Wärmerückgewinnung (ohne
+    Feuchteübertragung, siehe Notiz zur treibenden Temperaturdifferenz)
+    und entspricht der bereits in ``stuendliche_kaelteleistung_kw``
+    verwendeten effektiven Temperatur theta_i,c + delta_theta_c_eff(t).
+    Der Wasserdampfgehalt der Außenluft x_e(t) bleibt durch die WRG
+    unverändert.
+    """
+    if gebaeude.solltemperatur_kuehlung_c is None:
+        return pd.Series(0.0, index=weather_df.index, name="kaelteleistung_gesamt_kw")
+
+    theta_e = weather_df["t"]
+    theta_i_c = gebaeude.solltemperatur_kuehlung_c
+    x_e_gpkg = absolute_humidity(weather_df)
+    p_pa = air_pressure_pa(weather_df)
+    betrieb = berechne_betriebsmaske(weather_df, gebaeude)
+
+    delta_theta = (theta_e - theta_i_c).clip(lower=0.0)
+    delta_theta_eff = delta_theta * (1.0 - gebaeude.waermerueckgewinnungsgrad)
+    theta_coil_in = theta_i_c + delta_theta_eff
+
+    t_ic_kelvin = theta_i_c + 273.15
+
+    def _q_dot_stunde(theta_ein: float, x_gkg: float, p: float, im_kuehlfall: bool) -> float:
+        if not im_kuehlfall:
+            return 0.0
+        w_e = max(x_gkg, 0.0) / 1000.0
+        try:
+            phi_check = HAPropsSI("RH", "T", t_ic_kelvin, "P", p, "W", w_e)
+            kondensiert = phi_check > 0.95
+        except ValueError:
+            # CoolProp meldet einen Wertebereichsfehler, wenn die
+            # rechnerische relative Feuchte bei unveraendertem x oberhalb
+            # von 100 % (uebersaettigt) liegen wuerde - das bedeutet
+            # zweifelsfrei phi_L > 0,95, also Kondensation.
+            kondensiert = True
+        if kondensiert:
+            w_out = HAPropsSI("W", "T", t_ic_kelvin, "P", p, "RH", 0.95)
+        else:
+            w_out = w_e
+        t_ein_kelvin = theta_ein + 273.15
+        h_ein = HAPropsSI("Hha", "T", t_ein_kelvin, "P", p, "W", w_e)
+        h_aus = HAPropsSI("Hha", "T", t_ic_kelvin, "P", p, "W", w_out)
+        delta_h_j_pro_kg = max(h_ein - h_aus, 0.0)
+        return delta_h_j_pro_kg
+
+    im_kuehlfall = delta_theta > 0.0
+    delta_h_j_pro_kg = pd.Series(
+        [
+            _q_dot_stunde(te, x, p, kf)
+            for te, x, p, kf in zip(theta_coil_in, x_e_gpkg, p_pa, im_kuehlfall)
+        ],
+        index=weather_df.index,
+    )
+
+    v_dot_m3s = gebaeude.aussenluftvolumenstrom_m3h / 3600.0
+    m_dot_kg_s = RHO_LUFT * v_dot_m3s
+    q_dot_kw = m_dot_kg_s * delta_h_j_pro_kg / 1000.0  # W -> kW
+
+    q_dot_kw = q_dot_kw.where(betrieb, other=0.0)
+    q_dot_kw.name = "kaelteleistung_gesamt_kw"
+    return q_dot_kw
+
+
+def stuendliche_latente_kuehlleistung_kw(
+    weather_df: pd.DataFrame, gebaeude: VirtuellesGebaeude
+) -> pd.Series:
+    """Stündlicher latenter Anteil der Kälteleistung am Luftkühler in kW
+    (Kondensationsanteil nach DIN V 18599-3, Anhang C, Gl. C.3/C.4).
+
+    Der latente Anteil wird als Enthalpiedifferenz durch die
+    Entfeuchtung bei konstanter Kühler-Austrittstemperatur theta_i,c
+    gebildet (Differenz des Wasserdampfgehalts x_e(t) vor und x_out(t)
+    nach der Kondensation an der Isohygre phi = 0,95):
+
+        Q_dot_st(t) = m_dot_tL * (h(theta_i,c, x_e(t)) - h(theta_i,c, x_out(t)))
+
+    Er ist bewusst NICHT als Differenz aus Gesamt- und Sensibelanteil
+    gebildet, da diese Differenz auch die kleine Abweichung zwischen der
+    vereinfachten Sensibelrechnung (konstantes c_p trockener Luft in
+    ``stuendliche_kaelteleistung_kw``) und der exakten Enthalpie
+    feuchter Luft enthalten würde. In Stunden ohne Kondensation
+    (phi_L <= 0,95 an der Kühler-Austrittsisotherme) ist dieser Anteil
+    exakt null.
+    """
+    if gebaeude.solltemperatur_kuehlung_c is None:
+        return pd.Series(0.0, index=weather_df.index, name="latente_kuehlleistung_kw")
+
+    theta_e = weather_df["t"]
+    theta_i_c = gebaeude.solltemperatur_kuehlung_c
+    x_e_gpkg = absolute_humidity(weather_df)
+    p_pa = air_pressure_pa(weather_df)
+    betrieb = berechne_betriebsmaske(weather_df, gebaeude)
+
+    delta_theta = (theta_e - theta_i_c).clip(lower=0.0)
+    t_ic_kelvin = theta_i_c + 273.15
+
+    def _q_dot_latent_stunde(x_gkg: float, p: float, im_kuehlfall: bool) -> float:
+        if not im_kuehlfall:
+            return 0.0
+        w_e = max(x_gkg, 0.0) / 1000.0
+        try:
+            phi_check = HAPropsSI("RH", "T", t_ic_kelvin, "P", p, "W", w_e)
+            kondensiert = phi_check > 0.95
+        except ValueError:
+            kondensiert = True
+        if not kondensiert:
+            return 0.0
+        w_out = HAPropsSI("W", "T", t_ic_kelvin, "P", p, "RH", 0.95)
+        h_e = HAPropsSI("Hha", "T", t_ic_kelvin, "P", p, "W", w_e)
+        h_out = HAPropsSI("Hha", "T", t_ic_kelvin, "P", p, "W", w_out)
+        return max(h_e - h_out, 0.0)
+
+    im_kuehlfall = delta_theta > 0.0
+    delta_h_j_pro_kg = pd.Series(
+        [
+            _q_dot_latent_stunde(x, p, kf)
+            for x, p, kf in zip(x_e_gpkg, p_pa, im_kuehlfall)
+        ],
+        index=weather_df.index,
+    )
+
+    v_dot_m3s = gebaeude.aussenluftvolumenstrom_m3h / 3600.0
+    m_dot_kg_s = RHO_LUFT * v_dot_m3s
+    q_dot_kw = m_dot_kg_s * delta_h_j_pro_kg / 1000.0  # W -> kW
+
+    q_dot_kw = q_dot_kw.where(betrieb, other=0.0)
+    q_dot_kw.name = "latente_kuehlleistung_kw"
     return q_dot_kw
 
 

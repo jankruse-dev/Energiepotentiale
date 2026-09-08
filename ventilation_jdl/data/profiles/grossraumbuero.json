@@ -1,16 +1,17 @@
 {
   "name": "Bürogebäude",
-  "nutzungsprofil": "Verwaltung",
-  "aussenluftvolumenstrom_m3h": 8750,
+  "nutzungsprofil": "Großraumbüro",
+  "aussenluftvolumenstrom_m3h": 5000,
   "solltemperatur_innen_c": 21.0,
   "betriebszeit": {
-    "start_stunde": 7,
-    "end_stunde": 18,
+    "start_stunde": 6,
+    "end_stunde": 17,
     "wochentage": [0, 1, 2, 3, 4]
   },
   "waermerueckgewinnungsgrad": 0.6,
   "solltemperatur_kuehlung_c": 24.0,
-  "druckerhoehung_zuluft_pa": 300.0,
-  "druckerhoehung_abluft_pa": 250.0,
+  "feuchte_soll_gpkg": 6.0,
+  "druckerhoehung_zuluft_pa": 350.0,
+  "druckerhoehung_abluft_pa": 280.0,
   "wirkungsgrad_ventilator": 0.6
 }

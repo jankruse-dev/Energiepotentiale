@@ -2,8 +2,10 @@ import pytest
 
 from ventilation_jdl.kennwertverfahren import (
     KennwertRandbedingungen,
+    VARIANTE_21_JAHR,
     jahres_heizenergiebedarf_kwh,
     jahres_kaelteenergiebedarf_kwh,
+    jahres_dampfbefeuchtungsenergiebedarf_kwh,
 )
 
 
@@ -79,3 +81,66 @@ def test_betriebsstunden_ausserhalb_gueltigkeitsbereich_wirft_fehler():
     )
     with pytest.raises(ValueError):
         jahres_heizenergiebedarf_kwh(randbedingungen)
+
+
+def test_jahres_heizenergiebedarf_serverraum_variante3_korrigiert():
+    """Serverraum-Profil (V=1500 m3/h, theta_hc=21°C, 24 h/Tag,
+    365 Betriebstage/Jahr) nach DIN V 18599-10, Tabelle A.21
+    (Feuchteanforderung "keine") gegen Variante 3 (keine
+    Feuchteanforderung) der DIN V 18599-3, Tabelle A.1."""
+    randbedingungen = KennwertRandbedingungen(
+        aussenluftvolumenstrom_m3h=1500.0,
+        zulufttemperatur_soll_c=21.0,
+        taegliche_betriebsstunden=24.0,
+        jaehrliche_betriebstage=365.0,
+    )
+    ergebnis = jahres_heizenergiebedarf_kwh(randbedingungen)
+    assert ergebnis == pytest.approx(11120.5, rel=0.01)
+
+
+def test_jahres_kaelteenergiebedarf_serverraum_variante3_korrigiert():
+    randbedingungen = KennwertRandbedingungen(
+        aussenluftvolumenstrom_m3h=1500.0,
+        zulufttemperatur_soll_c=22.0,  # gecappt, reale theta_i,c = 24°C
+        taegliche_betriebsstunden=24.0,
+        jaehrliche_betriebstage=365.0,
+    )
+    ergebnis = jahres_kaelteenergiebedarf_kwh(randbedingungen)
+    assert ergebnis == pytest.approx(1490.9, rel=0.01)
+
+
+def test_jahres_heizenergiebedarf_grossraumbuero_variante21():
+    """Großraumbüro-Profil (V=1200 m3/h, theta_hc=21°C, 13 h/Tag,
+    250 Betriebstage/Jahr) nach DIN V 18599-10, Tabelle A.3
+    (Feuchteanforderung "mit Toleranz") gegen Variante 21 (mit
+    Toleranzbereich, Dampfbefeuchter) der DIN V 18599-3, Tabelle A.1."""
+    randbedingungen = KennwertRandbedingungen(
+        aussenluftvolumenstrom_m3h=1200.0,
+        zulufttemperatur_soll_c=21.0,
+        taegliche_betriebsstunden=13.0,
+        jaehrliche_betriebstage=250.0,
+    )
+    ergebnis = jahres_heizenergiebedarf_kwh(randbedingungen, VARIANTE_21_JAHR)
+    assert ergebnis == pytest.approx(3290.5, rel=0.01)
+
+
+def test_jahres_kaelteenergiebedarf_grossraumbuero_variante21():
+    randbedingungen = KennwertRandbedingungen(
+        aussenluftvolumenstrom_m3h=1200.0,
+        zulufttemperatur_soll_c=22.0,  # gecappt, reale theta_i,c = 24°C
+        taegliche_betriebsstunden=13.0,
+        jaehrliche_betriebstage=250.0,
+    )
+    ergebnis = jahres_kaelteenergiebedarf_kwh(randbedingungen, VARIANTE_21_JAHR)
+    assert ergebnis == pytest.approx(1277.7, rel=0.01)
+
+
+def test_jahres_dampfbefeuchtungsenergiebedarf_grossraumbuero_variante21():
+    randbedingungen = KennwertRandbedingungen(
+        aussenluftvolumenstrom_m3h=1200.0,
+        zulufttemperatur_soll_c=21.0,
+        taegliche_betriebsstunden=13.0,
+        jaehrliche_betriebstage=250.0,
+    )
+    ergebnis = jahres_dampfbefeuchtungsenergiebedarf_kwh(randbedingungen)
+    assert ergebnis == pytest.approx(3554.5, rel=0.01)

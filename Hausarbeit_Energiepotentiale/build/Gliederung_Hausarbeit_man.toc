@@ -1,0 +1,31 @@
+\babel@toc {ngerman}{}\relax 
+\contentsline {chapter}{Abbildungsverzeichnis}{}{chapter*.5}%
+\contentsline {chapter}{Tabellenverzeichnis}{I}{chapter*.7}%
+\contentsline {chapter}{Nomenklatur}{I}{section*.8}%
+\contentsline {chapter}{\nonumberline Abkürzungsverzeichnis}{III}{chapter*.9}%
+\contentsline {chapter}{\numberline {1}Einleitung}{1}{chapter.1}%
+\contentsline {chapter}{\numberline {2}Theoretischer Hintergrund}{2}{chapter.2}%
+\contentsline {section}{\numberline {2.1}Energetische Bewertung von Gebäuden nach DIN V 18599}{2}{section.2.1}%
+\contentsline {section}{\numberline {2.2}Das Kennwertverfahren nach DIN V 18599-3}{2}{section.2.2}%
+\contentsline {section}{\numberline {2.3}Testreferenzjahre als Wetterdatengrundlage}{3}{section.2.3}%
+\contentsline {chapter}{\numberline {3}Methodik}{4}{chapter.3}%
+\contentsline {section}{\numberline {3.1}Schritt 1: Eingangsdaten}{4}{section.3.1}%
+\contentsline {section}{\numberline {3.2}Schritt 2: Bestimmung der Betriebszustände}{5}{section.3.2}%
+\contentsline {section}{\numberline {3.3}Schritt 3: Stündliche Heizleistung}{5}{section.3.3}%
+\contentsline {section}{\numberline {3.4}Schritt 4: Stündliche Kühlleistung}{6}{section.3.4}%
+\contentsline {section}{\numberline {3.5}Schritt 5: Stündliche Befeuchtungsleistung}{6}{section.3.5}%
+\contentsline {section}{\numberline {3.6}Schritt 6: Stündliche Ventilatorleistung}{7}{section.3.6}%
+\contentsline {section}{\numberline {3.7}Schritt 7: Jahresenergiemenge und Volllaststunden}{7}{section.3.7}%
+\contentsline {section}{\numberline {3.8}Schritt 8: Erstellung der Jahresdauerlinie}{8}{section.3.8}%
+\contentsline {chapter}{\numberline {4}Ergebnisse \& Diskussion}{9}{chapter.4}%
+\contentsline {section}{\numberline {4.1}Ergebnisse von Stichproben der virtuellen Gebäude}{9}{section.4.1}%
+\contentsline {section}{\numberline {4.2}Sensitivitätsbetrachtung}{10}{section.4.2}%
+\contentsline {section}{\numberline {4.3}Vergleichsrechnung mit dem Kennwertverfahren nach DIN V 18599-3}{10}{section.4.3}%
+\contentsline {subsection}{\numberline {4.3.1}Einzelbüro-Profil: Heizen und Kühlen}{10}{subsection.4.3.1}%
+\contentsline {subsection}{\numberline {4.3.2}Serverraum-Profil: Heizen, Kühlen und Befeuchten}{11}{subsection.4.3.2}%
+\contentsline {section}{\numberline {4.4}Einordnung und Grenzen der überschlägigen Methode}{12}{section.4.4}%
+\contentsline {chapter}{\numberline {5}Fazit \& Ausblick}{14}{chapter.5}%
+\def \@chapapp {\appendixname }
+\contentsline {chapter}{\numberline {A}Parameterübersicht virtuelle Gebäude}{16}{appendix.A}%
+\contentsline {chapter}{\numberline {B}Programmübersicht Python-Tool}{17}{appendix.B}%
+\providecommand \tocbasic@end@toc@file {}\tocbasic@end@toc@file 

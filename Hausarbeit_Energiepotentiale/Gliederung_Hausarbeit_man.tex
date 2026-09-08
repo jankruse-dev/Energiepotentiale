@@ -5,8 +5,6 @@
 \usepackage[all, defaultlines=5]{nowidow}
 \usepackage{import}
 \usepackage{setspace}
-\usepackage{tikz}
-\usetikzlibrary{shapes.geometric, arrows.meta, positioning, calc}
 
 \addbibresource{quellen_methodik.bib}
 
@@ -82,7 +80,7 @@
     $\rho$ & Dichte der Luft in \si{\kilo\gram\per\cubic\meter} \\
     $c_{\mathrm{p}}$ & spez. Wärmekapazität der Luft in \si{\kilo\joule\per\kilo\gram\per\kelvin} \\
     $Q_{\mathrm{V}}$ & Jahresenergiemenge Lüftung in \si{\kwh} \\
-    $q_{\mathrm{h,18°C,12h,mth}}$ & normierter monatlicher Heizenergiekennwert nach DIN V 18599-3 \\
+    $q_{\mathrm{h,18^\circ C,12h,mth}}$ & normierter monatlicher Heizenergiekennwert nach DIN V 18599-3 \\
     $g_{\mathrm{h,u/o,mth}}$ & Gradient des monatlichen Heizenergiekennwerts nach DIN V 18599-3 \\
     $f_{\mathrm{T,h}}$ & Korrekturfaktor Betriebszeit (Heizfall) nach DIN V 18599-3 \\
     $\theta_{\mathrm{hc}}$ & Zulufttemperatur-Sollwert im Kennwertverfahren nach DIN V 18599-3 in \si{\celsius} \\
@@ -90,11 +88,9 @@
     $d_{\mathrm{v,mech}}$ & jährliche Betriebstage der RLT-Anlage nach DIN V 18599-3 in \si{\day\per\year} \\
     $\eta_{\mathrm{WRG}}$ & Temperaturänderungsgrad der Wärmerückgewinnung (-); entspricht $\eta_{\mathrm{t}}$ nach DIN V 18599-2 \\
     $\theta_{\mathrm{i,c}}$ & Raum-Solltemperatur Kühlung in \si{\celsius} \\
-    $q_{\mathrm{c,18°C,12h,mth}}$ & normierter monatlicher Kühlenergiekennwert nach DIN V 18599-3 \\
+    $q_{\mathrm{c,18^\circ C,12h,mth}}$ & normierter monatlicher Kühlenergiekennwert nach DIN V 18599-3 \\
     $g_{\mathrm{c,u/o,mth}}$ & Gradient des monatlichen Kühlenergiekennwerts nach DIN V 18599-3 \\
     $f_{\mathrm{T,c}}$ & Korrekturfaktor Betriebszeit (Kühlfall) nach DIN V 18599-3 \\
-    $q_{\mathrm{st,18°C,12h}}$ & normierter monatlicher Dampfenergiekennwert nach DIN V 18599-3 \\
-    $f_{\mathrm{T,st}}$ & Korrekturfaktor Betriebszeit (Dampf) nach DIN V 18599-3 \\
     $x$ & Wasserdampfgehalt der Luft in \si{\gram\per\kilo\gram} \\
     $x_{\mathrm{soll}}$ & Mindest-Wasserdampfgehalt der Zuluft in \si{\gram\per\kilo\gram} \\
     $h$ & spezifische Enthalpie feuchter Luft in \si{\kilo\joule\per\kilo\gram} \\
@@ -126,6 +122,8 @@
 
 \chapter{Einleitung}
 \pagenumbering{arabic}
+
+Ziel dieser Arbeit ist die Entwicklung eines Python-basierten Berechnungstools, mit dem die energetischen Auswirkungen von Lüftungsanlagen für unterschiedliche Gebäudetypen und Standorte schnell abgeschätzt werden können. Hierzu werden auf Grundlage stündlicher Wetterdaten Jahresenergiemengen sowie Jahresdauerlinien für Heizung, Kühlung, Befeuchtung und Ventilatorbetrieb ermittelt. Die Ergebnisse werden anschließend exemplarisch mit dem Kennwertverfahren der DIN V 18599-3 verglichen
 % Motivation: Anteil Lüftungswärmeverluste am Energiebedarf von NWG
 % Ziel: Python-Tool zur überschlägigen Jahresenergiemenge Lüftung + JDL
 % Aufbau der Arbeit (Verweis auf Kap. 2-5)
@@ -150,9 +148,7 @@ Referenzklimas für Deutschland \parencite{DIN185993}.
 \section{Das Kennwertverfahren nach DIN V 18599-3}
 Für die Ermittlung des Nutzenergiebedarfs raumlufttechnischer Anlagen
 stellt DIN V 18599-3 ein sogenanntes Kennwertverfahren bereit
-\parencite{DIN185993}. Diesem liegt folgender Grundgedanke zugrunde:
-Für die in der Praxis häufigsten \ac{RLT}-Systeme wurde eine
-umfangreiche Variantenmatrix aus 46 Anlagenvarianten gebildet, die
+\parencite{DIN185993}. Dieses folgt dem Grundgedanken für die in der Praxis häufigsten \ac{RLT}-Systeme eine umfangreiche Variantenmatrix aus 46 Anlagenvarianten aufzustellen, die
 sich hinsichtlich Feuchteanforderung, Befeuchtertyp,
 \ac{WRG}-Typ und \ac{WRG}-Größe unterscheiden \parencite{DIN185993}.
 Für jede dieser Varianten wurde der Nutzenergiebedarf vorab in einer
@@ -160,7 +156,7 @@ stündlichen Simulation für einen festgelegten Basisfall (Referenzklima,
 Zulufttemperatur-Sollwert $\theta_{\mathrm{v,mech}}=\SI{18}{\celsius}$,
 tägliche Betriebszeit $t_{\mathrm{v,mech}}=\SI{12}{\hour}$) ermittelt und
 als normierter, monatlicher Energiekennwert (z.\,B.
-$q_{\mathrm{h,18°C,12h,mth}}$) tabellarisch hinterlegt
+$q_{\mathrm{h,18^\circ C,12h,mth}}$) tabellarisch hinterlegt
 \parencite{DIN185993}.
 
 Zur Anwendung auf ein konkretes Gebäude wird aus der Variantenmatrix
@@ -182,8 +178,7 @@ Stundenschrittverfahren zu \parencite{DIN185993}.
 \section{Testreferenzjahre als Wetterdatengrundlage}
 Für die energetische Bewertung von Gebäuden und ihrer technischen
 Anlagen werden repräsentative, stündlich aufgelöste Wetterdatensätze
-benötigt, die sogenannten \acp{TRY}. Diese liefern für ein
-vollständiges Jahr klimatologische Randbedingungen, ohne die
+benötigt. Diese liefern für ein vollständiges Jahr klimatologische Randbedingungen, ohne die
 Extremwerte eines einzelnen realen Messjahres widerzuspiegeln
 \parencite{DWDBBR2017}. Während frühere Testreferenzjahre auf 15
 Klimaregionen mit jeweils einer Repräsentanzstation beruhten
@@ -197,61 +192,32 @@ Zielraster erfolgt unter Verwendung von Stations-, Satelliten- und
 Modelldaten, u.\,a. des Regionalklimamodells COSMO-CLM
 \parencite{Krähenmann2016,DWDBBR2017}.
 
-Ein mittleres \ac{TRJ} wird dabei nicht künstlich erzeugt, sondern
+Ein sogenanntes \ac{TRY} wird dabei nicht künstlich erzeugt, sondern
 aus realen, mehrtägigen Witterungsabschnitten des Zeitraums 1995 bis
 2012 zusammengesetzt, die so ausgewählt werden, dass Mittelwert und
 Streuung der stündlichen Lufttemperatur sowie der Mittelwert der
 Globalstrahlung im Vergleich zum langjährigen Jahresgang
-bestmöglich getroffen werden \parencite{DWDBBR2017}. Neben den
-mittleren \acp{TRJ} werden zusätzlich extreme \acp{TRJ} (ein
-sommer-fokussiertes, extrem warmes und ein winter-fokussiertes,
-extrem kaltes Jahr) sowie Zukunfts-\acp{TRJ} auf Basis regionaler
+bestmöglich getroffen werden \parencite{DWDBBR2017}. Neben den \acp{TRY} werden zusätzlich extreme \acp{TRY} erstellt, welche Jahre mit extrem warmer beziehungsweise kalter Witterungsbedingungen abbilden. Außerdem werden prognostizierte \acp{TRY} auf Basis regionaler
 Klimaprojektionen für den Zeitraum 2031 bis 2060 bereitgestellt
 \parencite{DWDBBR2017}. Für die vorliegende Arbeit wird ausschließlich
-das mittlere, gegenwärtige \ac{TRJ} verwendet, da eine überschlägige
+das gegenwärtige \ac{TRY} für den Standort des Technologie Campus Steinfurt verwendet, da eine überschlägige
 Jahresenergiemenge unter heutigen, repräsentativen
-Witterungsbedingungen ermittelt werden soll.
-
-\section{Lüftungswärmeverluste und Jahresdauerlinie}
-% Definition Lüftungswärmeverlust (Gleichung), Mindestaußenluftvolumenstrom
-% Definition Jahresdauerlinie und Nutzen zur energetischen Bewertung
+Witterungsbedingungen ermittelt werden soll. Der Temperatur-und Feuchteverlauf des Datensatzes werden in Kapite \ref{chap:Ergebnisse} zur Einordnung dargestellt.
 
 \chapter{Methodik}\label{chap:Methodik}
 
-Zur überschlägigen Ermittlung der Jahresenergiemenge der Lüftung und zur
-Erstellung der zugehörigen \ac{JDL} wird für jedes virtuelle Gebäude ein
-fester Berechnungsablauf durchlaufen: Ausgehend von stündlichen
+Im Gegensatz zur normativen Berechnung nach DIN V 18599 steht nicht die Erstellung eines normkonformen Energiebedarfsnachweises im Vordergrund. Ziel ist vielmehr die Entwicklung eines einfach anwendbaren Werkzeugs zur schnellen energetischen Abschätzung von Lüftungsanlagen. Daher werden verschiedene Vereinfachungen getroffen, die eine kurze Rechenzeit und eine einfache Parametrierung ermöglichen. Ausgehend von stündlichen
 Wetterdaten und den Nutzungsrandbedingungen des Gebäudes werden
 nacheinander die Betriebszustände, die stündlichen Energieströme für
 Heizen, Kühlen, Befeuchten und Ventilatoren, deren Jahressummen sowie
-die \ac{JDL} bestimmt. Die folgenden Abschnitte gehen diesen Ablauf
-Schritt für Schritt durch. Abbildung~\ref{abb:Flussdiagramm_methodik}
-fasst diesen Ablauf zusammen.
-
-\begin{figure}[H]
-    \centering
-    \subimport{TeX/}{Flussdiagramm_methodik.tex}
-    \caption{Ablauf der stündlichen Berechnung der Lüftungsenergieströme}
-    \label{abb:Flussdiagramm_methodik}
-\end{figure}
+die \ac{JDL} bestimmt. In dieser Arbeit wird die nur Leistung einer Dampfbefeuchtung dargestellt. Zwar wird in der Regel bei adiabatischen Befeuchtern keine thermische Energie zugeführt, jedoch muss durch die zu erwartende Temperaturabsenkung eine Nacherwärmung vorgesehen werden. Außerdem könnte es durch die Verdungstungskühlung die Jahreskühlenergie beeinflussen. Die Berechnung des Temperaturabfalls ist in CoolProp zwar möglich wurde im Rahmen dieser Arbeit allerdings nicht durchgeführt. Die folgenden Abschnitte gehen den Ablauf des Programmes schrittweise durch.
 
 \section{Schritt 1: Eingangsdaten}
 Grundlage der Berechnung sind zwei Arten von Eingangsdaten: stündlich
 aufgelöste Wetterdaten und die Nutzungsrandbedingungen des betrachteten
 Gebäudes.
 
-Als Wetterdatenbasis werden die ortsgenauen \acp{TRY} des \ac{DWD}
-verwendet, die 2017 im Auftrag des \ac{BBR} in Zusammenarbeit mit dem
-\ac{DWD} veröffentlicht wurden \parencite{DWDBBR2017}. Im Unterschied
-zu den älteren, auf 15 Klimaregionen mit Repräsentanzstationen
-basierenden Testreferenzjahren nach DIN V 18599-10, Anhang E
-\parencite[vgl.][]{DIN1859910}, liegen die ortsgenauen \acp{TRY} für
-ein Raster von etwa \SI{1}{\square\kilo\meter} über ganz Deutschland
-vor \parencite{DWDBBR2017}. Jeder Datensatz enthält 8760 Stundenwerte
-meteorologischer Größen für ein Jahr \parencite{DWDBBR2017}, von denen
-für die Berechnung die Außenlufttemperatur $\theta_{\mathrm{e}}$, der
-Wasserdampfgehalt $x_{\mathrm{e}}$ und der Luftdruck der Außenluft
-ausgewertet werden.
+Jeder Datensatz enthält 8760 Stundenwerte meteorologischer Größen für ein Jahr \parencite{DWDBBR2017}, von denen für die Berechnung die Außenlufttemperatur $\theta_{\mathrm{e}}$, der Wasserdampfgehalt $x_{\mathrm{e}}$ und der Luftdruck der Außenluft ausgewertet werden.
 
 Die Nutzungsrandbedingungen des Gebäudes orientieren sich an den
 Nutzungsprofilen für \ac{NWG} nach DIN V 18599-10
@@ -259,79 +225,19 @@ Nutzungsprofilen für \ac{NWG} nach DIN V 18599-10
 Außenluftvolumenstrom $\dot q_{\mathrm{v}}$, die Raum-Solltemperatur
 Heizen $\theta_{\mathrm{i}}$, wahlweise eine Raum-Solltemperatur Kühlen
 $\theta_{\mathrm{i,c}}$, die täglichen Betriebszeiten, der
-Wärmerückgewinnungsgrad $\eta_{\mathrm{WRG}}$ sowie – sofern relevant –
+Wärmerückgewinnungsgrad $\eta_{\mathrm{WRG}}$ sowie
 ein Mindest-Wasserdampfgehalt der Zuluft $x_{\mathrm{soll}}$ und die
 für die Ventilatorberechnung benötigten Druckerhöhungen und der
 Ventilatorwirkungsgrad $\eta_{\mathrm{V}}$. Die konkreten Zahlenwerte
 werden den Tabellen der DIN V 18599-10 entnommen bzw. für die
 untersuchten Varianten projektspezifisch festgelegt.
 
-Für die vorliegende Arbeit werden vier virtuelle Gebäude anhand
-unterschiedlicher Nutzungsprofile nach DIN V 18599-10, Anhang~A.2
-gebildet, sodass alle vier vom Tool berechneten Energiearten (Heizen,
-Kühlen, Befeuchten, Ventilatoren) sowie ein weiter Bereich an
-Betriebszeiten und Volumenströmen abgedeckt werden. Tabelle
-\ref{tab:Nutzungsprofile} fasst die zugrunde gelegten
-Nutzungsrandbedingungen zusammen; der Außenluftvolumenstrom
-$\dot q_{\mathrm{v}}$ ergibt sich dabei aus dem jeweiligen
-flächenbezogenen Mindestaußenluftvolumenstrom nach DIN V 18599-10 und
-einer angenommenen Nutzfläche des virtuellen Gebäudes.
-
-\begin{table}[H]
-    \centering
-    \caption{Nutzungsrandbedingungen der virtuellen Gebäude nach DIN V 18599-10, Anhang A.2 \parencite{DIN1859910}}
-    \label{tab:Nutzungsprofile}
-    \resizebox{\textwidth}{!}{%
-    \begin{tabular}{lllll}
-        \toprule
-        & \textbf{Büro} & \textbf{Großraumbüro} & \textbf{Lagerhalle} & \textbf{Serverraum} \\
-        \midrule
-        Nutzungsprofil (DIN-Tab.) & Einzelbüro (A.1) & Großraumbüro (A.3) & Lagerhallen, Logistikhallen (A.41) & Rechenzentrum (A.21) \\
-        Betriebszeit RLT & 5--18\,Uhr & 5--18\,Uhr & durchgehend & durchgehend \\
-        Betriebstage $d_{\mathrm{op,a}}$ & 250\,d/a (Mo--Fr) & 250\,d/a (Mo--Fr) & 365\,d/a & 365\,d/a \\
-        $\theta_{\mathrm{i,h,soll}}$ (real, DIN) & \SI{21}{\celsius} & \SI{21}{\celsius} & \SI{12}{\celsius} & \SI{21}{\celsius} \\
-        $\theta_{\mathrm{i}}$ (Tool, angesetzt) & \SI{20}{\celsius} & \SI{21}{\celsius} & \SI{12}{\celsius} & \SI{21}{\celsius} \\
-        $\theta_{\mathrm{i,c,soll}}$ & \SI{24}{\celsius} & \SI{24}{\celsius} & \SI{26}{\celsius} & \SI{24}{\celsius} \\
-        Feuchteanforderung & mit Toleranz & mit Toleranz & keine & keine \\
-        $\dot q_{\mathrm{v,A}}$ (flächenbez.) & \SI{4}{\cubic\meter\per\hour\per\square\meter} & \SI{6}{\cubic\meter\per\hour\per\square\meter} & \SI{1}{\cubic\meter\per\hour\per\square\meter} & \SI{1.3}{\cubic\meter\per\hour\per\square\meter} \\
-        angenommene Nutzfläche & \SI{125}{\square\meter} & \SI{200}{\square\meter} & \SI{8000}{\square\meter} & \SI{1150}{\square\meter} \\
-        $\dot q_{\mathrm{v}}$ (Tool) & \SI{500}{\cubic\meter\per\hour} & \SI{1200}{\cubic\meter\per\hour} & \SI{8000}{\cubic\meter\per\hour} & \SI{1500}{\cubic\meter\per\hour} \\
-        \bottomrule
-    \end{tabular}%
-    }
-\end{table}
-
-Für das Einzelbüro-Profil wird abweichend von der realen Raum-Solltemperatur
-Heizen nach Tabelle~A.1 der DIN V 18599-10
-($\theta_{\mathrm{i,h,soll}}=\SI{21}{\celsius}$) ein projektspezifischer
-Wert von $\theta_{\mathrm{i}}=\SI{20}{\celsius}$ angesetzt; diese
-Abweichung ist bei der Einordnung der zugehörigen Ergebnisse
-(Abschnitt~\ref{sec:Vergleichsrechnung}) zu berücksichtigen. Für das
-Serverraum-Profil sieht das Nutzungsprofil Rechenzentrum nach
-DIN V 18599-10, Tabelle~A.21 keine Feuchteanforderung vor; eine
-Luftbefeuchtung wird für dieses virtuelle Gebäude daher nicht
-angesetzt, obwohl reale Rechenzentren aus Gründen des
-Anlagenschutzes (Vermeidung elektrostatischer Entladung) häufig
-zusätzlich befeuchtet werden. Die Befeuchtungsfunktion des Tools
-(Schritt~5) wird stattdessen anhand des Großraumbüro-Profils
-demonstriert, dessen Nutzungsprofil nach DIN V 18599-10, Tabelle~A.3
-eine Feuchteanforderung „mit Toleranz“ vorsieht; als
-Mindest-Wasserdampfgehalt der Zuluft wird dabei der für diese
-Klassifizierung in DIN V 18599-3, Tabelle~C.1 hinterlegte Standardwert
-von $x_{\mathrm{soll}}=\SI{6.0}{\gram\per\kilo\gram}$ angesetzt
-\parencite{DIN185993}. Die Wärmerückgewinnungsgrade, Druckerhöhungen
-und der Ventilatorwirkungsgrad sind für alle vier Gebäude
-projektspezifische, plausible Auslegungswerte und keine Normwerte
-(vgl. Schritt~6).
-
 \section{Schritt 2: Bestimmung der Betriebszustände}
 Für jede der 8760 Stunden des Jahres wird zunächst geprüft, ob sich das
-Gebäude innerhalb seiner hinterlegten Betriebszeit befindet (Wochentag
-und Uhrzeit gegen die festgelegten Betriebstage und Betriebsstunden).
-Außerhalb der Betriebszeit wird die \ac{RLT}-Anlage als nicht in
-Betrieb angenommen; sämtliche im Folgenden beschriebenen Energieströme
+Gebäude innerhalb seiner hinterlegten Betriebszeit befindet.
+Außerhalb der Betriebszeit wird die \ac{RLT}-Anlage als außer Betrieb angenommen. Sämtliche im Folgenden beschriebenen Energieströme
 sind für diese Stunden null, unabhängig von der Außentemperatur oder
--feuchte.
+-feuchte. In diesem Ansatz werden vereinfacht konstante Volumenströme in der \ac{RLT}-Anlage 
 
 \section{Schritt 3: Stündliche Heizleistung}
 Die energetische Bewertung von Gebäuden nach DIN V 18599 erfolgt im
@@ -348,7 +254,7 @@ vereinfachte stündliche Energiebilanz auf Basis der \ac{TRY}-Daten
 angesetzt. Diese folgt dem Grundprinzip der Lüftungswärmeverlustbilanz
 nach DIN V 18599-2 \parencite{DIN185992}, wird jedoch nicht mit
 Monatsmittelwerten, sondern mit stündlichen Temperaturwerten
-ausgewertet, um im Anschluss eine \ac{JDL} bilden zu können. Der
+ausgewertet, um jährliche Energiebedarf abschätzen zu können. Der
 Lüftungswärmeverlust einer Betriebsstunde $t$ mit
 $\theta_{\mathrm{e}}(t) < \theta_{\mathrm{i}}$ berechnet sich zu
 
@@ -439,7 +345,7 @@ Abluftventilatoren abgeschätzt, sofern für das Gebäude Druckerhöhungen
 und ein Ventilatorwirkungsgrad hinterlegt sind. Nach DIN V 18599-3
 berechnet sich die elektrische Ventilatorleistung allgemein aus dem
 geförderten Volumenstrom, der Druckerhöhung, dem Ventilatorwirkungsgrad
-sowie einer Druckverhältnis-Zahl $f_{\mathrm{p}}$, die den Einfluss
+sowie einer Druckverhältniszahl $f_{\mathrm{p}}$, die den Einfluss
 einer Volumenstromregelung (\ac{VAV}) bei Teillast abbildet
 \parencite{DIN185993}. Für Anlagen mit konstantem Volumenstrom, wie sie
 den in dieser Arbeit betrachteten virtuellen Gebäuden zugrunde liegen,
@@ -450,22 +356,16 @@ Gleichung auf den bekannten Sonderfall
     P_{\mathrm{V}}(t) = \dot q_{\mathrm{v}}(t) \, \frac{\Delta p_{\mathrm{ZUL}} + \Delta p_{\mathrm{ABL}}}{\eta_{\mathrm{V}}}
 \end{equation}
 
-für Betriebsstunden reduziert \parencite{DIN185993}; außerhalb der
+für Betriebsstunden reduziert \parencite{DIN185993}. Außerhalb der
 Betriebszeit ist $P_{\mathrm{V}}(t) = 0$. Der Wirkungsgrad
 $\eta_{\mathrm{V}}$ fasst dabei, analog zum \ac{SFP}-Wert nach
 DIN V 18599-7, Abschnitt~3.1.2 (spezifische elektrische
 Leistungsaufnahme je Volumenstrom), Ventilator-, Motor- und ggf.
-Antriebswirkungsgrad zusammen \parencite{DIN185997}. Die für die
-virtuellen Gebäude angesetzten Druckerhöhungen und Wirkungsgrade sind
-projektspezifische, plausible Auslegungswerte und keine Normwerte, da
-DIN V 18599-7 hierfür primär Kennwerte für die anlagentechnische
-Bewertung von Bestandsanlagen (Anhang~F) bereitstellt
-\parencite{DIN185997}.
+Antriebswirkungsgrad zusammen \parencite{DIN185997}. Der Wirkungsgrad bezieht sich hier immer auf Zu- und Abluftventilatoren. Die Druckerhöhungen und Wirkungsgrade
 
 Die in den Schritten 3 bis 6 beschriebenen Erweiterungen sind für eine
 überschlägige Betrachtung vertretbar, vernachlässigen jedoch weiterhin
-anlagenspezifische Regelungseffekte sowie – im Fall der Befeuchtung –
-die Unterscheidung zwischen Dampf- und Verdunstungsbefeuchtung, die im
+anlagenspezifische Regelungseffekte sowie im Fall der Befeuchtung die Unterscheidung zwischen Dampf- und Verdunstungsbefeuchtung, die im
 vollständigen Kennwertverfahren über die Variantenmatrix erfasst werden
 \parencite{DIN185993}.
 
@@ -489,36 +389,67 @@ Energieart absteigend sortiert. Die Abszisse der \ac{JDL} gibt dabei
 die Anzahl der Jahresstunden an, in denen der jeweilige Leistungswert
 erreicht oder überschritten wird. Dies erlaubt eine Einschätzung, wie
 oft hohe Lasten im Jahresverlauf auftreten, und dient u.\,a. als
-Grundlage für die Dimensionierung der Anlagentechnik.
+Grundlage für die Dimensionierung der Anlagentechnik. In der Folgenden Darstellung wird der Programmablauf als Flussdiagramm dargestellt.
+
+\begin{figure}[H]
+\centering
+\subimport{TeX/}{Flussdiagramm_methodik.tex}
+\caption{Flussdiagramm mit Programmablauf}
+\label{abb:Flussdiagramm}
+\end{figure}
+
 
 \chapter{Ergebnisse \& Diskussion}\label{chap:Ergebnisse}
 
-\section{Jahresdauerlinien der virtuellen Gebäude}
+\section{Ergebnisse von Stichproben der virtuellen Gebäude}
+
+Zur Bewertung des entwickelten Berechnungstools werden verschiedene exemplarische Gebäudeprofile untersucht. Die Auswahl umfasst typische Nichtwohngebäude mit unterschiedlichen Anforderungen hinsichtlich Betriebszeiten, Außenluftvolumenströmen, Kühlung, Wärmerückgewinnung und Befeuchtung. Die zugrunde gelegten Randbedingungen sind in Tabelle \ref{tab:ProfileServerraumLagerhalleGrossraumbuero} dargestellt. Die Parameter für die Gebäudeprofile werden als JSON Dateien im Projektordner hinterlegt. Es können beliebige Gebäudeprofile hinzugefügt werden.
+
+\begin{table}[H]
+    \centering
+    \caption{Gebäudeprofile (JSON-Parameter des Tools)}
+    \label{tab:ProfileServerraumLagerhalleGrossraumbuero}
+    \begin{tabular}{lccc}
+        \toprule
+        Parameter & Serverräume & Lagerhalle & Bürogebäude \\
+        \midrule
+        $q_V$ [\si{\cubic\metre\per\hour}]& 2500 & 8000 & 5000 \\
+        $\theta_{\text{i,h}}$ & 21,0 & 12,0 & 21,0 \\
+        Betriebsstunden [h] & 24, Mo-So & 14, Mo-So & 11, Mo-Fr \\
+        $\eta_{\text{WRG}}$ [-]& 0,6 & 0,0 & 0,6 \\
+        $\theta_{\text{i,c}}$ [\si{\celsius}]& 24,0 & 26,0 & 24,0 \\
+        $x_{\text{soll}}$ [\si{\gram\per\kilo\gram}]& - & - & 6,0 \\
+        $\Delta P_{\text{ZUL}}$ [\si{\pascal}] & 500 & 400 & 350 \\
+        $\Delta P_{\text{ABL}}$ [\si{\pascal}]& 400 & 300 & 280 \\
+        $\eta_{\text{V}}$ & 0,65 & 0,55 & 0,60 \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+\begin{figure}
+\centering
+\includegraphics[width=\textwidth]{TRY2015_Temperatur_Feuchte.pdf}
+\caption{Temperatur- und Feuchteverlauf Standort Steinfurt aus \ac{TRY}}
+\label{abb:Temperaturrelfeuchte}
+\end{figure}
 
 \section{Sensitivitätsbetrachtung}
 % z. B. Einfluss Luftwechsel, Standort, WRG-Grad
 
 \section{Vergleichsrechnung mit dem Kennwertverfahren nach DIN V 18599-3}\label{sec:Vergleichsrechnung}
 Um die Ergebnisse des stündlichen Bilanzverfahrens einordnen zu
-können, wird für drei der vier virtuellen Gebäude zusätzlich eine
+können, wird für zwei der virtuellen Gebäude zusätzlich eine
 Vergleichsrechnung nach dem normativen Kennwertverfahren der DIN V
 18599-3 (Jahresverfahren für Anlagen mit konstantem Volumenstrom,
 Abschnitt~4.4.1 i.\,V.\,m. Tabelle~A.1) durchgeführt
-\parencite{DIN185993}. Für das Einzelbüro- und das Serverraum-Profil wird
-dabei jeweils eine Anlagenvariante ohne Feuchteanforderung
-herangezogen, die die Funktionen Heizen und Kühlen abdeckt; für das
-Großraumbüro-Profil wird zusätzlich eine Anlagenvariante mit
-Feuchteanforderung herangezogen, sodass mit den drei
-Vergleichsrechnungen alle vier vom Tool berechneten Energiearten
-(Heizen, Kühlen, Befeuchten, Ventilatoren) gegen das normative
-Verfahren abgeglichen werden. Die Lagerhalle wird hier bewusst nicht
-einbezogen, da für das zugrunde liegende Nutzungsprofil (Tabelle~A.41)
-nach DIN V 18599-10 eine sehr niedrige Raum-Solltemperatur Heizen von
-$\theta_{\mathrm{i,h,soll}}=\SI{12}{\celsius}$ vorgesehen ist, die
-außerhalb des in Gleichung~(29)/(30) der DIN V 18599-3 festgelegten
-Gültigkeitsbereichs von $\SI{14}{\celsius}$ bis $\SI{22}{\celsius}$ für
-den Zulufttemperatur-Sollwert liegt \parencite{DIN185993}. Diese
-Gegenüberstellung erfolgt exemplarisch für drei Gebäude und zwei
+\parencite{DIN185993}. Für das Einzelbüro-Profil wird dabei eine
+Anlagenvariante ohne Feuchteanforderung herangezogen, die die
+Funktionen Heizen und Kühlen abdeckt; für das Serverraum-Profil wird
+zusätzlich eine Anlagenvariante mit Feuchteanforderung herangezogen,
+sodass mit den beiden Vergleichsrechnungen alle vier vom Tool
+berechneten Energiearten (Heizen, Kühlen, Befeuchten, Ventilatoren)
+gegen das normative Verfahren abgeglichen werden. Diese
+Gegenüberstellung erfolgt exemplarisch für zwei Gebäude und zwei
 Anlagenvarianten und erhebt keinen Anspruch auf eine vollständige
 Anwendung der gesamten Variantenmatrix.
 
@@ -583,64 +514,21 @@ Befeuchtung ist innerhalb der Variante~3 kein Vergleich möglich, da
 diese Variante keine Feuchteanforderung vorsieht und der zugehörige
 Dampfkennwert $q_{\mathrm{st,12h}}=0$ ist \parencite{DIN185993}.
 
-\subsection{Serverraum-Profil: Heizen und Kühlen}
-Das Nutzungsprofil Rechenzentrum nach DIN V 18599-10, Tabelle~A.21
-sieht keine Feuchteanforderung vor \parencite{DIN1859910}; das
-Serverraum-Profil wird daher, wie das Einzelbüro-Profil, mit der Variante~3
-(keine Feuchteanforderung, \ac{WRG}-Typ „nur Wärme“,
-Wärmerückgewinnungsgrad $60\,\%$) verglichen, deren Kennwerte bereits
-im vorangehenden Abschnitt genannt wurden \parencite{DIN185993}.
-
-Das Serverraum-Profil ist mit $\theta_{\mathrm{hc}}=\SI{21}{\celsius}$,
-$\dot q_{\mathrm{v}}=\SI{1500}{\cubic\meter\per\hour}$ sowie
-durchgehendem Betrieb ($t_{\mathrm{v,mech}}=\SI{24}{\hour}$,
-$d_{\mathrm{v,mech}}=\SI{365}{\day\per\year}$) hinterlegt. Die
-Umrechnung des Heizenergiekennwerts auf die abweichende
-Zulufttemperatur ergibt
-$q_{\mathrm{h}}(\theta_{\mathrm{hc}}) = q_{\mathrm{h,18°C,12h}} +
-g_{\mathrm{h,o}} \, (\theta_{\mathrm{hc}} - \SI{18}{\celsius}) \approx
-\SI{3497}{\watt\hour\hour\per\cubic\meter}$. Da die tägliche
-Betriebszeit mit $\SI{24}{\hour}$ deutlich von der Basiszeit von
-$\SI{12}{\hour}$ abweicht, fällt der Korrekturfaktor $f_{\mathrm{T,h}}$
-nach Gleichung~(37) der DIN V 18599-3 mit $f_{\mathrm{T,h}}\approx
-1{,}06$ merklich von $1{,}0$ ab \parencite{DIN185993}. Nach Skalierung
-auf die tatsächliche Betriebszeit sowie Denormierung auf den
-Außenluftvolumenstrom ergibt sich ein jährlicher Nutzenergiebedarf
-Heizen von rund $Q_{\mathrm{h,Kennwert}}\approx
-\SI{11120}{\kwh\per\year}$. Diese Berechnung wurde ebenfalls
-programmtechnisch nachgebildet und gegen den von Hand nachvollzogenen
-Wert abgesichert.
-
-Für den Kühlfall wird, analog zum Einzelbüro-Profil, die reale
-Raum-Kühlsolltemperatur des Serverraum-Profils
-($\theta_{\mathrm{i,c}}=\SI{24}{\celsius}$) durch den oberen Rand des
-Gültigkeitsbereichs der Umrechnungsgleichungen
-($\theta_{\mathrm{hc}}=\SI{22}{\celsius}$) ersetzt, um eine unzulässige
-Extrapolation zu vermeiden \parencite{DIN185993}. Es ergibt sich
-$q_{\mathrm{c}}(\theta_{\mathrm{hc}}) = q_{\mathrm{c,18°C,12h}} -
-g_{\mathrm{c,o}} \, (\theta_{\mathrm{hc}} - \SI{18}{\celsius}) \approx
-\SI{753}{\watt\hour\hour\per\cubic\meter}$. Mit dem Korrekturfaktor
-$f_{\mathrm{T,c}}$ nach Gleichung~(39) der DIN V 18599-3, der für
-$t_{\mathrm{v,mech}}=\SI{24}{\hour}$ mit $f_{\mathrm{T,c}}\approx
-0{,}66$ deutlich unter $1{,}0$ liegt \parencite{DIN185993}, ergibt sich
-nach gleichem Rechengang ein jährlicher Nutzenergiebedarf Kühlen von
-rund $Q_{\mathrm{c,Kennwert}}\approx\SI{1491}{\kwh\per\year}$. Für die
-Befeuchtung ist auch hier innerhalb der Variante~3 kein Vergleich
-möglich, da diese Variante keine Feuchteanforderung vorsieht.
-
-\subsection{Großraumbüro-Profil: Heizen, Kühlen und Befeuchten}
+\subsection{Serverraum-Profil: Heizen, Kühlen und Befeuchten}
 Damit auch die im Tool implementierte Befeuchtungsfunktion (Schritt~5)
 gegen das Kennwertverfahren abgeglichen werden kann, wird zusätzlich
-eine Vergleichsrechnung für das Großraumbüro-Profil durchgeführt.
-Dieses Profil sieht nach DIN V 18599-10, Tabelle~A.3 eine
-Feuchteanforderung „mit Toleranz“ vor \parencite{DIN1859910}; als
-Mindest-Wasserdampfgehalt der Zuluft wird dabei der nach Tabelle~C.1
-der DIN V 18599-3 für diese Klassifizierung hinterlegte Standardwert
-von $x_{\mathrm{soll}}=\SI{6.0}{\gram\per\kilo\gram}$ angesetzt
-\parencite{DIN185993}. In Kombination mit einem Dampfbefeuchter sowie
-dem \ac{WRG}-Typ „nur Wärme“ ($60\,\%$) ergibt sich nach Tabelle~7 die
-Variante~21 \parencite{DIN185993}. Für diese Variante weist
-Tabelle~A.1 (Gesamtjahr) folgende Kennwerte aus:
+eine Vergleichsrechnung für das Serverraum-Profil durchgeführt. Dieses
+Profil sieht neben Heizen und Kühlen einen Mindest-Wasserdampfgehalt
+der Zuluft von $x_{\mathrm{soll}}=\SI{6.0}{\gram\per\kilo\gram}$ sowie
+einen Wärmerückgewinnungsgrad von $\eta_{\mathrm{WRG}}=0{,}6$ vor. Nach
+Tabelle~C.1 der DIN V 18599-3 entspricht ein Zuluft-Wasserdampfgehalt
+von $\SI{6.0}{\gram\per\kilo\gram}$ genau dem Standardwert für
+Feuchteanforderungen „mit Toleranzbereich“ \parencite{DIN185993}; das
+Profil ist damit dieser Klassifizierung zuzuordnen. In Kombination mit
+einem Dampfbefeuchter sowie dem \ac{WRG}-Typ „nur Wärme“
+($60\,\%$) ergibt sich nach Tabelle~7 die Variante~21
+\parencite{DIN185993}. Für diese Variante weist Tabelle~A.1
+(Gesamtjahr) folgende Kennwerte aus:
 $q_{\mathrm{h,18°C,12h}}=\SI{1028}{\watt\hour\hour\per\cubic\meter}$,
 $g_{\mathrm{h,u}}=\SI{227}{\watt\hour\hour\per\kelvin\per\cubic\meter}$,
 $g_{\mathrm{h,o}}=\SI{882}{\watt\hour\hour\per\kelvin\per\cubic\meter}$,
@@ -651,34 +539,39 @@ sowie
 $g_{\mathrm{c,o}}=\SI{246}{\watt\hour\hour\per\kelvin\per\cubic\meter}$
 \parencite{DIN185993}.
 
-Das Großraumbüro-Profil ist mit $\theta_{\mathrm{hc}}=\SI{21}{\celsius}$,
-$\dot q_{\mathrm{v}}=\SI{1200}{\cubic\meter\per\hour}$, täglicher
-Betriebszeit $t_{\mathrm{v,mech}}=\SI{13}{\hour}$ [5--18\,Uhr] sowie
-$d_{\mathrm{v,mech}}=\SI{250}{\day\per\year}$ [Mo--Fr] hinterlegt. Die
+Das Serverraum-Profil ist mit $\theta_{\mathrm{hc}}=\SI{21}{\celsius}$,
+$\dot q_{\mathrm{v}}=\SI{1500}{\cubic\meter\per\hour}$ sowie
+durchgehendem Betrieb ($t_{\mathrm{v,mech}}=\SI{24}{\hour}$,
+$d_{\mathrm{v,mech}}=\SI{365}{\day\per\year}$) hinterlegt. Die
 Umrechnung des Heizenergiekennwerts auf die abweichende
 Zulufttemperatur ergibt
 $q_{\mathrm{h}}(\theta_{\mathrm{hc}}) = q_{\mathrm{h,18°C,12h}} +
 g_{\mathrm{h,o}} \, (\theta_{\mathrm{hc}} - \SI{18}{\celsius}) \approx
-\SI{3674}{\watt\hour\hour\per\cubic\meter}$. Nach Skalierung auf die
-tägliche Betriebszeit über $f_{\mathrm{T,h}}$ (Gleichung~(37)), die
-tatsächliche Anzahl jährlicher Betriebstage sowie Denormierung auf den
+\SI{3674}{\watt\hour\hour\per\cubic\meter}$. Da die tägliche
+Betriebszeit mit $\SI{24}{\hour}$ deutlich von der Basiszeit von
+$\SI{12}{\hour}$ abweicht, fällt der Korrekturfaktor $f_{\mathrm{T,h}}$
+nach Gleichung~(37) der DIN V 18599-3 mit $f_{\mathrm{T,h}}\approx
+1{,}06$ merklich von $1{,}0$ ab \parencite{DIN185993}. Nach Skalierung
+auf die tatsächliche Betriebszeit sowie Denormierung auf den
 Außenluftvolumenstrom ergibt sich ein jährlicher Nutzenergiebedarf
 Heizen von rund $Q_{\mathrm{h,Kennwert}}\approx
-\SI{3291}{\kwh\per\year}$.
+\SI{11700}{\kwh\per\year}$.
 
-Für den Kühlfall wird wiederum die reale Raum-Kühlsolltemperatur des
-Großraumbüro-Profils ($\theta_{\mathrm{i,c}}=\SI{24}{\celsius}$) durch
-den oberen Rand des Gültigkeitsbereichs
-($\theta_{\mathrm{hc}}=\SI{22}{\celsius}$) ersetzt, um eine
-unzulässige Extrapolation zu vermeiden \parencite{DIN185993}. Es
-ergibt sich $q_{\mathrm{c}}(\theta_{\mathrm{hc}}) =
-q_{\mathrm{c,18°C,12h}} - g_{\mathrm{c,o}} \, (\theta_{\mathrm{hc}} -
-\SI{18}{\celsius}) \approx \SI{1459}{\watt\hour\hour\per\cubic\meter}$.
-Mit dem für Feuchteanforderungen „mit Toleranzbereich“ geltenden
-Korrekturfaktor $f_{\mathrm{T,c}}$ nach Gleichung~(39) der
-DIN V 18599-3 ergibt sich nach gleichem Rechengang ein jährlicher
-Nutzenergiebedarf Kühlen von rund
-$Q_{\mathrm{c,Kennwert}}\approx\SI{1278}{\kwh\per\year}$.
+Für den Kühlfall wird, analog zum Einzelbüro-Profil, die reale
+Raum-Kühlsolltemperatur des Serverraum-Profils
+($\theta_{\mathrm{i,c}}=\SI{24}{\celsius}$) durch den oberen Rand des
+Gültigkeitsbereichs der Umrechnungsgleichungen
+($\theta_{\mathrm{hc}}=\SI{22}{\celsius}$) ersetzt, um eine unzulässige
+Extrapolation zu vermeiden \parencite{DIN185993}. Es ergibt sich
+$q_{\mathrm{c}}(\theta_{\mathrm{hc}}) = q_{\mathrm{c,18°C,12h}} -
+g_{\mathrm{c,o}} \, (\theta_{\mathrm{hc}} - \SI{18}{\celsius}) \approx
+\SI{1459}{\watt\hour\hour\per\cubic\meter}$. Mit dem für
+Feuchteanforderungen „mit Toleranzbereich“ geltenden Korrekturfaktor
+$f_{\mathrm{T,c}}$ nach Gleichung~(39) der DIN V 18599-3, der für
+$t_{\mathrm{v,mech}}=\SI{24}{\hour}$ mit $f_{\mathrm{T,c}}\approx
+0{,}66$ deutlich unter $1{,}0$ liegt \parencite{DIN185993}, ergibt sich
+nach gleichem Rechengang ein jährlicher Nutzenergiebedarf Kühlen von
+rund $Q_{\mathrm{c,Kennwert}}\approx\SI{2890}{\kwh\per\year}$.
 
 Für die Dampfbefeuchtung gilt näherungsweise
 $q_{\mathrm{st}}(\theta_{\mathrm{hc}}) \approx q_{\mathrm{st,18°C,12h}}$
@@ -687,8 +580,8 @@ zugehörige Korrekturfaktor $f_{\mathrm{T,st}}$ ist konstant $1{,}0$
 \parencite{DIN185993}. Nach Skalierung auf die tatsächliche
 Betriebszeit sowie Denormierung auf den Außenluftvolumenstrom ergibt
 sich ein jährlicher Nutzenergiebedarf Befeuchtung von rund
-$Q_{\mathrm{st,Kennwert}}\approx\SI{3555}{\kwh\per\year}$. Mit dieser
-dritten Vergleichsrechnung sind alle vier vom Tool berechneten
+$Q_{\mathrm{st,Kennwert}}\approx\SI{12000}{\kwh\per\year}$. Mit dieser
+zweiten Vergleichsrechnung sind alle vier vom Tool berechneten
 Energiearten – Heizen, Kühlen, Befeuchten und Ventilatoren, Letztere
 über den bereits in Schritt~6 unmittelbar aus Gleichung~(11)/(12) der
 DIN V 18599-3 abgeleiteten Sonderfall konstanten Volumenstroms – gegen
@@ -726,22 +619,18 @@ Erstellung einer \ac{JDL} geeignet ist, jedoch keinen Ersatz für eine
 normkonforme Nachweisführung nach DIN V 18599 darstellt.
 
 Für den Kühlfall kommt als zusätzliche Einschränkung hinzu, dass die
-reale Raum-Kühlsolltemperatur aller drei betrachteten Gebäudeprofile
+reale Raum-Kühlsolltemperatur beider betrachteter Gebäudeprofile
 ($\SI{24}{\celsius}$) außerhalb des Gültigkeitsbereichs der
 Umrechnungsgleichungen des Kennwertverfahrens liegt
 (Abschnitt~\ref{sec:Vergleichsrechnung}); die Vergleichsrechnungen
 Kühlen sind daher nur eingeschränkt aussagekräftig. Für die
-Befeuchtung konnte anhand des Großraumbüro-Profils ein normkonformer
-Abgleich mit einer Anlagenvariante mit Feuchteanforderung durchgeführt
-werden; die im Tool implementierte latente Bilanz (Schritt~5)
-verwendet dabei jedoch reale, stündlich schwankende
-Wasserdampfgehalte der Außenluft anstelle eines fest vorgegebenen
-Standardwertes, sodass auch hier eine methodische Vereinfachung
-gegenüber dem Kennwertverfahren besteht. Das Serverraum-Profil sieht
-nach DIN V 18599-10 dagegen keine Feuchteanforderung vor, sodass für
-dieses virtuelle Gebäude – abweichend von einer in der Praxis bei
-Rechenzentren aus Gründen des Anlagenschutzes häufig anzutreffenden
-Befeuchtung – keine Befeuchtungsleistung angesetzt wird.
+Befeuchtung konnte anhand des Serverraum-Profils zwar ein
+normkonformer Abgleich mit einer Anlagenvariante mit
+Feuchteanforderung durchgeführt werden; die im Tool implementierte
+latente Bilanz (Schritt~5) verwendet dabei jedoch reale, stündlich
+schwankende Wasserdampfgehalte der Außenluft anstelle eines fest
+vorgegebenen Standardwertes, sodass auch hier eine methodische
+Vereinfachung gegenüber dem Kennwertverfahren besteht.
 
 Für die berechnete Jahresenergiemenge der Ventilatoren gilt
 einschränkend, dass die verwendeten Druckerhöhungen und der
@@ -759,36 +648,6 @@ DIN V 18599-3 heranzuziehen \parencite{DIN185993}.
 
 \appendix
 \chapter{Parameterübersicht virtuelle Gebäude}
-Tabelle~\ref{tab:AnhangProfile} listet die vollständigen, im Tool
-hinterlegten \texttt{JSON}-Gebäudeprofile (Verzeichnis
-\texttt{data/profiles/}) der vier virtuellen Gebäude, ergänzend zu den
-in Tabelle~\ref{tab:Nutzungsprofile} zusammengefassten
-Nutzungsrandbedingungen nach DIN V 18599-10.
-
-\begin{table}[H]
-    \centering
-    \caption{Vollständige Gebäudeprofile (JSON-Parameter des Tools)}
-    \label{tab:AnhangProfile}
-    \resizebox{\textwidth}{!}{%
-    \begin{tabular}{lllll}
-        \toprule
-        Parameter & Büro & Großraumbüro & Lagerhalle & Serverraum \\
-        \midrule
-        \texttt{nutzungsprofil} & Einzelbüro & Großraumbüro & Lagerhallen, Logistikhallen & Rechenzentrum \\
-        \texttt{aussenluftvolumenstrom\_m3h} & 500 & 1200 & 8000 & 1500 \\
-        \texttt{solltemperatur\_innen\_c} & 20{,}0 & 21{,}0 & 12{,}0 & 21{,}0 \\
-        \texttt{betriebszeit} & 7--18\,Uhr, Mo--Fr & 5--18\,Uhr, Mo--Fr & 0--24\,Uhr, Mo--So & 0--24\,Uhr, Mo--So \\
-        \texttt{waermerueckgewinnungsgrad} & 0{,}6 & 0{,}6 & 0{,}0 & 0{,}6 \\
-        \texttt{solltemperatur\_kuehlung\_c} & 24{,}0 & 24{,}0 & 26{,}0 & 24{,}0 \\
-        \texttt{feuchte\_soll\_gpkg} & -- & 6{,}0 & -- & -- \\
-        \texttt{druckerhoehung\_zuluft\_pa} & 300 & 350 & 400 & 500 \\
-        \texttt{druckerhoehung\_abluft\_pa} & 250 & 280 & 300 & 400 \\
-        \texttt{wirkungsgrad\_ventilator} & 0{,}6 & 0{,}6 & 0{,}55 & 0{,}65 \\
-        \bottomrule
-    \end{tabular}%
-    }
-\end{table}
-
 \chapter{Programmübersicht Python-Tool}
 
 \end{document}

@@ -1,0 +1,70 @@
+% Flussdiagramm zum Berechnungsablauf (Kapitel 3, Methodik)
+% Einbindung z. B. mit \subimport{TeX/}{Flussdiagramm_methodik.tex}
+\begin{tikzpicture}[scale=0.9,
+    node distance=0.7cm and 0.5cm,
+    font=\small,
+    startstop/.style={rectangle, rounded corners, minimum width=3.2cm, minimum height=0.9cm,
+        text width=3.0cm, align=center, draw=black, fill=gray!15},
+    io/.style={trapezium, trapezium left angle=70, trapezium right angle=110,
+        minimum width=4.1cm, minimum height=0.9cm, text width=3.8cm, align=center,
+        draw=black, fill=blue!8},
+    process/.style={rectangle, minimum width=3.0cm, minimum height=1.0cm,
+        text width=2.9cm, align=center, draw=black, fill=orange!10},
+    decision/.style={diamond, aspect=2.4, inner sep=1pt, text width=2.7cm, align=center,
+        draw=black, fill=yellow!15},
+    arr/.style={-Latex, thick},
+]
+
+% --- Schritt 1: Eingangsdaten ---
+\node[io] (input) {Schritt 1\\Eingangsdaten:\\Wetterdaten und Gebäuderandbedingungen};
+
+% --- Schritt 2: Betriebszustand je Stunde ---
+\node[decision, below=of input] (betrieb) {Schritt 2\\Stunde innerhalb der Betriebszeit?};
+
+\node[process, right=2.2cm of betrieb] (null) {alle Energieströme dieser Stunde = 0};
+
+% --- Schritte 3-6: parallele Berechnung der Energieströme ---
+\node[process, below=1.6cm of betrieb, xshift=-4.9cm] (heizen) {Schritt 3\\Heizleistung};
+\node[process, right=of heizen] (kuehlen) {Schritt 4\\Kühlleistung\\(falls Kühl-Solltemperatur hinterlegt)};
+\node[process, right=of kuehlen] (befeuchten) {Schritt 5\\Befeuchtungs-\\leistung (falls Feuchte-Sollwert hinterlegt)};
+\node[process, right=of befeuchten] (ventilator) {Schritt 6\\Ventilator-\\leistung (falls Druckerhöhung und Wirkungsgrad hinterlegt)};
+
+% --- Schritt 7: Aggregation ---
+\node[process, below=1.4cm of befeuchten, xshift=-1.3cm] (aggregation) {Schritt 7\\Jahresenergiemenge und Volllaststunden je Energieart};
+
+% --- Schritt 8: Jahresdauerlinie ---
+\node[process, below=of aggregation] (jdl) {Schritt 8\\Jahresdauerlinie};
+
+
+\node[startstop, below=of jdl] (ende) {Ergebnisse: Jahresenergiemengen, Volllaststunden, Jahresdauerlinien};
+
+% --- Hilfskoordinaten fuer die Verteilerleiste (Schritte 3-6) ---
+\coordinate (busJa) at ($(betrieb.south)+(0,-0.5)$);
+
+% --- Pfeile: Eingangsdaten -> Entscheidung ---
+\draw[arr] (input) -- (betrieb);
+
+% --- nein-Zweig: keine Berechnung fuer diese Stunde ---
+\draw[arr] (betrieb) -- node[above]{nein} (null);
+\draw[arr] (null.east) -- ++(1.0,0) |- ($(aggregation.east)+(0.9,0)$) -- (aggregation.east);
+
+% --- ja-Zweig: Verteilerleiste zu den Schritten 3-6 ---
+\draw (betrieb.south) -- (busJa) node[midway, right]{ja};
+\draw (busJa -| heizen.north) -- (busJa -| ventilator.north);
+\draw[arr] (busJa -| heizen.north) -- (heizen.north);
+\draw[arr] (busJa -| kuehlen.north) -- (kuehlen.north);
+\draw[arr] (busJa -| befeuchten.north) -- (befeuchten.north);
+\draw[arr] (busJa -| ventilator.north) -- (ventilator.north);
+
+% --- Schritte 3-6 -> Aggregation ---
+\draw[arr] (heizen.south) |- (aggregation.west);
+\draw[arr] (kuehlen.south) -- (aggregation.north);
+\draw[arr] (befeuchten.south) -- (aggregation.north);
+\draw[arr] (ventilator.south) |- (aggregation.east);
+
+% --- weiterer Ablauf ---
+\draw[arr] (aggregation) -- (jdl);
+\draw[arr] (jdl) -- (ende);
+
+
+\end{tikzpicture}

@@ -15,8 +15,6 @@ Referenz: DIN V 18599-3:2018-09, Gleichungen (27), (29), (30), (31),
 Die hier hinterlegten Energiekennwerte stammen aus Tabelle A.1
 (Spezifische Energiekennwerte Gesamtjahr) der DIN V 18599-3 für
 Variante 3 (keine Feuchteanforderung, Wärmerückgewinnung "nur Wärme",
-Wärmerückgewinnungsgrad 60 %) sowie für Variante 21 (Feuchteanforderung
-"mit Toleranzbereich", Dampfbefeuchter, Wärmerückgewinnung "nur Wärme",
 Wärmerückgewinnungsgrad 60 %) und wurden manuell aus der Norm
 übernommen, NICHT berechnet oder geschätzt.
 
@@ -44,20 +42,6 @@ VARIANTE_3_JAHR = {
     "qc_18C_12h": 2309.0,   # Wh/(m3/h)
     "gc_u": 856.0,          # Wh/(K*m3/h), Zulufttemperatur 14-18°C
     "gc_o": 389.0,          # Wh/(K*m3/h), Zulufttemperatur 18-22°C
-}
-
-# Tabelle A.1 (Gesamtjahr), Variante 21: Feuchteanforderung "mit
-# Toleranzbereich" (Dampfbefeuchter), WRG-Typ "nur Wärme",
-# Wärmerückgewinnungsgrad 60 %.
-# Basis: theta_v,mech = 18 °C; t_v,mech = 12 h; d_v,mech = 365 d.
-VARIANTE_21_JAHR = {
-    "qh_18C_12h": 1028.0,   # Wh/(m3/h)
-    "gh_u": 227.0,          # Wh/(K*m3/h), Zulufttemperatur 14-18°C
-    "gh_o": 882.0,          # Wh/(K*m3/h), Zulufttemperatur 18-22°C
-    "qc_18C_12h": 2443.0,   # Wh/(m3/h)
-    "gc_u": 886.0,          # Wh/(K*m3/h), Zulufttemperatur 14-18°C
-    "gc_o": 246.0,          # Wh/(K*m3/h), Zulufttemperatur 18-22°C
-    "qst_18C_12h": 3992.0,  # Wh/(m3/h), Dampfbefeuchtung
 }
 
 
@@ -165,24 +149,3 @@ def jahres_kaelteenergiebedarf_kwh(
     qc_tage = qc_stunden * (randbedingungen.jaehrliche_betriebstage / 365.0)
     q_c_wh = qc_tage * randbedingungen.aussenluftvolumenstrom_m3h
     return q_c_wh / 1000.0
-
-
-def jahres_dampfbefeuchtungsenergiebedarf_kwh(
-    randbedingungen: KennwertRandbedingungen,
-    kennwerte: dict = VARIANTE_21_JAHR,
-) -> float:
-    """Jährlicher Nutzenergiebedarf Dampfbefeuchtung in kWh nach dem
-    Kennwertverfahren der DIN V 18599-3.
-
-    Der Dampfenergiekennwert ist näherungsweise unabhängig von der
-    Zulufttemperatur (Gl. 42 mit $f_{\\mathrm{T,st}} = 1{,}0$ konstant);
-    lediglich die Skalierung auf die tägliche Betriebszeit, die
-    tatsächliche Anzahl jährlicher Betriebstage sowie die Denormierung
-    auf den Zuluftvolumenstrom erfolgen wie bei Heizen/Kühlen.
-    """
-    qst_theta = kennwerte["qst_18C_12h"]
-    fT_st = 1.0
-    qst_stunden = qst_theta * (randbedingungen.taegliche_betriebsstunden / 12.0) * fT_st
-    qst_tage = qst_stunden * (randbedingungen.jaehrliche_betriebstage / 365.0)
-    q_st_wh = qst_tage * randbedingungen.aussenluftvolumenstrom_m3h
-    return q_st_wh / 1000.0

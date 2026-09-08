@@ -52,8 +52,8 @@ import numpy as np
 import pandas as pd
 from CoolProp.HumidAirProp import HAPropsSI
 
-from .building import VirtuellesGebaeude
-from .weather import absolute_humidity, air_pressure_pa
+from building import Gebaeude
+from weather import absolute_humidity, air_pressure_pa
 
 # Stoffwerte trockener Luft bei ca. 20 °C (Näherungswerte)
 RHO_LUFT = 1.20  # kg/m3
@@ -70,7 +70,7 @@ def _wochentag(monat: int, tag: int) -> int:
     return _dt.date(REFERENZJAHR, int(monat), int(tag)).weekday()
 
 
-def berechne_betriebsmaske(weather_df: pd.DataFrame, gebaeude: VirtuellesGebaeude) -> pd.Series:
+def berechne_betriebsmaske(weather_df: pd.DataFrame, gebaeude: Gebaeude) -> pd.Series:
     """Bestimmt für jede Stunde des TRY-Jahres, ob sich das Gebäude im
     Betrieb befindet (True/False), auf Basis der hinterlegten
     Betriebszeit.
@@ -87,7 +87,7 @@ def berechne_betriebsmaske(weather_df: pd.DataFrame, gebaeude: VirtuellesGebaeud
 
 
 def stuendlicher_waermeverlust_kw(
-    weather_df: pd.DataFrame, gebaeude: VirtuellesGebaeude
+    weather_df: pd.DataFrame, gebaeude: Gebaeude
 ) -> pd.Series:
     """Stündlicher Lüftungswärmeverlust (Heizfall) in kW über das TRY-Jahr."""
     theta_e = weather_df["t"]
@@ -106,7 +106,7 @@ def stuendlicher_waermeverlust_kw(
 
 
 def stuendliche_kaelteleistung_kw(
-    weather_df: pd.DataFrame, gebaeude: VirtuellesGebaeude
+    weather_df: pd.DataFrame, gebaeude: Gebaeude
 ) -> pd.Series:
     """Stündlicher Lüftungskälteverlust (Kühlfall) in kW über das
     TRY-Jahr. Liefert eine Nullreihe, wenn im Gebäudeprofil keine
@@ -130,7 +130,7 @@ def stuendliche_kaelteleistung_kw(
 
 
 def stuendliche_kaelteleistung_gesamt_kw(
-    weather_df: pd.DataFrame, gebaeude: VirtuellesGebaeude
+    weather_df: pd.DataFrame, gebaeude: Gebaeude
 ) -> pd.Series:
     """Stündliche Kälteleistung am Luftkühler (sensibel + latent) in kW
     über das TRY-Jahr, nach dem Komponentenmodell "Luftkühler" der
@@ -223,7 +223,7 @@ def stuendliche_kaelteleistung_gesamt_kw(
 
 
 def stuendliche_latente_kuehlleistung_kw(
-    weather_df: pd.DataFrame, gebaeude: VirtuellesGebaeude
+    weather_df: pd.DataFrame, gebaeude: Gebaeude
 ) -> pd.Series:
     """Stündlicher latenter Anteil der Kälteleistung am Luftkühler in kW
     (Kondensationsanteil nach DIN V 18599-3, Anhang C, Gl. C.3/C.4).
@@ -290,7 +290,7 @@ def stuendliche_latente_kuehlleistung_kw(
 
 
 def stuendliche_befeuchtungsleistung_kw(
-    weather_df: pd.DataFrame, gebaeude: VirtuellesGebaeude
+    weather_df: pd.DataFrame, gebaeude: Gebaeude
 ) -> pd.Series:
     """Stündliche Befeuchtungsleistung (latenter Anteil) in kW über das
     TRY-Jahr. Liefert eine Nullreihe, wenn im Gebäudeprofil kein
@@ -343,7 +343,7 @@ def stuendliche_befeuchtungsleistung_kw(
 
 
 def stuendliche_ventilatorleistung_kw(
-    weather_df: pd.DataFrame, gebaeude: VirtuellesGebaeude
+    weather_df: pd.DataFrame, gebaeude: Gebaeude
 ) -> pd.Series:
     """Stündliche elektrische Ventilatorleistung (Zu- und Abluft) in kW
     über das TRY-Jahr. Liefert eine Nullreihe, wenn im Gebäudeprofil

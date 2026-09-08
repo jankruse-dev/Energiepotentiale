@@ -1,0 +1,31 @@
+\begin{table}[H]
+    \centering
+    \caption{Zustandspunkte der RLT-Anlage (vgl. Abbildung~\ref{abb:RLT_Schema})}
+    \label{tab:RLT_Zustandspunkte}
+    \resizebox{\textwidth}{!}{%
+    \begin{tabular}{clll}
+        \toprule
+        \textbf{Punkt} & \textbf{Bezeichnung} & \textbf{Zustandsgrößen} & \textbf{Bemerkung} \\
+        \midrule
+        (1) & Außenluft (ODA), nach Filter, Eintritt WRG (Zuluftseite)
+            & $\theta_{1}(t)=\theta_{\mathrm{e}}(t)$, $x_{1}(t)=x_{\mathrm{e}}(t)$
+            & Eingangsgrößen aus dem \ac{TRY} (Schritt~1) \\
+        (2) & Zuluft nach WRG, Austritt WRG (Zuluftseite), vor Ventilator (Zuluft)
+            & $\theta_{2}(t)=\theta_{\mathrm{coil,in}}(t)$, $x_{2}(t)=x_{1}(t)$
+            & WRG ohne Feuchteübertragung, daher $x_{2}=x_{1}$ (Schritt~3/4, Gl.~\eqref{eq:dtheta}/\eqref{eq:thetacoilin}) \\
+        (3) & Zuluft nach Ventilator (Zuluft), vor Erhitzer
+            & $\theta_{3}(t)\approx\theta_{2}(t)$, $x_{3}(t)=x_{2}(t)$
+            & Ventilatorwärmeeintrag im Tool nicht gesondert bilanziert \\
+        (4) & Zuluft nach Erhitzer, vor Kühler
+            & $\theta_{4}(t)=\theta_{\mathrm{i}}$ (Heizfall) bzw. $\theta_{4}(t)=\theta_{3}(t)$ (Kühlfall), $x_{4}(t)=x_{3}(t)$
+            & Erhitzer aktiv nur im Heizfall (Schritt~3, Gl.~\eqref{eq:QdotV}) \\
+        (5) & Zuluft (SUP) nach Kühler und Befeuchter, Eintritt Raum
+            & $\theta_{5}(t)=\theta_{\mathrm{v,mech}}$, $x_{5}(t)=x_{\mathrm{out}}(t)$ (Kühlfall) bzw. $x_{5}(t)=x_{\mathrm{soll}}$ (Befeuchtung)
+            & Kühler und Befeuchter im Schema zwischen (4) und (5), nicht gesondert nummeriert (Schritt~4/5, Gl.~\eqref{eq:QdotCgesamt}/\eqref{eq:Qst}) \\
+        (6) & Abluft (ETA) nach Ventilator (Abluft), Eintritt WRG (Abluftseite)
+            & $\theta_{6}(t)=\theta_{\mathrm{i}}$ bzw. $\theta_{\mathrm{i,c}}$, $x_{6}(t)\approx x_{5}(t)$
+            & Bilanz-Innentemperatur der Gebäudezone; nicht Bestandteil der Berechnung \\
+        \bottomrule
+    \end{tabular}%
+    }
+\end{table}

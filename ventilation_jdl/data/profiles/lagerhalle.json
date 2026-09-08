@@ -4,8 +4,8 @@
   "aussenluftvolumenstrom_m3h": 8000,
   "solltemperatur_innen_c": 12.0,
   "betriebszeit": {
-    "start_stunde": 0,
-    "end_stunde": 24,
+    "start_stunde": 6,
+    "end_stunde": 20,
     "wochentage": [0, 1, 2, 3, 4, 5, 6]
   },
   "waermerueckgewinnungsgrad": 0.0,

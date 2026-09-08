@@ -1,16 +1,16 @@
 {
   "name": "Serverräume",
   "nutzungsprofil": "Rechenzentrum",
-  "aussenluftvolumenstrom_m3h": 2500,
-  "solltemperatur_innen_c": 21.0,
+  "aussenluftvolumenstrom_m3h": 8000,
+  "solltemperatur_innen_c": 18,
   "betriebszeit": {
-    "start_stunde": 0,
-    "end_stunde": 24,
+    "start_stunde": 6,
+    "end_stunde": 18,
     "wochentage": [0, 1, 2, 3, 4, 5, 6]
   },
-  "waermerueckgewinnungsgrad": 0.6,
+  "waermerueckgewinnungsgrad": 0.0,
   "solltemperatur_kuehlung_c": 18.0,
   "druckerhoehung_zuluft_pa": 500.0,
   "druckerhoehung_abluft_pa": 400.0,
-  "wirkungsgrad_ventilator": 0.65
+  "wirkungsgrad_ventilator": 0.55
 }

@@ -77,14 +77,15 @@
 \begin{titlepage}
 \thispagestyle{empty}
 % Logo
-\begin{minipage}[c]{0.5\textwidth}
-    \hspace*{-5mm}\vspace*{10mm}\includegraphics[scale=0.35]{Logo Kampmann.JPG.pdf}
-\end{minipage}
-\begin{minipage}[c]{0.5\textwidth}
-    \hspace*{10mm}\vspace*{7mm}\includegraphics[scale=0.6]{fhm_Logo_CMYK_17mm.pdf}
-\end{minipage}
+% \begin{minipage}[c]{0.5\textwidth}
+%     \hspace*{-5mm}\vspace*{10mm}\includegraphics[scale=0.35]{Logo Kampmann.JPG.pdf}
+% \end{minipage}
+\begin{figure}
+    \centering
+    \includegraphics[scale=0.8]{fhm_Logo_CMYK_17mm.pdf}
+\end{figure}
 
-\vspace{3cm}
+\vspace*{3cm}
 
 % Titel - Table + Tabular damit zentriert auf der Seite
 \begin{table}[h]
@@ -112,7 +113,7 @@
         Fachhochschule Münster\\
         \\
         \getfhmsfirstexaminer \\
-        \getfhmssecondexaminer
+        % \getfhmssecondexaminer
     
     \end{tabular}
 \end{table}
@@ -123,9 +124,9 @@
 \newcommand{\getfhmstitle}{Titel der Bachelorarbeit}
 \newcommand{\getfhmssubtitle}{Bachelorarbeit}
 \newcommand{\getfhmsauthor}{Autor}
-\newcommand{\getfhmsmatrikelnr}{Matr. Nr.}
+\newcommand{\getfhmsmatrikelnr}{Matr. Nr. 1230471}
 \newcommand{\getfhmsdate}{\today}
-\newcommand{\getfhmsfirstexaminer}{Erstprüfer: Titel Vorname Nachname}
+\newcommand{\getfhmsfirstexaminer}{Prüfer: Prof.Dr.-Ing Bernd Boiting}
 \newcommand{\getfhmssecondexaminer}{Zweitprüfer: Titel Vorname Nachname}
 \newcommand{\getfhmsemail}{autor@fh-muenster.de}
 \newcommand{\fhmstitle}[1]{\renewcommand{\getfhmstitle}{#1}}

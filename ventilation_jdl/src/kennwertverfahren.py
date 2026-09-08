@@ -14,11 +14,12 @@ Referenz: DIN V 18599-3:2018-09, Gleichungen (27), (29), (30), (31),
 
 Die hier hinterlegten Energiekennwerte stammen aus Tabelle A.1
 (Spezifische Energiekennwerte Gesamtjahr) der DIN V 18599-3 für
-Variante 3 (keine Feuchteanforderung, Wärmerückgewinnung "nur Wärme",
-Wärmerückgewinnungsgrad 60 %) sowie für Variante 21 (Feuchteanforderung
-"mit Toleranzbereich", Dampfbefeuchter, Wärmerückgewinnung "nur Wärme",
-Wärmerückgewinnungsgrad 60 %) und wurden manuell aus der Norm
-übernommen, NICHT berechnet oder geschätzt.
+Variante 1 (keine Feuchteanforderung, WRG-Typ "keine", d. h. keine
+Wärmerückgewinnung), Variante 3 (keine Feuchteanforderung,
+Wärmerückgewinnung "nur Wärme", Wärmerückgewinnungsgrad 60 %) sowie für
+Variante 21 (Feuchteanforderung "mit Toleranzbereich", Dampfbefeuchter,
+Wärmerückgewinnung "nur Wärme", Wärmerückgewinnungsgrad 60 %) und wurden
+manuell aus der Norm übernommen, NICHT berechnet oder geschätzt.
 
 Für den Kühlfall gilt außerdem: Der Gültigkeitsbereich der
 Umrechnungsgleichungen (31)/(32) ist auf Zulufttemperatur-Sollwerte von
@@ -33,6 +34,18 @@ angesetzt, nicht die tatsächliche Raum-Kühlsolltemperatur.
 from __future__ import annotations
 
 from dataclasses import dataclass
+
+# Tabelle A.1 (Gesamtjahr), Variante 1: keine Feuchteanforderung,
+# WRG-Typ "keine" (keine Wärmerückgewinnung vorhanden).
+# Basis: theta_v,mech = 18 °C; t_v,mech = 12 h; d_v,mech = 365 d.
+VARIANTE_1_JAHR = {
+    "qh_18C_12h": 10291.0,  # Wh/(m3/h)
+    "gh_u": 924.0,          # Wh/(K*m3/h), Zulufttemperatur 14-18°C
+    "gh_o": 1150.0,         # Wh/(K*m3/h), Zulufttemperatur 18-22°C
+    "qc_18C_12h": 2358.0,   # Wh/(m3/h)
+    "gc_u": 855.0,          # Wh/(K*m3/h), Zulufttemperatur 14-18°C
+    "gc_o": 389.0,          # Wh/(K*m3/h), Zulufttemperatur 18-22°C
+}
 
 # Tabelle A.1 (Gesamtjahr), Variante 3: keine Feuchteanforderung,
 # WRG-Typ "nur Wärme", Wärmerückgewinnungsgrad 60 %.

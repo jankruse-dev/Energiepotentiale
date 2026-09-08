@@ -1,0 +1,87 @@
+% Schematische Darstellung der RLT-Anlage mit nummerierten Zustandspunkten.
+% Die Nummerierung (1)-(7) markiert die fuer die Berechnung (Kapitel 3,
+% Methodik) relevanten Punkte der Zustandsaenderung feuchter Luft und wird
+% dort als Index fuer Temperatur, Wasserdampfgehalt und Enthalpie
+% wiederverwendet (z. B. theta_2, x_2, h_2 fuer den Zustand nach dem WRG).
+% Einbindung z. B. mit \subimport{TeX/}{Schema_RLT_Anlage.tex}
+\begin{tikzpicture}[
+    node distance=1.0cm and 1.0cm,
+    font=\small,
+    box/.style={rectangle, minimum width=2.0cm, minimum height=1.1cm,
+        text width=1.9cm, align=center, draw=black, fill=orange!10},
+    wrgbox/.style={rectangle, minimum width=1.9cm, minimum height=1.1cm,
+        text width=1.7cm, align=center, draw=black, fill=gray!20},
+    raumbox/.style={rectangle, rounded corners, minimum width=2.6cm,
+        minimum height=4.6cm, text width=2.3cm, align=center, draw=black,
+        fill=blue!8},
+    aussen/.style={rectangle, rounded corners, minimum width=1.8cm,
+        minimum height=0.9cm, text width=1.7cm, align=center, draw=black,
+        fill=green!10},
+    arr/.style={-Latex, thick},
+    punkt/.style={circle, draw=black, fill=white, inner sep=0pt,
+        minimum size=4.6mm, font=\scriptsize\bfseries},
+    legende/.style={rectangle, draw=black, fill=white, align=left,
+        text width=8.4cm, font=\scriptsize, inner sep=6pt},
+]
+
+% ---------------------------------------------------------------
+% Zuluftpfad (oben): Aussenluft -> WRG -> Erhitzer -> Kuehler ->
+% Befeuchter -> Ventilator -> Raum
+% ---------------------------------------------------------------
+\node[aussen] (oda) at (0,3) {Außenluft\\(ODA)};
+\node[wrgbox] (wrgzu) at (3.2,3) {WRG\\(Zuluftseite)};
+\node[box] (erhitzer) at (6.6,3) {Erhitzer};
+\node[box] (kuehler) at (9.6,3) {Kühler};
+\node[box] (befeuchter) at (12.6,3) {Befeuchter};
+\node[box] (ventzu) at (15.6,3) {Ventilator\\(Zuluft)};
+\node[raumbox] (raum) at (19.2,0.6) {Raum\\$\theta_{\mathrm{i}}$ bzw.\\$\theta_{\mathrm{i,c}}$};
+
+\draw[arr] (oda) -- (wrgzu);
+\draw[arr] (wrgzu) -- (erhitzer);
+\draw[arr] (erhitzer) -- (kuehler);
+\draw[arr] (kuehler) -- (befeuchter);
+\draw[arr] (befeuchter) -- (ventzu);
+\draw[arr] (ventzu.east) -| (raum.north);
+
+% ---------------------------------------------------------------
+% Abluftpfad (unten): Raum -> Ventilator -> WRG -> Fortluft
+% ---------------------------------------------------------------
+\node[box] (ventab) at (15.6,-1.8) {Ventilator\\(Abluft)};
+\node[wrgbox] (wrgab) at (3.2,-1.8) {WRG\\(Abluftseite)};
+\node[aussen] (eha) at (0,-1.8) {Fortluft\\(EHA)};
+
+\draw[arr] (raum.south) |- (ventab.east);
+\draw[arr] (ventab) -- (wrgab);
+\draw[arr] (wrgab) -- (eha);
+
+% Kopplung des WRG (Waerme-/Feuchteaustausch zwischen Zu- und Abluftseite)
+\draw[<->, dashed, thick] (wrgzu.south) -- (wrgab.north)
+    node[midway, right, font=\scriptsize, align=left] {Wärme-\\übertragung};
+
+% ---------------------------------------------------------------
+% Nummerierte Zustandspunkte (1)-(7)
+% ---------------------------------------------------------------
+\node[punkt] (p1) at ($(oda.east)!0.5!(wrgzu.west)$) {1};
+\node[punkt] (p2) at ($(wrgzu.east)!0.5!(erhitzer.west)$) {2};
+\node[punkt] (p3) at ($(kuehler.east)!0.5!(befeuchter.west)$) {3};
+\node[punkt] (p4) at ($(befeuchter.east)!0.5!(ventzu.west)$) {4};
+\node[punkt] (p5) at ($(raum.north |- ventzu.east)!0.5!(raum.north)$) {5};
+\node[punkt] (p6) at ($(raum.south |- ventab.east)!0.5!(ventab.east)$) {6};
+\node[punkt] (p7) at ($(wrgab.west)!0.5!(eha.east)$) {7};
+
+% ---------------------------------------------------------------
+% Legende der Zustandspunkte
+% ---------------------------------------------------------------
+\node[legende, below=1.0cm of eha, anchor=north west, xshift=-0.1cm]
+    (legende) {%
+    \textbf{Zustandspunkte:}\\[2pt]
+    (1) Außenluft (ODA): $\theta_{\mathrm{e}}(t)$, $x_{\mathrm{e}}(t)$ -- Eingangsgrößen aus dem \ac{TRY} (Schritt~1)\\
+    (2) nach WRG, Zuluftseite: $\theta_{\mathrm{coil,in}}(t)$, $x_{\mathrm{e}}(t)$ unverändert (Schritt~3/4, Gl.~\eqref{eq:dtheta}/\eqref{eq:thetacoilin})\\
+    (3) nach thermischer Luftaufbereitung (Erhitzer im Heizfall bzw. Kühler im Kühlfall): $\theta_{\mathrm{i}}$ bzw. $\theta_{\mathrm{i,c}}$, $x_{\mathrm{out}}(t)$ bei Kondensation (Schritt~4/5, Gl.~\eqref{eq:QdotC}/\eqref{eq:QdotCgesamt})\\
+    (4) nach Befeuchter: $\theta_{\mathrm{i}}$, $x_{\mathrm{soll}}$ (Schritt~5, Gl.~\eqref{eq:Qst})\\
+    (5) Zuluft in den Raum (SUP): $\theta_{\mathrm{v,mech}}$\\
+    (6) Raum/Abluft (ETA): Bilanz-Innentemperatur $\theta_{\mathrm{i}}$ bzw. $\theta_{\mathrm{i,c}}$\\
+    (7) Fortluft (EHA), nach WRG, Abluftseite -- nicht Bestandteil der Berechnung
+};
+
+\end{tikzpicture}

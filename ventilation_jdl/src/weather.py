@@ -81,7 +81,7 @@ def aussentemperatur(df):
     return df[SPALTE_TEMPERATUR]
 
 
-def absolute_feuchte(df):
+def absolute_humidity(df):
     """Stuendlicher Wasserdampfgehalt der Aussenluft (g/kg trockener Luft),
     direkt aus TRY-Spalte 'x' (siehe TRY-Handbuch, Tab. 2)."""
     if SPALTE_FEUCHTE not in df.columns:
@@ -89,7 +89,7 @@ def absolute_feuchte(df):
     return df[SPALTE_FEUCHTE]
 
 
-def luftdruck_pa(df):
+def air_pressure_pa(df):
     """Stuendlicher Luftdruck in Pa (TRY-Spalte 'p' liegt in hPa vor)."""
     if SPALTE_DRUCK not in df.columns:
         raise ValueError("Spalte 'p' (Luftdruck) nicht in der TRY-Datei gefunden.")

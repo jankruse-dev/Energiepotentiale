@@ -33,18 +33,15 @@
 \begin{document}
 
 %Titeldefinition
-\fhmstitle{Energetische Bewertung virtueller Gebäude anhand von Jahresdauerlinien der Lüftungswärmeverluste nach DIN V 18599}
+\fhmstitle{Python-Tool zur energetischen Abschätzung raumlufttechnischer Anlagen auf Basis der DIN V 18599}
 \fhmssubtitle{Hausarbeit im Fach Energiepotentiale}
 \fhmsauthor{Jan Kruse}
 \fhmsdate{\today}
-\fhmsemail{jan.kruse@kampmann.de}
+\fhmsemail{jan.kruse@fh-muenster.de}
 
 \fhmsmaketitlepage
 \pagestyle{empty}
 \clearpage
-
-\chapter*{Abstract}
-% TODO: Kurzfassung DE + EN nach Fertigstellung
 
 \pagestyle{scrheadings}
 \pagenumbering{gobble}
@@ -123,10 +120,45 @@
 \chapter{Einleitung}
 \pagenumbering{arabic}
 
-Ziel dieser Arbeit ist die Entwicklung eines Python-basierten Berechnungstools, mit dem die energetischen Auswirkungen von Lüftungsanlagen für unterschiedliche Gebäudetypen und Standorte schnell abgeschätzt werden können. Hierzu werden auf Grundlage stündlicher Wetterdaten Jahresenergiemengen sowie Jahresdauerlinien für Heizung, Kühlung, Befeuchtung und Ventilatorbetrieb ermittelt. Die Ergebnisse werden anschließend exemplarisch mit dem Kennwertverfahren der DIN V 18599-3 verglichen
-% Motivation: Anteil Lüftungswärmeverluste am Energiebedarf von NWG
-% Ziel: Python-Tool zur überschlägigen Jahresenergiemenge Lüftung + JDL
-% Aufbau der Arbeit (Verweis auf Kap. 2-5)
+% Ziel dieser Arbeit ist die Entwicklung eines Python-basierten Berechnungstools, mit dem die energetischen Auswirkungen von Lüftungsanlagen für unterschiedliche Gebäudetypen und Standorte schnell abgeschätzt werden können. Hierzu werden auf Grundlage stündlicher Wetterdaten Jahresenergiemengen sowie Jahresdauerlinien für Heizung, Kühlung, Befeuchtung und Ventilatorbetrieb ermittelt. Die Ergebnisse werden anschließend exemplarisch mit dem Kennwertverfahren der DIN V 18599-3 verglichen
+% % Motivation: Anteil Lüftungswärmeverluste am Energiebedarf von NWG
+% % Ziel: Python-Tool zur überschlägigen Jahresenergiemenge Lüftung + JDL
+% % Aufbau der Arbeit (Verweis auf Kap. 2-5)
+
+Raumlufttechnische Anlagen tragen in \ac{NWG} über mehrere Wege zum
+Energiebedarf bei. Über den thermischen Nutzenergiebedarf für die
+Konditionierung der Außenluft (Heizen, Kühlen, ggf. Befeuchten) sowie
+über den elektrischen Endenergiebedarf der Ventilatoren
+\parencite{DIN185993,DIN185997}. Anders als bei den
+Transmissionswärmeverlusten der Gebäudehülle wird dieser Anteil in
+der Praxis in der Planung vielfach nur überschlägig abgeschätzt, obwohl DIN V 18599
+mit ihren Teilen~2, 3, 7 und 10 ein detailliertes normatives
+Bilanzierungsverfahren für die energetische Bewertung von Gebäuden
+und ihrer Anlagentechnik bereitstellt \parencite{DIN1859910}.
+
+Für die überschlägige Ermittlung des Nutzenergiebedarfs
+raumlufttechnischer Anlagen sieht DIN V 18599-3 mit dem
+Kennwertverfahren ein eigenes, monatsweises Näherungsverfahren vor,
+das auf einer vorab simulierten Variantenmatrix üblicher
+Anlagenkonzepte beruht \parencite{DIN185993}. Dieses Verfahren ist
+jedoch an ein festgelegtes Referenzklima sowie an einen begrenzten
+Gültigkeitsbereich der Umrechnungsgleichungen gebunden und liefert
+keine stündliche Auflösung, wie sie beispielsweise für die
+Erstellung einer \ac{JDL} zur Einschätzung von Lastspitzen und zur
+überschlägigen Dimensionierung der Anlagentechnik hilfreich wäre.
+
+Vor diesem Hintergrund verfolgt die vorliegende Hausarbeit das Ziel,
+ein einfach anwendbares Python-Werkzeug zu entwickeln, mit dem die
+überschlägige Jahresenergiemenge der Lüftungstechnik virtueller
+Gebäude auf Basis stündlich aufgelöster \ac{TRY} berechnet und als
+\ac{JDL} dargestellt werden kann. Berücksichtigt werden dabei die
+stündlichen Energieströme für Heizen, Kühlen und Befeuchten sowie der
+elektrische Bedarf der Zu- und Abluftventilatoren. Anhand von drei
+exemplarischen virtuellen Gebäuden mit unterschiedlichen
+Nutzungsprofilen werden die
+Ergebnisse des Tools anschließend dem normativen Kennwertverfahren
+nach DIN V 18599-3 gegenübergestellt, um die überschlägige Methode
+einordnen und ihre Grenzen aufzeigen zu können.
 
 \chapter{Theoretischer Hintergrund}\label{chap:Theorie}
 
@@ -212,7 +244,40 @@ nacheinander die Betriebszustände, die stündlichen Energieströme für
 Heizen, Kühlen, Befeuchten und Ventilatoren, deren Jahressummen sowie
 die \ac{JDL} bestimmt. In dieser Arbeit wird die nur Leistung einer Dampfbefeuchtung dargestellt. Zwar wird in der Regel bei adiabatischen Befeuchtern keine thermische Energie zugeführt, jedoch muss durch die zu erwartende Temperaturabsenkung eine Nacherwärmung vorgesehen werden. Außerdem könnte es durch die Verdungstungskühlung die Jahreskühlenergie beeinflussen. Die Berechnung des Temperaturabfalls ist in CoolProp zwar möglich wurde im Rahmen dieser Arbeit allerdings nicht durchgeführt. Die folgenden Abschnitte gehen den Ablauf des Programmes schrittweise durch.
 
-\section{Schritt 1: Eingangsdaten}
+Der Aufbau des Programms orientiert sich an Folgendem Auafbau einer RLT-Anlage. Da in diesem vereinfachten Modell die Raumsolltemperatur und die Zuluftsolltemperatur gleich sein sollen, wurde kein zusätzlicher Zustandspunkt nach dem Befeuchter gesetzt.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=\textwidth]{RLT_Schema.png}
+    \caption{Schema mit Punkten der Zustandsänderung}
+    \label{abb:RLT_Schema}
+\end{figure}
+
+\begin{table}[H]
+    \centering
+    \caption{Zustandspunkte der RLT-Anlage (vgl. Abbildung~\ref{abb:RLT_Schema})}
+    \label{tab:RLT_Zustandspunkte}
+    \begin{tabular}{clll}
+        \toprule
+        \textbf{Punkt} & \textbf{Bezeichnung} & \textbf{Zustandsgrößen} \\
+        \midrule
+        (1) & Außenluft, Eintritt WRG
+            & $\theta_{\mathrm{e}}(t)$
+            \\
+        (2) & Zuluft, Austritt WRG
+            & $\theta_{\mathrm{coil,in}}$
+            \\
+        (3) & Erwärmte / Gekühlte Zuluft
+            & $\theta_{\mathrm{h}}$ (Heizfall) bzw. $\theta_{\mathrm{c}}$ (Kühlfall)
+            \\
+        (4) & Abluft, Eintritt WRG
+            & $\theta_{\mathrm{i,h}}$ (Heizfall) bzw. $\theta_{\mathrm{i,c}}$ (Kühlfall)
+            \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+\section{Eingangsdaten}
 Grundlage der Berechnung sind zwei Arten von Eingangsdaten: stündlich
 aufgelöste Wetterdaten und die Nutzungsrandbedingungen des betrachteten
 Gebäudes.
@@ -232,14 +297,14 @@ Ventilatorwirkungsgrad $\eta_{\mathrm{V}}$. Die konkreten Zahlenwerte
 werden den Tabellen der DIN V 18599-10 entnommen bzw. für die
 untersuchten Varianten projektspezifisch festgelegt.
 
-\section{Schritt 2: Bestimmung der Betriebszustände}
+\section{Bestimmung der Betriebszustände}
 Für jede der 8760 Stunden des Jahres wird zunächst geprüft, ob sich das
 Gebäude innerhalb seiner hinterlegten Betriebszeit befindet.
 Außerhalb der Betriebszeit wird die \ac{RLT}-Anlage als außer Betrieb angenommen. Sämtliche im Folgenden beschriebenen Energieströme
 sind für diese Stunden null, unabhängig von der Außentemperatur oder
 -feuchte. In diesem Ansatz werden vereinfacht konstante Volumenströme in der \ac{RLT}-Anlage 
 
-\section{Schritt 3: Stündliche Heizleistung}
+\section{Stündliche Heizleistung}
 Die energetische Bewertung von Gebäuden nach DIN V 18599 erfolgt im
 Regelfall über ein monatliches Bilanzverfahren \parencite{DIN1859910};
 für die Lüftungswärme- und -kältebedarfe raumlufttechnischer Anlagen
@@ -300,7 +365,7 @@ Korrekturfaktor $f_{\mathrm{T,h}}$ \parencite{DIN185993} abgebildet,
 sondern unmittelbar über die stundengenaue Bestimmung der
 Betriebszustände (Schritt~2) berücksichtigt.
 
-\section{Schritt 4: Stündliche Kühlleistung}
+\section{Stündliche Kühlerleistung}
 Sofern für das virtuelle Gebäude eine Kühl-Solltemperatur
 $\theta_{\mathrm{i,c}}$ hinterlegt ist, wird analog zum Heizfall ein
 sensibler Kühlfall berechnet. Für Betriebsstunden mit
@@ -316,29 +381,106 @@ Q_{\mathrm{C}}(t) = 0$. Ist für ein Gebäude keine Kühl-Solltemperatur
 festgelegt, entfällt dieser Schritt vollständig und die Kühlleistung
 wird für alle Stunden zu null angenommen.
 
-\section{Schritt 5: Stündliche Befeuchtungsleistung}
-Sofern für das virtuelle Gebäude ein Mindest-Wasserdampfgehalt der
-Zuluft $x_{\mathrm{soll}}$ hinterlegt ist, wird zusätzlich eine latente
-Befeuchtungsbilanz gebildet. Für Betriebsstunden mit
-$x_{\mathrm{e}}(t) < x_{\mathrm{soll}}$ gilt:
+\subsection{Latenter Anteil der Kühlleistung: Kondensation am Luftkühler}
+Die beschriebene Kühlbilanz (Gleichung~\eqref{eq:QdotC})
+berücksichtigt ausschließlich die sensible Abkühlung der Zuluft und
+vernachlässigt eine mögliche Kondensation von Wasserdampf am
+Luftkühler. Ob eine solche Kondensation auftritt, hängt davon ab, ob
+die Außenluft beim Abkühlen auf die Kühl-Solltemperatur
+$\theta_{\mathrm{i,c}}$ ihren praktischen Sättigungszustand erreicht.
+Das Tool bildet diesen Effekt nach dem normativen Komponentenmodell
+„Luftkühler“ der DIN V 18599-3, Anhang~C (normativ),
+Gleichungen~(C.3) und (C.4), ab \parencite{DIN185993}.
+
+Grundlage ist die effektive Kühler-Eintrittstemperatur
+$\theta_{\mathrm{coil,in}}(t)$, die sich bereits aus der in Schritt~4
+verwendeten, um die Wärmerückgewinnung reduzierten
+Temperaturdifferenz ergibt:
+
+\begin{equation}\label{eq:thetacoilin}
+    \theta_{\mathrm{coil,in}}(t) = \theta_{\mathrm{i,c}} + (1-\eta_{\mathrm{WRG}}) \, \bigl(\theta_{\mathrm{e}}(t) - \theta_{\mathrm{i,c}}\bigr).
+\end{equation}
+
+Da die Wärmerückgewinnung im Tool als Wärmeübertrager ohne
+Feuchteübertragung angenommen wird, bleibt der Wasserdampfgehalt der
+Außenluft $x_{\mathrm{e}}(t)$ dabei unverändert. Nach Anhang~C wird
+zunächst geprüft, welche relative Feuchte $\varphi_{\mathrm{L}}$ sich
+einstellen würde, wenn die Luft bei unverändertem Wasserdampfgehalt
+$x_{\mathrm{e}}(t)$ auf die Kühler-Austrittstemperatur
+$\theta_{\mathrm{i,c}}$ gebracht würde:
+
+\begin{equation}\label{eq:phicheck}
+    \varphi_{\mathrm{check}}(t) = \varphi_{\mathrm{L}}\bigl(\theta_{\mathrm{i,c}}, x_{\mathrm{e}}(t)\bigr).
+\end{equation}
+
+Bleibt $\varphi_{\mathrm{check}}(t) \leq 0{,}95$, findet keine
+Kondensation statt, die Zuluft bleibt bei konstantem
+Wasserdampfgehalt und das
+Ergebnis entspricht in diesem Fall der rein sensiblen Kühlleistung
+nach Gleichung~\eqref{eq:QdotC}. Überschreitet $\varphi_{\mathrm{check}}(t)$
+hingegen den Wert $0{,}95$, tritt Kondensation auf und es ergibt sich eine Zustandsänderung wie in Abbildung \ref{abb:Kondensation}:
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{Zustandsänderung_Kühler.png}
+    \caption{Zustandsänderung bei Feuchtigkeitsausfall}
+    \label{abb:Kondensation}
+\end{figure}
+
+Die Begrenzung auf $\varphi_{\mathrm{L}} = 0{,}95$ statt exakt
+$1{,}0$ berücksichtigt dabei den in realen Luftkühlern stets
+vorhandenen „Bypass-Faktor“, also den Anteil der Luft, der den Kühler
+ohne vollständigen Kontakt mit der kalten Oberfläche passiert und
+daher nicht vollständig gesättigt wird, und stellt insofern eine
+praxisnahe Näherung an die exakte Sättigungslinie dar
+\parencite{DIN185993}. Die gesamte, sensible und latente Kälteleistung
+ergibt sich damit als Enthalpiedifferenz zwischen Kühlerein- und austritt.
+
+\begin{equation}\label{eq:QdotCgesamt}
+    \dot Q_{\mathrm{C,gesamt}}(t) = \dot m_{\mathrm{tL}} \, \Bigl(h\bigl(\theta_{\mathrm{coil,in}}(t), x_{\mathrm{e}}(t)\bigr) - h\bigl(\theta_{\mathrm{i,c}}, x_{\mathrm{out}}(t)\bigr)\Bigr),
+\end{equation}
+
+Kondensation am Luftkühler tritt nach diesem Modell nur in Stunden
+auf, in denen die Außenluft sowohl deutlich wärmer als die
+Kühl-Solltemperatur als auch hinreichend feucht ist; für die in dieser
+Arbeit betrachteten virtuellen Gebäude und das verwendete \ac{TRY}
+ist dieser latente Anteil daher, verglichen mit der sensiblen
+Kälteleistung, in der Regel gering. Wie bei der Befeuchtung wird der
+Wasserdampfgehalt der Außenluft $x_{\mathrm{e}}(t)$ direkt der
+\ac{TRY}-Datei entnommen, und für die CoolProp-Enthalpieberechnung
+wird der tatsächliche, stündlich schwankende Luftdruck der
+\ac{TRY}-Datei anstelle des in Anhang~C festgelegten konstanten
+Werts von \SI{100}{\kilo\pascal} verwendet. Ist für ein Gebäude keine Kühl-Solltemperatur festgelegt,
+entfallen sowohl die sensible als auch die latente Kälteleistung
+vollständig.
+
+\section{stündliche Befeuchtungsleistung}
+Sofern im Nutzungsprofil ein Mindest-Wasserdampfgehalt der
+Zuluft $x_{\mathrm{soll}}$ hinterlegt ist, wird eine latente
+Befeuchtungsbilanz gebildet. Für Betriebsstunden in denen die gewünschte Zuluftfeuchte die Feuchte der Außenluft unterschreitet gilt der Ansatz nach Gleichung \ref{eq:Qst}:
 
 \begin{equation}\label{eq:Qst}
     \dot Q_{\mathrm{st}}(t) = \dot m_{\mathrm{tL}} \, \bigl(h(\theta_{\mathrm{i}}, x_{\mathrm{soll}}) - h(\theta_{\mathrm{i}}, x_{\mathrm{e}}(t))\bigr),
 \end{equation}
 
-wobei $h$ die spezifische Enthalpie feuchter Luft je kg trockener Luft
-bezeichnet. Außerhalb der Betriebszeit sowie für Stunden mit
-$x_{\mathrm{e}}(t) \geq x_{\mathrm{soll}}$ (die Außenluft ist bereits
-feucht genug) ist $\dot Q_{\mathrm{st}}(t) = 0$. Der Wasserdampfgehalt
-der Außenluft $x_{\mathrm{e}}(t)$ wird direkt der \ac{TRY}-Datei
-entnommen; die Enthalpiewerte werden mit der Stoffdatenbibliothek
-CoolProp \parencite{Bell2014} berechnet, um belastbare Stoffwerte
-feuchter Luft ohne eigene, fehleranfällige Psychrometrie-Näherungsformeln
-zu erhalten. Ist für ein Gebäude kein Feuchte-Sollwert festgelegt,
-entfällt dieser Schritt und die Befeuchtungsleistung wird für alle
-Stunden zu null angenommen.
+wobei $\dot m_{\mathrm{tL}} = \rho \, \dot q_{\mathrm{v}}(t)$ den
+Massenstrom trockener Luft bezeichnet. Außerhalb der Betriebszeit
+sowie für Stunden mit $x_{\mathrm{e}}(t) \geq x_{\mathrm{soll}}$ (die
+Außenluft ist bereits feucht genug) ist $\dot Q_{\mathrm{st}}(t) = 0$.
+Der Wasserdampfgehalt der Außenluft $x_{\mathrm{e}}(t)$ in \si{\gram\per\kilo\gram} wird direkt der
+\ac{TRY}-Datei entnommen. Ist für ein Gebäude kein Feuchte-Sollwert
+festgelegt, entfällt dieser Schritt und die Befeuchtungsleistung wird
+für alle Stunden zu null angenommen. Gleichung~\eqref{eq:Qst} erfasst
+dabei sowohl den eigentlichen latenten Anteil (Verdampfungsenthalpie
+des zugeführten Wassers) als auch den vergleichsweise kleinen
+sensiblen Anteil durch das Aufheizen des zugeführten Wasserdampfs auf
+Zulufttemperatur; eine Unterscheidung nach Befeuchtertyp (Dampf- oder
+Verdunstungsbefeuchtung), wie sie das Kennwertverfahren über die
+Variantenmatrix vorsieht \parencite{DIN185993}, erfolgt nicht.
 
-\section{Schritt 6: Stündliche Ventilatorleistung}
+
+
+\section{Stündliche Ventilatorleistung}
 Neben dem Nutzenergiebedarf für Heizen, Kühlen und Befeuchten wird
 zusätzlich der elektrische Endenergiebedarf der Zu- und
 Abluftventilatoren abgeschätzt, sofern für das Gebäude Druckerhöhungen
@@ -361,35 +503,29 @@ Betriebszeit ist $P_{\mathrm{V}}(t) = 0$. Der Wirkungsgrad
 $\eta_{\mathrm{V}}$ fasst dabei, analog zum \ac{SFP}-Wert nach
 DIN V 18599-7, Abschnitt~3.1.2 (spezifische elektrische
 Leistungsaufnahme je Volumenstrom), Ventilator-, Motor- und ggf.
-Antriebswirkungsgrad zusammen \parencite{DIN185997}. Der Wirkungsgrad bezieht sich hier immer auf Zu- und Abluftventilatoren. Die Druckerhöhungen und Wirkungsgrade
+Antriebswirkungsgrad zusammen \parencite{DIN185997}. Der Wirkungsgrad bezieht sich hier immer auf Zu- und Abluftventilatoren.
 
-Die in den Schritten 3 bis 6 beschriebenen Erweiterungen sind für eine
-überschlägige Betrachtung vertretbar, vernachlässigen jedoch weiterhin
-anlagenspezifische Regelungseffekte sowie im Fall der Befeuchtung die Unterscheidung zwischen Dampf- und Verdunstungsbefeuchtung, die im
-vollständigen Kennwertverfahren über die Variantenmatrix erfasst werden
-\parencite{DIN185993}.
-
-\section{Schritt 7: Jahresenergiemenge und Volllaststunden}
+\section{Jahresenergiemenge und Volllaststunden}
 Für jede der vier Energiearten (Heizen, Kühlen, Befeuchten,
 Ventilatoren) wird die Jahresenergiemenge als Summe der 8760
-Stundenwerte gebildet, z.\,B. für die Heizenergie
+Stundenwerte gebildet, zum Beispiel für die Heizenergie
 
 \begin{equation}
     Q_{\mathrm{V}} = \sum_{t=1}^{8760} \dot Q_{\mathrm{V}}(t).
 \end{equation}
 
 Zusätzlich werden die rechnerischen Volllaststunden als Quotient aus
-Jahresenergiemenge und Spitzenlast bestimmt; sie geben an, wie viele
+Jahresenergiemenge und Spitzenlast bestimmt. Sie geben an, wie viele
 Stunden die Anlage bei Spitzenlast betrieben werden müsste, um
-dieselbe Jahresenergiemenge zu erreichen.
+dieselbe Jahresenergiemenge zu erreichen. In Abbildung \ref{abb:Flussdiagramm} ist der gesamte Programmablauf in einem Flussdiagramm dargestellt.
 
-\section{Schritt 8: Erstellung der Jahresdauerlinie}
+\section{Erstellung der Jahresdauerlinie}
 Zur Erstellung der \ac{JDL} werden die 8760 Stundenwerte einer
 Energieart absteigend sortiert. Die Abszisse der \ac{JDL} gibt dabei
 die Anzahl der Jahresstunden an, in denen der jeweilige Leistungswert
 erreicht oder überschritten wird. Dies erlaubt eine Einschätzung, wie
 oft hohe Lasten im Jahresverlauf auftreten, und dient u.\,a. als
-Grundlage für die Dimensionierung der Anlagentechnik. In der Folgenden Darstellung wird der Programmablauf als Flussdiagramm dargestellt.
+Grundlage für die Dimensionierung der Anlagentechnik. 
 
 \begin{figure}[H]
 \centering
@@ -398,10 +534,7 @@ Grundlage für die Dimensionierung der Anlagentechnik. In der Folgenden Darstell
 \label{abb:Flussdiagramm}
 \end{figure}
 
-
 \chapter{Ergebnisse \& Diskussion}\label{chap:Ergebnisse}
-
-\section{Ergebnisse von Stichproben der virtuellen Gebäude}
 
 Zur Bewertung des entwickelten Berechnungstools werden verschiedene exemplarische Gebäudeprofile untersucht. Die Auswahl umfasst typische Nichtwohngebäude mit unterschiedlichen Anforderungen hinsichtlich Betriebszeiten, Außenluftvolumenströmen, Kühlung, Wärmerückgewinnung und Befeuchtung. Die zugrunde gelegten Randbedingungen sind in Tabelle \ref{tab:ProfileServerraumLagerhalleGrossraumbuero} dargestellt. Die Parameter für die Gebäudeprofile werden als JSON Dateien im Projektordner hinterlegt. Es können beliebige Gebäudeprofile hinzugefügt werden.
 
@@ -413,185 +546,265 @@ Zur Bewertung des entwickelten Berechnungstools werden verschiedene exemplarisch
         \toprule
         Parameter & Serverräume & Lagerhalle & Bürogebäude \\
         \midrule
-        $q_V$ [\si{\cubic\metre\per\hour}]& 2500 & 8000 & 5000 \\
+        $q_V$ [\si{\cubic\metre\per\hour}]& \num{2500} & \num{8000} & \num{5000} \\
         $\theta_{\text{i,h}}$ & 21,0 & 12,0 & 21,0 \\
-        Betriebsstunden [h] & 24, Mo-So & 14, Mo-So & 11, Mo-Fr \\
+        Betriebsstunden [h] & \num{24}, Mo-So & \num{14}, Mo-So & \num{11}, Mo-Fr \\
         $\eta_{\text{WRG}}$ [-]& 0,6 & 0,0 & 0,6 \\
         $\theta_{\text{i,c}}$ [\si{\celsius}]& 24,0 & 26,0 & 24,0 \\
         $x_{\text{soll}}$ [\si{\gram\per\kilo\gram}]& - & - & 6,0 \\
-        $\Delta P_{\text{ZUL}}$ [\si{\pascal}] & 500 & 400 & 350 \\
-        $\Delta P_{\text{ABL}}$ [\si{\pascal}]& 400 & 300 & 280 \\
+        $\Delta P_{\text{ZUL}}$ [\si{\pascal}] & \num{500} & \num{400} & \num{350} \\
+        $\Delta P_{\text{ABL}}$ [\si{\pascal}]& \num{400} & \num{300} & \num{280} \\
         $\eta_{\text{V}}$ & 0,65 & 0,55 & 0,60 \\
         \bottomrule
     \end{tabular}
 \end{table}
 
-\begin{figure}
-\centering
-\includegraphics[width=\textwidth]{TRY2015_Temperatur_Feuchte.pdf}
-\caption{Temperatur- und Feuchteverlauf Standort Steinfurt aus \ac{TRY}}
-\label{abb:Temperaturrelfeuchte}
-\end{figure}
+% \begin{figure}
+% \centering
+% \includegraphics[width=\textwidth]{TRY2015_Temperatur_Feuchte.pdf}
+% \caption{Temperatur- und Feuchteverlauf Standort Steinfurt aus \ac{TRY}}
+% \label{abb:Temperaturrelfeuchte}
+% \end{figure}
 
-\section{Sensitivitätsbetrachtung}
-% z. B. Einfluss Luftwechsel, Standort, WRG-Grad
 
 \section{Vergleichsrechnung mit dem Kennwertverfahren nach DIN V 18599-3}\label{sec:Vergleichsrechnung}
 Um die Ergebnisse des stündlichen Bilanzverfahrens einordnen zu
-können, wird für zwei der virtuellen Gebäude zusätzlich eine
-Vergleichsrechnung nach dem normativen Kennwertverfahren der DIN V
-18599-3 (Jahresverfahren für Anlagen mit konstantem Volumenstrom,
-Abschnitt~4.4.1 i.\,V.\,m. Tabelle~A.1) durchgeführt
-\parencite{DIN185993}. Für das Einzelbüro-Profil wird dabei eine
-Anlagenvariante ohne Feuchteanforderung herangezogen, die die
-Funktionen Heizen und Kühlen abdeckt; für das Serverraum-Profil wird
-zusätzlich eine Anlagenvariante mit Feuchteanforderung herangezogen,
-sodass mit den beiden Vergleichsrechnungen alle vier vom Tool
-berechneten Energiearten (Heizen, Kühlen, Befeuchten, Ventilatoren)
-gegen das normative Verfahren abgeglichen werden. Diese
-Gegenüberstellung erfolgt exemplarisch für zwei Gebäude und zwei
+können, wird für alle drei virtuellen Gebäude aus
+Tabelle~\ref{tab:ProfileServerraumLagerhalleGrossraumbuero} zusätzlich
+eine Vergleichsrechnung nach dem normativen Kennwertverfahren der
+DIN V 18599-3 (Jahresverfahren für Anlagen mit konstantem
+Volumenstrom, Abschnitt~4.4.1 i.\,V.\,m. Tabelle~A.1) durchgeführt
+\parencite{DIN185993}. Für jedes Gebäude wird zunächst anhand seiner
+Feuchteanforderung und seines Wärmerückgewinnungsgrades die passende
+Anlagenvariante aus der Variantenmatrix bestimmt. Die
+zugehörigen Energiekennwerte werden anschließend auf die tatsächliche
+Zulufttemperatur, tägliche Betriebszeit und Anzahl jährlicher
+Betriebstage umgerechnet und auf den tatsächlichen
+Außenluftvolumenstrom bezogen \parencite{DIN185993}. Diese
+Gegenüberstellung erfolgt exemplarisch für drei Gebäude und drei
 Anlagenvarianten und erhebt keinen Anspruch auf eine vollständige
 Anwendung der gesamten Variantenmatrix.
 
-\subsection{Einzelbüro-Profil: Heizen und Kühlen}
-Aus der Variantenmatrix nach DIN V 18599-3, Tabelle~7, wird zunächst
-die zum Einzelbüro-Profil passende Anlagenvariante identifiziert. Das
-Profil sieht keine Feuchteanforderung sowie einen
-Wärmerückgewinnungsgrad von $\eta_{\mathrm{WRG}}=0{,}6$ vor; dies
-entspricht der Variante~3 (keine Feuchteanforderung,
-\ac{WRG}-Typ „nur Wärme“, Wärmerückgewinnungsgrad $60\,\%$)
-\parencite{DIN185993}. Für diese Variante weist Tabelle~A.1
-(Gesamtjahr) einen Heizenergiekennwert von
-$q_{\mathrm{h,18°C,12h}}=\SI{1148}{\watt\hour\hour\per\cubic\meter}$
-sowie die Gradienten $g_{\mathrm{h,u}}=\SI{274}{\watt\hour\hour\per\kelvin\per\cubic\meter}$
-(für $\theta_{\mathrm{hc}}<\SI{18}{\celsius}$) und
-$g_{\mathrm{h,o}}=\SI{783}{\watt\hour\hour\per\kelvin\per\cubic\meter}$
-(für $\theta_{\mathrm{hc}}>\SI{18}{\celsius}$) aus
+\subsection{Zuordnung der Anlagenvarianten}
+Serverräume und Bürogebäude sehen jeweils einen
+Wärmerückgewinnungsgrad von \num{60}\,\% vor, unterscheiden sich jedoch in
+der Feuchteanforderung. Für die Serverräume ist keine Mindestfeuchte
+hinterlegt, für das Bürogebäude dagegen ein Mindest-Wasserdampfgehalt
+der Zuluft von \SI{6.0}{\gram\per\kilo\gram}, der nach Tabelle~C.1 der
+DIN V 18599-3 der Klassifizierung „mit Toleranzbereich“ entspricht
+\parencite{DIN185993}. Damit ergibt sich für die Serverräume
+Variante~3 (keine Feuchteanforderung, \ac{WRG}-Typ „nur Wärme“,
+\num{60}\,\%) und für das Bürogebäude Variante~21 (Feuchteanforderung
+„mit Toleranzbereich“, Dampfbefeuchter, \ac{WRG}-Typ „nur Wärme“,
+\num{60}\,\%) \parencite{DIN185993}. Die Lagerhalle sieht dagegen keine
+Wärmerückgewinnung vor. Hierfür ist nach Tabelle~7 Variante~1 (keine
+Feuchteanforderung, \ac{WRG}-Typ „keine“) heranzuziehen
 \parencite{DIN185993}.
 
-Für das Einzelbüro-Profil ($\theta_{\mathrm{hc}}=\SI{20}{\celsius}$,
-tägliche Betriebszeit $t_{\mathrm{v,mech}}=\SI{11}{\hour}$
-[7--18\,Uhr], $d_{\mathrm{v,mech}}=\SI{260}{\day\per\year}$
-[Mo--Fr], $\dot q_{\mathrm{v}}=\SI{500}{\cubic\meter\per\hour}$)
-ergibt sich der Heizenergiekennwert nach Umrechnung auf die
-abweichende Zulufttemperatur zu
+\subsection{Anwendungsgrenzen der Umrechnungsgleichungen}
+Die Umrechnungsgleichungen für die Zulufttemperatur sind nur im
+Bereich von \SI{14}{\celsius} bis \SI{22}{\celsius} gültig
+\parencite{DIN185993}. Die realen Raum-Solltemperaturen der drei
+Gebäude liegen teilweise außerhalb dieses Bereichs: Die
+Kühl-Solltemperaturen aller drei Gebäude (\SI{24}{\celsius} bzw.
+\SI{26}{\celsius}) liegen oberhalb, die Heiz-Solltemperatur der
+Lagerhalle (\SI{12}{\celsius}) unterhalb des Gültigkeitsbereichs. Um
+eine unzulässige Extrapolation zu vermeiden, wird in diesen Fällen
+ersatzweise der jeweils nächstgelegene Rand des Gültigkeitsbereichs
+angesetzt (\SI{22}{\celsius} für alle Kühlfälle, \SI{14}{\celsius} für
+den Heizfall der Lagerhalle). Die betroffenen Vergleichswerte sind
+entsprechend nur eingeschränkt aussagekräftig.
 
-\begin{equation}
-    q_{\mathrm{h}}(\theta_{\mathrm{hc}}) = q_{\mathrm{h,18°C,12h}} + g_{\mathrm{h,o}} \, (\theta_{\mathrm{hc}} - \SI{18}{\celsius}) \approx \SI{2714}{\watt\hour\hour\per\cubic\meter}
+\subsection{Ergebnisse}
+Tabelle~\ref{tab:VergleichKennwertverfahren} stellt die vom Tool
+berechneten Jahresenergiemengen den nach dem Kennwertverfahren
+ermittelten Vergleichswerten gegenüber. Die Befeuchtung wird nur für
+das Bürogebäude verglichen, da nur dort ein Feuchte-Sollwert
+hinterlegt ist.
+
+\begin{table}[H]
+    \centering
+    \caption{Jahresenergiemengen: Tool und Kennwertverfahren nach DIN V 18599-3 in \si{\kilo\watt\hour\per\year}}
+    \label{tab:VergleichKennwertverfahren}
+    \begin{tabular}{llrrr}
+        \toprule
+        Gebäude & Energieart & Tool & Kennwertverfahren & Abweichung [\%] \\
+        \midrule
+        Serverräume & Heizen & \num{32355} & \num{18534} & $+74{,}6$ \\
+                    & Kühlen & \num{110} & \num{2485} & $-95{,}6$ \\
+        \midrule
+        Lagerhalle & Heizen & \num{48694} & \num{62246} & $-21{,}8$ \\
+                   & Kühlen & \num{278} & \num{7225} & $-96{,}2$ \\
+        \midrule
+        Bürogebäude & Heizen & \num{19270} & \num{11918} & $+61{,}7$ \\
+                    & Kühlen & \num{140} & \num{4834} & $-97{,}1$ \\
+                    & Befeuchten & \num{9449} & \num{13033} & $-27{,}5$ \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+Für den Heizfall liegen die Werte des Tools bei Serverräumen und
+Bürogebäude deutlich über, bei der Lagerhalle unter dem jeweiligen
+Kennwert des Kennwertverfahrens. Für den Kühlfall unterschätzt das
+Tool die Kennwerte durchgehend um mehr als \num{90}\,\%. Hier wirken sich
+sowohl die eingeschränkte Aussagekraft durch die Extrapolation
+(vorheriger Abschnitt) als auch die tatsächlich geringe Zahl an
+Kühlstunden im verwendeten \ac{TRY}-Datensatz aus. Für die
+Befeuchtung liegt das Tool rund ein Viertel unter dem Kennwert.
+Mögliche Ursachen für die verbleibenden Abweichungen werden in den
+folgenden beiden Abschnitten eingeordnet.
+
+\subsection{Referenzfall ohne Umrechnungsunsicherheit}\label{sec:Referenzfall}
+Die Abweichungen in Tabelle~\ref{tab:VergleichKennwertverfahren} sind
+nicht nur auf die Rechenmethodik selbst zurückzuführen, sondern
+teilweise auch auf die Umrechnung der Kennwerte auf die realen
+Randbedingungen (Zulufttemperatur, Betriebszeit) sowie auf die in
+Abschnitt~\ref{sec:Vergleichsrechnung} beschriebene Kappung nicht
+gültiger Zulufttemperaturen. Um diese Effekte auszuschließen, wird
+zusätzlich ein Referenzfall betrachtet, in dem alle drei Gebäude mit
+den Basisbedingungen der Norm gerechnet werden:
+
+\begin{itemize}
+    \item Zulufttemperatur Heizen/Kühlen: \SI{18}{\celsius}
+    \item \SI{12}{\hour\per\day} Betriebszeit
+    \item \SI{365}{\day\per\year}
+\end{itemize}
+
+Unter diesen Bedingungen entfallen sowohl der Temperatur-Gradient als auch die Betriebszeitkorrektur des Kennwertverfahrens, sodass der
+tabellierte Kennwert nur mit dem Volumenstrom multipliziert werden muss. Tabelle~\ref{tab:Referenzfall}
+zeigt die Ergebnisse.
+
+\begin{table}[H]
+    \centering
+    \caption{Referenzfall Jahresenergiemenge (Zulufttemperatur \SI{18}{\celsius}, \SI{12}{\hour\per\day}, \SI{365}{\day\per\year}) in kWh/a: Tool und Kennwertverfahren im Vergleich}
+    \label{tab:Referenzfall}
+    \begin{tabular}{llrrr}
+        \toprule
+        Gebäude & Energieart & Tool & Kennwertverfahren & Abweichung [\%] \\
+        \midrule
+        Serverräume & Heizen & \num{11120} & \num{2870} & $+287{,}5$ \\
+                    & Kühlen & \num{966} & \num{5772} & $-83{,}3$ \\
+        \midrule
+        Lagerhalle & Heizen & \num{88964} & \num{82328} & $+8{,}1$ \\
+                   & Kühlen & \num{7463} & \num{18864} & $-60{,}4$ \\
+        \midrule
+        Bürogebäude & Heizen & \num{22241} & \num{5140} & $+332{,}7$ \\
+                    & Kühlen & \num{1933} & \num{12215} & $-84{,}2$ \\
+                    & Befeuchten & \num{14222} & \num{19960} & $-28{,}7$ \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+Auch ohne jede Umrechnungsunsicherheit bleiben die Abweichungen groß. Beim Heizen steigen die Werte sogar deutlich an. Die
+Umrechnungsgleichungen und die Kappung des Gültigkeitsbereichs
+erklären die Abweichung damit nicht. Sie wirkten in
+Tabelle~\ref{tab:VergleichKennwertverfahren} eher zufällig dämpfend.
+
+\subsection{Gradstundenanalyse: Ursache der verbleibenden Abweichung}
+Sowohl das Tool als auch das Kennwertverfahren gehen für den
+sensiblen Anteil von derselben Bilanzgleichung aus, die dem
+Lüftungswärmeverlust nach DIN V 18599-2 zugrunde liegt
+(Gleichung~\eqref{eq:QdotV}). Für den Kennwert
+$q_{\mathrm{h,18°C,12h}}$ einer Anlagenvariante, der ja selbst aus
+einer stündlichen Simulation der Norm für deren Referenzklima
+hervorgegangen ist, gilt bezogen auf den Volumenstrom entsprechend
+
+\begin{equation}\label{eq:qh_gradstunden}
+    q_{\mathrm{h,18°C,12h}} = \rho \, c_{\mathrm{p}} \, (1-\eta_{\mathrm{WRG}}) \sum \Delta\theta_{\mathrm{Norm}},
 \end{equation}
 
-Die Umrechnung auf die tatsächliche tägliche Betriebszeit erfolgt
-über den Korrekturfaktor $f_{\mathrm{T,h}}$, der für
-$t_{\mathrm{v,mech}}=\SI{11}{\hour}$ nahe $1{,}0$ liegt
-\parencite{DIN185993}. Nach Skalierung auf die tägliche Betriebszeit,
-die tatsächliche Anzahl jährlicher Betriebstage (Tabelle~A.1 basiert
-auf $365$~Tagen) sowie Denormierung auf den Außenluftvolumenstrom von
-$\SI{500}{\cubic\meter\per\hour}$ ergibt sich ein jährlicher
-Nutzenergiebedarf Heizen von rund $Q_{\mathrm{h,Kennwert}}\approx
-\SI{880}{\kwh\per\year}$. Diese Berechnung wurde zusätzlich
-programmtechnisch nachgebildet und gegen den von Hand nachvollzogenen
-Wert abgesichert.
+wobei $\sum \Delta\theta_{\mathrm{Norm}}$ die Gradstundensumme
+bezeichnet, die dem Referenzklima der Norm im Basisfall (12 h/Tag,
+365 Tage/Jahr) implizit zugrunde liegt. Da $\rho$, $c_{\mathrm{p}}$
+und $\eta_{\mathrm{WRG}}$ bekannt sind, lässt sich
+Gleichung~\eqref{eq:qh_gradstunden} nach dieser Gradstundensumme
+auflösen:
 
-Analog wird für den Kühlfall der Kühlenergiekennwert
-$q_{\mathrm{c,18°C,12h}}=\SI{2309}{\watt\hour\hour\per\cubic\meter}$
-sowie die Gradienten $g_{\mathrm{c,u}}=\SI{856}{\watt\hour\hour\per\kelvin\per\cubic\meter}$
-und $g_{\mathrm{c,o}}=\SI{389}{\watt\hour\hour\per\kelvin\per\cubic\meter}$
-der Variante~3 herangezogen \parencite{DIN185993}. Die reale
-Raum-Kühlsolltemperatur des Einzelbüro-Profils nach DIN V 18599-10
-beträgt $\theta_{\mathrm{i,c}}=\SI{24}{\celsius}$
-\parencite{DIN1859910}; dieser Wert liegt jedoch außerhalb des in
-Gleichung~(31)/(32) der DIN V 18599-3 festgelegten
-Gültigkeitsbereichs von $\SI{14}{\celsius}$ bis $\SI{22}{\celsius}$
-für den Zulufttemperatur-Sollwert \parencite{DIN185993}. Um eine
-unzulässige Extrapolation zu vermeiden, wird für die
-Vergleichsrechnung ersatzweise der obere Rand des Gültigkeitsbereichs
-($\SI{22}{\celsius}$) angesetzt. Mit dem zugehörigen Korrekturfaktor
-$f_{\mathrm{T,c}}$ für $t_{\mathrm{v,mech}}=\SI{11}{\hour}$
-\parencite{DIN185993} ergibt sich nach gleichem Rechengang wie beim
-Heizfall ein jährlicher Nutzenergiebedarf Kühlen von rund
-$Q_{\mathrm{c,Kennwert}}\approx\SI{249}{\kwh\per\year}$. Für die
-Befeuchtung ist innerhalb der Variante~3 kein Vergleich möglich, da
-diese Variante keine Feuchteanforderung vorsieht und der zugehörige
-Dampfkennwert $q_{\mathrm{st,12h}}=0$ ist \parencite{DIN185993}.
+\begin{equation}\label{eq:gradstunden_norm}
+    \sum \Delta\theta_{\mathrm{Norm}} = \frac{q_{\mathrm{h,18°C,12h}}}{\rho \, c_{\mathrm{p}} \, (1-\eta_{\mathrm{WRG}})}.
+\end{equation}
 
-\subsection{Serverraum-Profil: Heizen, Kühlen und Befeuchten}
-Damit auch die im Tool implementierte Befeuchtungsfunktion (Schritt~5)
-gegen das Kennwertverfahren abgeglichen werden kann, wird zusätzlich
-eine Vergleichsrechnung für das Serverraum-Profil durchgeführt. Dieses
-Profil sieht neben Heizen und Kühlen einen Mindest-Wasserdampfgehalt
-der Zuluft von $x_{\mathrm{soll}}=\SI{6.0}{\gram\per\kilo\gram}$ sowie
-einen Wärmerückgewinnungsgrad von $\eta_{\mathrm{WRG}}=0{,}6$ vor. Nach
-Tabelle~C.1 der DIN V 18599-3 entspricht ein Zuluft-Wasserdampfgehalt
-von $\SI{6.0}{\gram\per\kilo\gram}$ genau dem Standardwert für
-Feuchteanforderungen „mit Toleranzbereich“ \parencite{DIN185993}; das
-Profil ist damit dieser Klassifizierung zuzuordnen. In Kombination mit
-einem Dampfbefeuchter sowie dem \ac{WRG}-Typ „nur Wärme“
-($60\,\%$) ergibt sich nach Tabelle~7 die Variante~21
-\parencite{DIN185993}. Für diese Variante weist Tabelle~A.1
-(Gesamtjahr) folgende Kennwerte aus:
-$q_{\mathrm{h,18°C,12h}}=\SI{1028}{\watt\hour\hour\per\cubic\meter}$,
-$g_{\mathrm{h,u}}=\SI{227}{\watt\hour\hour\per\kelvin\per\cubic\meter}$,
-$g_{\mathrm{h,o}}=\SI{882}{\watt\hour\hour\per\kelvin\per\cubic\meter}$,
-$q_{\mathrm{st,18°C,12h}}=\SI{3992}{\watt\hour\hour\per\cubic\meter}$,
-$q_{\mathrm{c,18°C,12h}}=\SI{2443}{\watt\hour\hour\per\cubic\meter}$,
-$g_{\mathrm{c,u}}=\SI{886}{\watt\hour\hour\per\kelvin\per\cubic\meter}$
-sowie
-$g_{\mathrm{c,o}}=\SI{246}{\watt\hour\hour\per\kelvin\per\cubic\meter}$
-\parencite{DIN185993}.
+Dieser Wert lässt sich für den verwendeten \ac{TRY} berechnen, indem man die positiven Differenzen zwischen Zuluft- und Außentemperatur stündlich aufsummiert. Also in jeder Stunde innerhalb der Betriebszeiten in der die Außenlufttemperatur unter der Zulufttemperatur liegt. Für den
+Standort Steinfurt ergibt sich dabei eine Gradstundensumme von rund
+\SI{33200}{\kelvin\hour\per\year}. Tabelle~\ref{tab:Gradstunden} stellt dieser
+die aus den drei Anlagenvarianten abgeleiteten, impliziten
+Gradstundensummen der Norm gegenüber.
 
-Das Serverraum-Profil ist mit $\theta_{\mathrm{hc}}=\SI{21}{\celsius}$,
-$\dot q_{\mathrm{v}}=\SI{1500}{\cubic\meter\per\hour}$ sowie
-durchgehendem Betrieb ($t_{\mathrm{v,mech}}=\SI{24}{\hour}$,
-$d_{\mathrm{v,mech}}=\SI{365}{\day\per\year}$) hinterlegt. Die
-Umrechnung des Heizenergiekennwerts auf die abweichende
-Zulufttemperatur ergibt
-$q_{\mathrm{h}}(\theta_{\mathrm{hc}}) = q_{\mathrm{h,18°C,12h}} +
-g_{\mathrm{h,o}} \, (\theta_{\mathrm{hc}} - \SI{18}{\celsius}) \approx
-\SI{3674}{\watt\hour\hour\per\cubic\meter}$. Da die tägliche
-Betriebszeit mit $\SI{24}{\hour}$ deutlich von der Basiszeit von
-$\SI{12}{\hour}$ abweicht, fällt der Korrekturfaktor $f_{\mathrm{T,h}}$
-nach Gleichung~(37) der DIN V 18599-3 mit $f_{\mathrm{T,h}}\approx
-1{,}06$ merklich von $1{,}0$ ab \parencite{DIN185993}. Nach Skalierung
-auf die tatsächliche Betriebszeit sowie Denormierung auf den
-Außenluftvolumenstrom ergibt sich ein jährlicher Nutzenergiebedarf
-Heizen von rund $Q_{\mathrm{h,Kennwert}}\approx
-\SI{11700}{\kwh\per\year}$.
+\begin{table}[H]
+    \centering
+    \caption{Implizite Heizgradstunden in Kh/a der Anlagenvarianten im Vergleich zum TRY Steinfurt}
+    \label{tab:Gradstunden}
+    \begin{tabular}{lrrr}
+        \toprule
+        Anlagenvariante & Gradstunden Norm & Gradstunden TRY & Verhältnis \\
+        \midrule
+        Variante 1 (Lagerhalle) & \num{30719} & \num{33200} & $1{,}08$ \\
+        Variante 3 (Serverräume) & \num{8567} & \num{33200} & $3{,}87$ \\
+        Variante 21 (Bürogebäude) & \num{7672} & \num{33200} & $4{,}33$ \\
+        \bottomrule
+    \end{tabular}
+\end{table}
 
-Für den Kühlfall wird, analog zum Einzelbüro-Profil, die reale
-Raum-Kühlsolltemperatur des Serverraum-Profils
-($\theta_{\mathrm{i,c}}=\SI{24}{\celsius}$) durch den oberen Rand des
-Gültigkeitsbereichs der Umrechnungsgleichungen
-($\theta_{\mathrm{hc}}=\SI{22}{\celsius}$) ersetzt, um eine unzulässige
-Extrapolation zu vermeiden \parencite{DIN185993}. Es ergibt sich
-$q_{\mathrm{c}}(\theta_{\mathrm{hc}}) = q_{\mathrm{c,18°C,12h}} -
-g_{\mathrm{c,o}} \, (\theta_{\mathrm{hc}} - \SI{18}{\celsius}) \approx
-\SI{1459}{\watt\hour\hour\per\cubic\meter}$. Mit dem für
-Feuchteanforderungen „mit Toleranzbereich“ geltenden Korrekturfaktor
-$f_{\mathrm{T,c}}$ nach Gleichung~(39) der DIN V 18599-3, der für
-$t_{\mathrm{v,mech}}=\SI{24}{\hour}$ mit $f_{\mathrm{T,c}}\approx
-0{,}66$ deutlich unter $1{,}0$ liegt \parencite{DIN185993}, ergibt sich
-nach gleichem Rechengang ein jährlicher Nutzenergiebedarf Kühlen von
-rund $Q_{\mathrm{c,Kennwert}}\approx\SI{2890}{\kwh\per\year}$.
+Die Verhältnisse in Tabelle~\ref{tab:Gradstunden} treffen die im
+Referenzfall beobachteten Heizabweichungen aus
+Tabelle~\ref{tab:Referenzfall} praktisch exakt ($+8{,}1\,\%$,
+$+287{,}5\,\%$ bzw. $+332{,}7\,\%$). Die vollständige Abweichung im
+Heizfall lässt sich damit auf die unterschiedliche
+Klimadatengrundlage zurückführen: Den Kennwerten der
+Variantenmatrix liegt ein deutlich milderes Referenzklima
+(„Region~4“ des früheren 15-Klimaregionen-Systems) zugrunde als das
+reale, ortsgenaue \ac{TRY} für Steinfurt. Auffällig ist außerdem, dass
+die implizite Gradstundensumme mit steigendem
+Wärmerückgewinnungsgrad sinkt (Variante~1 ohne WRG gegenüber
+Varianten~3/21 mit $60\,\%$ WRG) -- das ist rein rechnerisch zu
+erwarten, da $(1-\eta_{\mathrm{WRG}})$ und die Gradstundensumme in
+Gleichung~\eqref{eq:qh_gradstunden} nur als Produkt auftreten und sich
+nicht getrennt aus dem Kennwert bestimmen lassen. Es lässt aber auch
+erkennen, wie empfindlich der aus dem Kennwert rückgerechnete
+Klimabezug von der jeweiligen Anlagenvariante abhängt.
 
-Für die Dampfbefeuchtung gilt näherungsweise
-$q_{\mathrm{st}}(\theta_{\mathrm{hc}}) \approx q_{\mathrm{st,18°C,12h}}$
-unabhängig von der Zulufttemperatur \parencite{DIN185993}; der
-zugehörige Korrekturfaktor $f_{\mathrm{T,st}}$ ist konstant $1{,}0$
-\parencite{DIN185993}. Nach Skalierung auf die tatsächliche
-Betriebszeit sowie Denormierung auf den Außenluftvolumenstrom ergibt
-sich ein jährlicher Nutzenergiebedarf Befeuchtung von rund
-$Q_{\mathrm{st,Kennwert}}\approx\SI{12000}{\kwh\per\year}$. Mit dieser
-zweiten Vergleichsrechnung sind alle vier vom Tool berechneten
-Energiearten – Heizen, Kühlen, Befeuchten und Ventilatoren, Letztere
-über den bereits in Schritt~6 unmittelbar aus Gleichung~(11)/(12) der
-DIN V 18599-3 abgeleiteten Sonderfall konstanten Volumenstroms – gegen
-das normative Kennwertverfahren nachvollzogen.
+Die analoge Rechnung für den Kühlfall (mit den Kühlgradstunden
+$\theta_{\mathrm{e}}(t)-\theta_{\mathrm{zu}}$ anstelle der
+Heizgradstunden) liefert mit rund \num{60} bis \num{85}\,\% ebenfalls den
+größten Teil, aber nicht die gesamte im Referenzfall beobachtete
+Abweichung. Die verbleibende Differenz ist plausibel, da diese rein
+sensible Gradstundenrechnung die latente Kondensation am Luftkühler
+(Schritt~4) nicht erfasst, die das Tool zusätzlich zur sensiblen
+Kühlleistung berücksichtigt.
+
+Insgesamt zeigt die Gradstundenanalyse, dass die großen Abweichungen
+in den Abschnitten~\ref{sec:Vergleichsrechnung} und
+\ref{sec:Referenzfall} kein Hinweis auf einen Fehler in der
+Implementierung des Tools sind. Die zugrunde liegende Bilanzgleichung
+ist mit der Norm identisch, und die beobachtete Differenz lässt sich
+nahezu vollständig auf die unterschiedliche Wetterdatengrundlage
+zurückführen, auf der die tabellierten Kennwerte einerseits und das
+verwendete \ac{TRY} andererseits beruhen.
+
+Einschränkend ist zu erwähnen, dass allen Varianten der
+Variantenmatrix dasselbe Referenzklima zugrunde liegt und die
+impliziten Gradstunden nach Gleichung~\eqref{eq:gradstunden_norm}
+daher eigentlich variantenübergreifend gleich groß ausfallen müssten.
+Tatsächlich liefert Variante~1 (keine WRG) mit rund
+$30700\,\mathrm{Kh/a}$ einen deutlich höheren Wert als die Varianten~3
+und~21 (jeweils $60\,\%$ WRG) mit rund $7700$ bis
+$8600\,\mathrm{Kh/a}$. Dies deutet darauf hin, dass der ursprünglichen
+Simulation der Norm keine über das Jahr konstante Wärmerückgewinnung
+zugrunde liegt, sondern vermutlich ein temperaturabhängiges
+Betriebsverhalten (z.\,B. ein Frostschutz-Bypass bei sehr niedrigen
+Außentemperaturen), das durch den in
+Gleichung~\eqref{eq:gradstunden_norm} unterstellten konstanten
+Wärmerückgewinnungsgrad nicht abgebildet wird. Die Gradstundenanalyse
+ist daher als Näherung zu verstehen, die für die Einordnung der
+Abweichung der einzelnen Anlagenvariante gegenüber dem Tool
+plausibel ist, deren Ergebnisse zwischen den Varianten selbst jedoch
+nicht direkt vergleichbar sind.
 
 \section{Einordnung und Grenzen der überschlägigen Methode}
 Der Vergleich des stündlichen Bilanzverfahrens mit dem
 Kennwertverfahren nach DIN V 18599-3 (Abschnitt~\ref{sec:Vergleichsrechnung})
 zeigt, in welcher Größenordnung sich die überschlägige Methode
-gegenüber dem normativen Verfahren bewegt. % TODO: Vergleich mit tatsächlichem TRY-Tool-Ergebnis ergänzen, sobald ein reales TRY für den betrachteten Standort ausgewertet wurde.
+gegenüber dem normativen Verfahren bewegt.
 
 Bei der Interpretation der Abweichung ist zu berücksichtigen, dass
 die in DIN V 18599-3, Tabelle~A.1 hinterlegten Energiekennwerte
@@ -608,10 +821,12 @@ eine unterschiedliche Wetterdatengrundlage. Für eine methodisch
 sauberere Gegenüberstellung müssten beide Verfahren auf denselben
 Klimadatensatz angewendet werden.
 
-Darüber hinaus vernachlässigt das im Tool implementierte
-Bilanzverfahren, wie in Abschnitt~\ref{chap:Methodik} dargelegt, den
-latenten Wärmeanteil sowie anlagenspezifische Regelungseffekte, die
-im Kennwertverfahren über die Variantenmatrix und die zugehörigen
+Darüber hinaus bildet das im Tool implementierte Bilanzverfahren
+zwar inzwischen sowohl die latente Kondensation am Luftkühler
+(Schritt~4) als auch die Befeuchtung (Schritt~5) ab, nicht jedoch
+anlagenspezifische Regelungseffekte -- etwa eine Teillastregelung
+oder eine Nacherwärmung nach adiabater Befeuchtung --, die im
+Kennwertverfahren über die Variantenmatrix und die zugehörigen
 Korrekturfaktoren implizit erfasst werden. Die überschlägige Methode
 ist damit als Orientierungsrechnung zu verstehen, die für einen
 schnellen Vergleich mehrerer Gebäudevarianten und Standorte sowie zur
@@ -619,18 +834,20 @@ Erstellung einer \ac{JDL} geeignet ist, jedoch keinen Ersatz für eine
 normkonforme Nachweisführung nach DIN V 18599 darstellt.
 
 Für den Kühlfall kommt als zusätzliche Einschränkung hinzu, dass die
-reale Raum-Kühlsolltemperatur beider betrachteter Gebäudeprofile
-($\SI{24}{\celsius}$) außerhalb des Gültigkeitsbereichs der
-Umrechnungsgleichungen des Kennwertverfahrens liegt
-(Abschnitt~\ref{sec:Vergleichsrechnung}); die Vergleichsrechnungen
-Kühlen sind daher nur eingeschränkt aussagekräftig. Für die
-Befeuchtung konnte anhand des Serverraum-Profils zwar ein
-normkonformer Abgleich mit einer Anlagenvariante mit
-Feuchteanforderung durchgeführt werden; die im Tool implementierte
-latente Bilanz (Schritt~5) verwendet dabei jedoch reale, stündlich
-schwankende Wasserdampfgehalte der Außenluft anstelle eines fest
-vorgegebenen Standardwertes, sodass auch hier eine methodische
-Vereinfachung gegenüber dem Kennwertverfahren besteht.
+realen Raum-Kühlsolltemperaturen aller drei Gebäudeprofile
+($\SI{24}{\celsius}$ bzw. $\SI{26}{\celsius}$) außerhalb des
+Gültigkeitsbereichs der Umrechnungsgleichungen des Kennwertverfahrens
+liegen; für die Lagerhalle gilt dies zusätzlich für den Heizfall
+($\SI{12}{\celsius}$, Abschnitt~\ref{sec:Vergleichsrechnung}). Die
+betroffenen Vergleichsrechnungen sind daher nur eingeschränkt
+aussagekräftig. Für die Befeuchtung konnte anhand des
+Bürogebäude-Profils zwar ein normkonformer Abgleich mit einer
+Anlagenvariante mit Feuchteanforderung durchgeführt werden, die im
+Tool implementierte latente Bilanz verwendet dabei jedoch
+reale, stündlich schwankende Wasserdampfgehalte der Außenluft
+anstelle eines fest vorgegebenen Standardwertes, sodass auch hier
+eine methodische Vereinfachung gegenüber dem Kennwertverfahren
+besteht.
 
 Für die berechnete Jahresenergiemenge der Ventilatoren gilt
 einschränkend, dass die verwendeten Druckerhöhungen und der
@@ -638,7 +855,7 @@ Ventilatorwirkungsgrad projektspezifisch angenommen und nicht aus
 DIN V 18599-7 entnommen wurden, da die Norm hierfür primär auf
 anlagenspezifische Bestandsdaten (Inspektionswerte) verweist
 \parencite{DIN185997}. Zudem wird mit $f_{\mathrm{p}}=1$ nur der
-Sonderfall konstanten Volumenstroms abgebildet; für Anlagen mit
+Sonderfall konstanten Volumenstroms abgebildet. Für Anlagen mit
 \ac{VAV}-Teillastregelung wäre die vollständige Gleichung nach
 DIN V 18599-3 heranzuziehen \parencite{DIN185993}.
 

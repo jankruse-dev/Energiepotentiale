@@ -14,10 +14,10 @@ sys.path.append(str(Path(__file__).parent / "src"))
 from building import Gebaeude
 from weather import try_datei_einlesen
 from ventilation import (
-    heizleistung_kw,
-    kuehlleistung_kw,
-    befeuchtungsleistung_kw,
-    ventilatorleistung_kw,
+    stuendlicher_waermeverlust_kw,
+    stuendliche_kaelteleistung_gesamt_kw,
+    stuendliche_befeuchtungsleistung_kw,
+    stuendliche_ventilatorleistung_kw,
     jahresenergiemenge_kwh,
 )
 from load_duration import jahresdauerlinie, volllaststunden, jdl_plotten
@@ -42,10 +42,10 @@ def main():
 
     # 2. Fuer jede Energieart die stuendliche Leistung berechnen
     energiearten = {
-        "heizen": ("Heizen", heizleistung_kw),
-        "kuehlen": ("Kuehlen", kuehlleistung_kw),
-        "befeuchten": ("Befeuchten", befeuchtungsleistung_kw),
-        "ventilatoren": ("Ventilatoren", ventilatorleistung_kw),
+        "heizen": ("Heizen", stuendlicher_waermeverlust_kw),
+        "kuehlen": ("Kuehlen", stuendliche_kaelteleistung_gesamt_kw),
+        "befeuchten": ("Befeuchten", stuendliche_befeuchtungsleistung_kw),
+        "ventilatoren": ("Ventilatoren", stuendliche_ventilatorleistung_kw),
     }
 
     for schluessel, (bezeichnung, berechnungsfunktion) in energiearten.items():

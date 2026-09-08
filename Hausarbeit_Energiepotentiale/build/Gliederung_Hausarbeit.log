@@ -1,10 +1,10 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.28 (MiKTeX 25.12) (preloaded format=pdflatex 2026.8.11)  8 SEP 2026 19:16
+This is pdfTeX, Version 3.141592653-2.6-1.40.28 (MiKTeX 25.12) (preloaded format=pdflatex 2026.8.11)  8 SEP 2026 18:55
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
  %&-line parsing enabled.
-**c:/Users/jkruse/PycharmProjects/Energiepotentiale/Hausarbeit_Energiepotentiale/Gliederung_Hausarbeit_man.tex
-(c:/Users/jkruse/PycharmProjects/Energiepotentiale/Hausarbeit_Energiepotentiale/Gliederung_Hausarbeit_man.tex
+**c:/Users/jkruse/PycharmProjects/Energiepotentiale/Hausarbeit_Energiepotentiale/Gliederung_Hausarbeit.tex
+(c:/Users/jkruse/PycharmProjects/Energiepotentiale/Hausarbeit_Energiepotentiale/Gliederung_Hausarbeit.tex
 LaTeX2e <2025-11-01>
 L3 programming layer <2025-12-24>
 (C:\Users\jkruse\AppData\Local\Programs\MiKTeX\tex/latex/koma-script\scrreprt.cls
@@ -1065,9 +1065,9 @@ Package: import 2020/04/01  v 6.2
 Package: setspace 2022/12/04 v6.7b set line spacing
 )
 \@nomenclaturefile=\write6
-\openout6 = `Gliederung_Hausarbeit_man.nlo'.
+\openout6 = `Gliederung_Hausarbeit.nlo'.
 
-Package nomencl Info: Writing nomenclature file Gliederung_Hausarbeit_man.nlo on input line 16.
+Package nomencl Info: Writing nomenclature file Gliederung_Hausarbeit.nlo on input line 16.
 
 
 Package scrlayer-scrpage Warning: Command deprecated!
@@ -1100,11 +1100,11 @@ Package csquotes Info: Checking for multilingual support...
 Package csquotes Info: ... found 'babel' package.
 Package csquotes Info: Adjusting default style.
 Package csquotes Info: Redefining alias 'default' -> 'ngerman'.
- (c:/Users\jkruse\PycharmProjects\Energiepotentiale\Hausarbeit_Energiepotentiale\build\Gliederung_Hausarbeit_man.aux
+ (c:/Users\jkruse\PycharmProjects\Energiepotentiale\Hausarbeit_Energiepotentiale\build\Gliederung_Hausarbeit.aux
 Package babel Info: 'ngerman' activates 'german' shorthands.
 (babel)             Reported on input line 13.
 )
-\openout1 = `Gliederung_Hausarbeit_man.aux'.
+\openout1 = `Gliederung_Hausarbeit.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 33.
 LaTeX Font Info:    ... okay on input line 33.
@@ -1192,69 +1192,94 @@ File: german.lbx 2025/07/10 v3.21 biblatex localization (PK/MW)
 Package biblatex Info: Input encoding 'utf8' detected.
 Package biblatex Info: Automatic encoding selection.
 (biblatex)             Assuming data encoding 'utf8'.
-\openout5 = `Gliederung_Hausarbeit_man.bcf'.
+\openout5 = `Gliederung_Hausarbeit.bcf'.
 
 Package biblatex Info: Trying to load bibliographic data...
-Package biblatex Info: ... file 'Gliederung_Hausarbeit_man.bbl' found.
- (c:/Users\jkruse\PycharmProjects\Energiepotentiale\Hausarbeit_Energiepotentiale\build\Gliederung_Hausarbeit_man.bbl)
+Package biblatex Info: ... file 'Gliederung_Hausarbeit.bbl' found.
+ (c:/Users\jkruse\PycharmProjects\Energiepotentiale\Hausarbeit_Energiepotentiale\build\Gliederung_Hausarbeit.bbl)
 Package biblatex Info: Reference section=0 on input line 33.
 Package biblatex Info: Reference segment=0 on input line 33.
-<images/fhm_Logo_CMYK_17mm.pdf, id=6, 364.48372pt x 96.73932pt>
+<images/Logo Kampmann.JPG.pdf, id=6, 463.7325pt x 130.4875pt>
+File: images/Logo Kampmann.JPG.pdf Graphic file (type pdf)
+<use images/Logo Kampmann.JPG.pdf>
+Package pdftex.def Info: images/Logo Kampmann.JPG.pdf  used on input line 42.
+(pdftex.def)             Requested size: 162.30879pt x 45.6713pt.
+<images/fhm_Logo_CMYK_17mm.pdf, id=7, 364.48372pt x 96.73932pt>
 File: images/fhm_Logo_CMYK_17mm.pdf Graphic file (type pdf)
 <use images/fhm_Logo_CMYK_17mm.pdf>
 Package pdftex.def Info: images/fhm_Logo_CMYK_17mm.pdf  used on input line 42.
-(pdftex.def)             Requested size: 291.58736pt x 77.39154pt.
+(pdftex.def)             Requested size: 218.69191pt x 58.04402pt.
+
+Overfull \hbox (38.01688pt too wide) in paragraph at lines 42--42
+[]| [] 
+ []
+
+
+Overfull \hbox (18.75343pt too wide) in paragraph at lines 42--42
+[]$[]$ $[]$ 
+ []
+
 
 Overfull \hbox (20.53578pt too wide) in paragraph at lines 42--42
  [][] 
  []
 
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
 [1
 
 
 
-{C:/Users/jkruse/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map} <./images/fhm_Logo_CMYK_17mm.pdf>] (c:/Users\jkruse\PycharmProjects\Energiepotentiale\Hausarbeit_Energiepotentiale\build\Gliederung_Hausarbeit_man.toc)
+{C:/Users/jkruse/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map} <./images/Logo Kampmann.JPG.pdf> <./images/fhm_Logo_CMYK_17mm.pdf>] [2] [1
+
+
+] (c:/Users\jkruse\PycharmProjects\Energiepotentiale\Hausarbeit_Energiepotentiale\build\Gliederung_Hausarbeit.toc)
 \tf@toc=\write7
-\openout7 = `Gliederung_Hausarbeit_man.toc'.
+\openout7 = `Gliederung_Hausarbeit.toc'.
 
 Package babel Info: 'ngerman' activates 'german' shorthands.
-(babel)             Reported on input line 51.
- [1
+(babel)             Reported on input line 54.
 
+pdfTeX warning (ext4): destination with the same identifier (name{page.}) has been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.54 \clearpage
+                [2
 
 ]
 pdfTeX warning (ext4): destination with the same identifier (name{page.}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.51 \clearpage
-                [2] (c:/Users\jkruse\PycharmProjects\Energiepotentiale\Hausarbeit_Energiepotentiale\build\Gliederung_Hausarbeit_man.lof)
+l.54 \clearpage
+                [3] (c:/Users\jkruse\PycharmProjects\Energiepotentiale\Hausarbeit_Energiepotentiale\build\Gliederung_Hausarbeit.lof)
 \tf@lof=\write8
-\openout8 = `Gliederung_Hausarbeit_man.lof'.
+\openout8 = `Gliederung_Hausarbeit.lof'.
 
 
 pdfTeX warning (ext4): destination with the same identifier (name{page.}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.57 \listoftables
+l.60 \listoftables
                    [0
 
 
-] (c:/Users\jkruse\PycharmProjects\Energiepotentiale\Hausarbeit_Energiepotentiale\build\Gliederung_Hausarbeit_man.lot
+] (c:/Users\jkruse\PycharmProjects\Energiepotentiale\Hausarbeit_Energiepotentiale\build\Gliederung_Hausarbeit.lot
 Overfull \hbox (1.2659pt too wide) in paragraph at lines 10--10
  [][] [][]\T1/cmr/m/n/10.95 Referenzfall Jah-res-ener-gie-men-ge (Zu-luft-tem-pe-ra-tur $\OT1/cmr/m/n/10.95 18$$[]$\T1/cmr/m/n/10.95 , $\OT1/cmr/m/n/10.95 12$$h\OML/cmm/m/it/10.95 =\OT1/cmr/m/n/10.95 d$\T1/cmr/m/n/10.95 , $\OT1/cmr/m/n/10.95 365$$d\OML/cmm/m/it/10.95 =\OT1/cmr/m/n/10.95 a$\T1/cmr/m/n/10.95 ) 
  []
 
 )
 \tf@lot=\write9
-\openout9 = `Gliederung_Hausarbeit_man.lot'.
+\openout9 = `Gliederung_Hausarbeit.lot'.
 
 
-Overfull \hbox (124.11017pt too wide) in paragraph at lines 71--102
+Overfull \hbox (124.11017pt too wide) in paragraph at lines 74--105
 [][]
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 71--102
+Underfull \hbox (badness 10000) in paragraph at lines 74--105
 
  []
 
@@ -1263,35 +1288,35 @@ Underfull \hbox (badness 10000) in paragraph at lines 71--102
 ] [2]
 chapter without number
 
-LaTeX Warning: Hyper reference `acro:TRJ' on page III undefined on input line 108.
+LaTeX Warning: Hyper reference `acro:TRJ' on page III undefined on input line 111.
 
 
-LaTeX Warning: Hyper reference `acro:TRJ' on page III undefined on input line 108.
+LaTeX Warning: Hyper reference `acro:TRJ' on page III undefined on input line 111.
 
 
-LaTeX Warning: Hyper reference `acro:DWD' on page III undefined on input line 109.
+LaTeX Warning: Hyper reference `acro:DWD' on page III undefined on input line 112.
 
 
-LaTeX Warning: Hyper reference `acro:DWD' on page III undefined on input line 109.
+LaTeX Warning: Hyper reference `acro:DWD' on page III undefined on input line 112.
 
 
-LaTeX Warning: Hyper reference `acro:BBR' on page III undefined on input line 110.
+LaTeX Warning: Hyper reference `acro:BBR' on page III undefined on input line 113.
 
 
-LaTeX Warning: Hyper reference `acro:BBR' on page III undefined on input line 110.
+LaTeX Warning: Hyper reference `acro:BBR' on page III undefined on input line 113.
 
 [3
 
 ]
 chapter 1.
 Package acronym Info: Label `acro:NWG' newly defined as it shall be overridden
-although it is yet undefined on input line 128.
+although it is yet undefined on input line 126.
 Package acronym Info: Label `acro:JDL' newly defined as it shall be overridden
-although it is yet undefined on input line 147.
+although it is yet undefined on input line 145.
 Package acronym Info: Label `acro:TRY' newly defined as it shall be overridden
-although it is yet undefined on input line 153.
+although it is yet undefined on input line 151.
 
-Overfull \hbox (1.41107pt too wide) in paragraph at lines 150--162
+Overfull \hbox (1.41107pt too wide) in paragraph at lines 148--160
 \T1/cmr/m/n/10.95 ge der Lüf-tungs-tech-nik vir-tu-el-ler Ge-bäu-de auf Ba-sis stünd-lich auf-ge-lös-ter [][][]Testreferenzjahr
  []
 
@@ -1299,45 +1324,50 @@ Overfull \hbox (1.41107pt too wide) in paragraph at lines 150--162
 pdfTeX warning (ext4): destination with the same identifier (name{page.1}) has been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.163 \chapter
+l.162 \chapter
               {Theoretischer Hintergrund}\label{chap:Theorie} [1
 
 ]
 chapter 2.
 Package acronym Info: Label `acro:RLT' newly defined as it shall be overridden
-although it is yet undefined on input line 174.
+although it is yet undefined on input line 173.
 Package acronym Info: Label `acro:WRG' newly defined as it shall be overridden
-although it is yet undefined on input line 185.
-[2
+although it is yet undefined on input line 184.
+
+pdfTeX warning (ext4): destination with the same identifier (name{page.2}) has been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.208 
+       [2
 
 ] [3]
 chapter 3.
-<images/RLT_Schema.png, id=237, 935.495pt x 243.91125pt>
+<images/RLT_Schema.png, id=248, 935.495pt x 243.91125pt>
 File: images/RLT_Schema.png Graphic file (type png)
 <use images/RLT_Schema.png>
-Package pdftex.def Info: images/RLT_Schema.png  used on input line 251.
+Package pdftex.def Info: images/RLT_Schema.png  used on input line 250.
 (pdftex.def)             Requested size: 418.25555pt x 109.0519pt.
 [4
 
  <./images/RLT_Schema.png>] [5] [6]
-<images/ZustandsÃ¤nderung_KÃ¼hler.png, id=281, 469.755pt x 354.32375pt>
+<images/ZustandsÃ¤nderung_KÃ¼hler.png, id=292, 469.755pt x 354.32375pt>
 File: images/ZustandsÃ¤nderung_KÃ¼hler.png Graphic file (type png)
 <use images/ZustandsÃ¤nderung_KÃ¼hler.png>
-Package pdftex.def Info: images/ZustandsÃ¤nderung_KÃ¼hler.png  used on input line 425.
+Package pdftex.def Info: images/ZustandsÃ¤nderung_KÃ¼hler.png  used on input line 424.
 (pdftex.def)             Requested size: 250.95587pt x 189.2883pt.
  [7 <./images/ZustandsÃ¤nderung_KÃ¼hler.png>]
 Package acronym Info: Label `acro:VAV' newly defined as it shall be overridden
-although it is yet undefined on input line 491.
+although it is yet undefined on input line 490.
  [8]
 Package acronym Info: Label `acro:SFP' newly defined as it shall be overridden
-although it is yet undefined on input line 503.
+although it is yet undefined on input line 502.
  (TeX/Flussdiagramm_methodik.tex
 Overfull \hbox (3.82721pt too wide) in paragraph at lines 33--33
  []\T1/cmr/m/n/10 Jahresenergiemenge 
  []
 
 )
-Overfull \hbox (24.09644pt too wide) in paragraph at lines 70--533
+Overfull \hbox (24.09644pt too wide) in paragraph at lines 70--532
  [][] 
  []
 
@@ -1346,36 +1376,36 @@ chapter 4.
 [11
 
 ]
-Overfull \hbox (30.72879pt too wide) in paragraph at lines 605--617
+Overfull \hbox (30.72879pt too wide) in paragraph at lines 604--616
 \T1/cmr/m/n/10.95 Solltemperaturen al-ler drei Ge-bäu-de ($\OT1/cmr/m/n/10.95 24$$[]$ \T1/cmr/m/n/10.95 bzw. $\OT1/cmr/m/n/10.95 26$$[]$\T1/cmr/m/n/10.95 ) lie-gen ober-halb, die Heiz-Solltemperatur
  []
 
 [12]
 
-LaTeX Warning: Command \textdegree invalid in math mode on input line 708.
+LaTeX Warning: Command \textdegree invalid in math mode on input line 707.
 
 
-LaTeX Warning: Command \textdegree invalid in math mode on input line 708.
+LaTeX Warning: Command \textdegree invalid in math mode on input line 707.
 
 Missing character: There is no ° in font cmr8!
 [13]
 
-LaTeX Warning: Command \textdegree invalid in math mode on input line 713.
+LaTeX Warning: Command \textdegree invalid in math mode on input line 712.
 
 
-LaTeX Warning: Command \textdegree invalid in math mode on input line 713.
+LaTeX Warning: Command \textdegree invalid in math mode on input line 712.
 
 Missing character: There is no ° in font cmr8!
 
-Overfull \hbox (1.15384pt too wide) in paragraph at lines 716--722
+Overfull \hbox (1.15384pt too wide) in paragraph at lines 715--721
 []\T1/cmr/m/n/10.95 wobei $[] \OT1/cmr/m/n/10.95 ^^A\OML/cmm/m/it/10.95 ^^R[]$ \T1/cmr/m/n/10.95 die Grad-stun-den-sum-me be-zeich-net, die dem Re-fe-renz-kli-ma der Norm
  []
 
 
-LaTeX Warning: Command \textdegree invalid in math mode on input line 724.
+LaTeX Warning: Command \textdegree invalid in math mode on input line 723.
 
 
-LaTeX Warning: Command \textdegree invalid in math mode on input line 724.
+LaTeX Warning: Command \textdegree invalid in math mode on input line 723.
 
 Missing character: There is no ° in font cmr8!
 [14] [15] [16]
@@ -1392,7 +1422,7 @@ chapter A.
 chapter B.
 [20
 
-] (c:/Users\jkruse\PycharmProjects\Energiepotentiale\Hausarbeit_Energiepotentiale\build\Gliederung_Hausarbeit_man.aux)
+] (c:/Users\jkruse\PycharmProjects\Energiepotentiale\Hausarbeit_Energiepotentiale\build\Gliederung_Hausarbeit.aux)
  ***********
 LaTeX2e <2025-11-01>
 L3 programming layer <2025-12-24>
@@ -1401,22 +1431,22 @@ L3 programming layer <2025-12-24>
 
 LaTeX Warning: There were undefined references.
 
-Package logreq Info: Writing requests to 'Gliederung_Hausarbeit_man.run.xml'.
-\openout1 = `Gliederung_Hausarbeit_man.run.xml'.
+Package logreq Info: Writing requests to 'Gliederung_Hausarbeit.run.xml'.
+\openout1 = `Gliederung_Hausarbeit.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 54423 strings out of 467871
- 1301751 string characters out of 5417892
- 2471645 words of memory out of 5000000
- 82442 multiletter control sequences out of 15000+600000
+ 54434 strings out of 467871
+ 1301987 string characters out of 5417892
+ 2471738 words of memory out of 5000000
+ 82453 multiletter control sequences out of 15000+600000
  646436 words of font info for 73 fonts, out of 8000000 for 9000
  1143 hyphenation exceptions out of 8191
- 108i,20n,131p,11327b,7353s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 108i,20n,131p,11323b,7353s stack positions out of 10000i,1000n,20000p,200000b,200000s
  <C:\Users\jkruse\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecti1095.pk> <C:\Users\jkruse\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\tcrm1095.pk> <C:\Users\jkruse\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecrm0800.pk> <C:\Users\jkruse\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecrm1000.pk> <C:\Users\jkruse\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecsx1200.pk> <C:\Users\jkruse\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecsx1440.pk> <C:\Users\jkruse\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx1095.pk> <C:\Users\jkruse\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecsx1095.pk> <C:\Users\jkruse\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecsx2074.pk> <C:\Users\jkruse\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecrm1095.pk> <C:\Users\jkruse\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx2488.pk> <C:\Users\jkruse\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx1728.pk><C:/Users/jkruse/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmex10.pfb><C:/Users/jkruse/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi10.pfb><C:/Users/jkruse/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi8.pfb><C:/Users/jkruse/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Users/jkruse/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr8.pfb><C:/Users/jkruse/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Users/jkruse/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy6.pfb><C:/Users/jkruse/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy8.pfb>
-Output written on c:/Users\jkruse\PycharmProjects\Energiepotentiale\Hausarbeit_Energiepotentiale\build\Gliederung_Hausarbeit_man.pdf (27 pages, 642487 bytes).
+Output written on c:/Users\jkruse\PycharmProjects\Energiepotentiale\Hausarbeit_Energiepotentiale\build\Gliederung_Hausarbeit.pdf (29 pages, 665461 bytes).
 PDF statistics:
- 1045 PDF objects out of 1200 (max. 8388607)
+ 1057 PDF objects out of 1200 (max. 8388607)
  103 named destinations out of 1000 (max. 500000)
- 268 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 273 words of extra memory for PDF output out of 10000 (max. 10000000)
 

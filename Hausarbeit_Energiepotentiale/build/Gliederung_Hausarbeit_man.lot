@@ -10,7 +10,4 @@
 \contentsline {table}{\numberline {4.3}{\ignorespaces Referenzfall Jahresenergiemenge (Zulufttemperatur \SI {18}{\celsius }, \SI {12}{\hour \per \day }, \SI {365}{\day \per \year }) in kWh/a: Tool und Kennwertverfahren im Vergleich}}{13}{table.caption.22}%
 \contentsline {table}{\numberline {4.4}{\ignorespaces Implizite Heizgradstunden in Kh/a der Anlagenvarianten im Vergleich zum TRY Steinfurt}}{14}{table.caption.23}%
 \addvspace {10\p@ }
-\def \@chapapp {\appendixname }
-\addvspace {10\p@ }
-\addvspace {10\p@ }
 \providecommand \tocbasic@end@toc@file {}\tocbasic@end@toc@file 

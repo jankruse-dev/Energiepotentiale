@@ -6,7 +6,7 @@
 \contentsline {table}{\numberline {3.1}{\ignorespaces Zustandspunkte der RLT-Anlage (vgl. Abbildung~\ref {abb:RLT_Schema})}}{4}{table.caption.15}%
 \addvspace {10\p@ }
 \contentsline {table}{\numberline {4.1}{\ignorespaces Gebäudeprofile (JSON-Parameter des Tools)}}{11}{table.caption.20}%
-\contentsline {table}{\numberline {4.2}{\ignorespaces Jahresenergiemengen: Tool und Kennwertverfahren nach DIN V 18599-3 in \si {\kilo \watt \hour \per \year }}}{12}{table.caption.21}%
+\contentsline {table}{\numberline {4.2}{\ignorespaces Jahresenergiemengen: Tool und Kennwertverfahren nach DIN/TS 18599-3 in \si {\kilo \watt \hour \per \year }}}{12}{table.caption.21}%
 \contentsline {table}{\numberline {4.3}{\ignorespaces Referenzfall Jahresenergiemenge (Zulufttemperatur \SI {18}{\celsius }, \SI {12}{\hour \per \day }, \SI {365}{\day \per \year }) in kWh/a: Tool und Kennwertverfahren im Vergleich}}{13}{table.caption.22}%
 \contentsline {table}{\numberline {4.4}{\ignorespaces Implizite Heizgradstunden in Kh/a der Anlagenvarianten im Vergleich zum TRY Steinfurt}}{14}{table.caption.23}%
 \addvspace {10\p@ }

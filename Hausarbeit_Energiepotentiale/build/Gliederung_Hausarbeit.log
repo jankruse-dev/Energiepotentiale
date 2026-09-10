@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.28 (MiKTeX 25.12) (preloaded format=pdflatex 2026.8.11)  8 SEP 2026 18:55
+This is pdfTeX, Version 3.141592653-2.6-1.40.28 (MiKTeX 25.12) (preloaded format=pdflatex 2026.8.11)  9 SEP 2026 10:58
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -1199,26 +1199,11 @@ Package biblatex Info: ... file 'Gliederung_Hausarbeit.bbl' found.
  (c:/Users\jkruse\PycharmProjects\Energiepotentiale\Hausarbeit_Energiepotentiale\build\Gliederung_Hausarbeit.bbl)
 Package biblatex Info: Reference section=0 on input line 33.
 Package biblatex Info: Reference segment=0 on input line 33.
-<images/Logo Kampmann.JPG.pdf, id=6, 463.7325pt x 130.4875pt>
-File: images/Logo Kampmann.JPG.pdf Graphic file (type pdf)
-<use images/Logo Kampmann.JPG.pdf>
-Package pdftex.def Info: images/Logo Kampmann.JPG.pdf  used on input line 42.
-(pdftex.def)             Requested size: 162.30879pt x 45.6713pt.
-<images/fhm_Logo_CMYK_17mm.pdf, id=7, 364.48372pt x 96.73932pt>
+<images/fhm_Logo_CMYK_17mm.pdf, id=6, 364.48372pt x 96.73932pt>
 File: images/fhm_Logo_CMYK_17mm.pdf Graphic file (type pdf)
 <use images/fhm_Logo_CMYK_17mm.pdf>
 Package pdftex.def Info: images/fhm_Logo_CMYK_17mm.pdf  used on input line 42.
-(pdftex.def)             Requested size: 218.69191pt x 58.04402pt.
-
-Overfull \hbox (38.01688pt too wide) in paragraph at lines 42--42
-[]| [] 
- []
-
-
-Overfull \hbox (18.75343pt too wide) in paragraph at lines 42--42
-[]$[]$ $[]$ 
- []
-
+(pdftex.def)             Requested size: 291.58736pt x 77.39154pt.
 
 Overfull \hbox (20.53578pt too wide) in paragraph at lines 42--42
  [][] 
@@ -1231,7 +1216,7 @@ LaTeX Warning: `h' float specifier changed to `ht'.
 
 
 
-{C:/Users/jkruse/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map} <./images/Logo Kampmann.JPG.pdf> <./images/fhm_Logo_CMYK_17mm.pdf>] [2] [1
+{C:/Users/jkruse/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map} <./images/fhm_Logo_CMYK_17mm.pdf>] [2] [1
 
 
 ] (c:/Users\jkruse\PycharmProjects\Energiepotentiale\Hausarbeit_Energiepotentiale\build\Gliederung_Hausarbeit.toc)
@@ -1342,7 +1327,7 @@ l.208
 
 ] [3]
 chapter 3.
-<images/RLT_Schema.png, id=248, 935.495pt x 243.91125pt>
+<images/RLT_Schema.png, id=244, 935.495pt x 243.91125pt>
 File: images/RLT_Schema.png Graphic file (type png)
 <use images/RLT_Schema.png>
 Package pdftex.def Info: images/RLT_Schema.png  used on input line 250.
@@ -1350,7 +1335,7 @@ Package pdftex.def Info: images/RLT_Schema.png  used on input line 250.
 [4
 
  <./images/RLT_Schema.png>] [5] [6]
-<images/Zustandsänderung_Kühler.png, id=292, 469.755pt x 354.32375pt>
+<images/Zustandsänderung_Kühler.png, id=288, 469.755pt x 354.32375pt>
 File: images/Zustandsänderung_Kühler.png Graphic file (type png)
 <use images/Zustandsänderung_Kühler.png>
 Package pdftex.def Info: images/Zustandsänderung_Kühler.png  used on input line 424.
@@ -1410,17 +1395,22 @@ LaTeX Warning: Command \textdegree invalid in math mode on input line 723.
 Missing character: There is no � in font cmr8!
 [14] [15] [16]
 chapter 5.
+
+Overfull \hbox (8.08002pt too wide) in paragraph at lines 905--909
+[]\T1/cmr/m/n/10.95 eine tem-pe-ra-tu-r-ab-h�n-gi-ge, nicht �ber das Jahr kon-stan-te [][] (z.B. ein Frostschutz-
+ []
+
 [17
 
-] [18
+] [18] [19
 
 ]
 chapter A.
-[19
+[20
 
 ]
 chapter B.
-[20
+[21
 
 ] (c:/Users\jkruse\PycharmProjects\Energiepotentiale\Hausarbeit_Energiepotentiale\build\Gliederung_Hausarbeit.aux)
  ***********
@@ -1436,17 +1426,17 @@ Package logreq Info: Writing requests to 'Gliederung_Hausarbeit.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 54434 strings out of 467871
- 1301987 string characters out of 5417892
- 2471738 words of memory out of 5000000
- 82453 multiletter control sequences out of 15000+600000
+ 54425 strings out of 467871
+ 1301629 string characters out of 5417892
+ 2471634 words of memory out of 5000000
+ 82442 multiletter control sequences out of 15000+600000
  646436 words of font info for 73 fonts, out of 8000000 for 9000
  1143 hyphenation exceptions out of 8191
  108i,20n,131p,11323b,7353s stack positions out of 10000i,1000n,20000p,200000b,200000s
  <C:\Users\jkruse\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecti1095.pk> <C:\Users\jkruse\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\tcrm1095.pk> <C:\Users\jkruse\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecrm0800.pk> <C:\Users\jkruse\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecrm1000.pk> <C:\Users\jkruse\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecsx1200.pk> <C:\Users\jkruse\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecsx1440.pk> <C:\Users\jkruse\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx1095.pk> <C:\Users\jkruse\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecsx1095.pk> <C:\Users\jkruse\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecsx2074.pk> <C:\Users\jkruse\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecrm1095.pk> <C:\Users\jkruse\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx2488.pk> <C:\Users\jkruse\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\ecbx1728.pk><C:/Users/jkruse/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmex10.pfb><C:/Users/jkruse/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi10.pfb><C:/Users/jkruse/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi8.pfb><C:/Users/jkruse/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/Users/jkruse/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmr8.pfb><C:/Users/jkruse/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy10.pfb><C:/Users/jkruse/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy6.pfb><C:/Users/jkruse/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/cm/cmsy8.pfb>
-Output written on c:/Users\jkruse\PycharmProjects\Energiepotentiale\Hausarbeit_Energiepotentiale\build\Gliederung_Hausarbeit.pdf (29 pages, 665461 bytes).
+Output written on c:/Users\jkruse\PycharmProjects\Energiepotentiale\Hausarbeit_Energiepotentiale\build\Gliederung_Hausarbeit.pdf (30 pages, 650227 bytes).
 PDF statistics:
- 1057 PDF objects out of 1200 (max. 8388607)
- 103 named destinations out of 1000 (max. 500000)
- 273 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 1068 PDF objects out of 1200 (max. 8388607)
+ 105 named destinations out of 1000 (max. 500000)
+ 268 words of extra memory for PDF output out of 10000 (max. 10000000)
 

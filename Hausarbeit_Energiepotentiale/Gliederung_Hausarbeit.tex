@@ -860,6 +860,69 @@ DIN V 18599-3 heranzuziehen \parencite{DIN185993}.
 
 \chapter{Fazit \& Ausblick}\label{chap:Fazit}
 
+Ziel dieser Hausarbeit war es, ein Python-Werkzeug zu entwickeln, mit
+dem die überschlägige Jahresenergiemenge der Lüftungstechnik
+virtueller Gebäude auf Basis stündlich aufgelöster \ac{TRY} berechnet
+und als \ac{JDL} dargestellt werden kann, und die Ergebnisse
+anschließend dem normativen Kennwertverfahren nach DIN V 18599-3
+gegenüberzustellen. Dieses Ziel wurde erreicht: Ausgehend von
+Gebäudeprofilen und einem \ac{TRY} bildet das Tool Schritt für Schritt
+die stündliche Heiz-, Kühl- (einschließlich der latenten Kondensation
+am Luftkühler), Befeuchtungs- und Ventilatorleistung ab und aggregiert
+diese zu Jahresenergiemengen und \acp{JDL}.
+
+Der Vergleich mit dem Kennwertverfahren zeigte für alle drei
+virtuellen Gebäude teils erhebliche Abweichungen. Anhand eines
+Referenzfalls ohne Umrechnungsunsicherheiten sowie einer
+Gradstundenanalyse (Abschnitt~\ref{sec:Referenzfall} ff.) konnte
+gezeigt werden, dass diese Abweichungen im Heizfall nahezu
+vollständig und im Kühlfall größtenteils auf die unterschiedliche
+Wetterdatengrundlage der beiden Verfahren zurückzuführen sind und
+nicht auf einen Fehler in der Implementierung des Tools. Die
+vorliegende Arbeit liefert damit nicht nur ein funktionsfähiges
+Berechnungstool, sondern auch eine belastbare Erklärung für die
+beobachteten Differenzen zum normativen Verfahren.
+
+Über die bereits in Abschnitt~\ref{sec:Vergleichsrechnung} ff.
+diskutierten methodischen Einschränkungen hinaus bildet das Tool in
+seinem aktuellen Stand nur einen Ausschnitt der Anlagenkonzepte ab,
+die das Kennwertverfahren mit seiner Variantenmatrix von 46 Varianten
+abdeckt. Um weitere Varianten der Matrix darstellen zu können, müsste
+das Tool insbesondere um folgende Aspekte erweitert werden:
+
+\begin{itemize}
+    \item eine adiabate Befeuchtung einschließlich der zugehörigen
+    Nacherwärmung, zusätzlich zu dem bislang ausschließlich
+    abgebildeten Dampfbefeuchter,
+    \item eine feuchteübertragende \ac{WRG} (WRG-Typ „Wärme und
+    Feuchte“) zusätzlich zu der bislang ausschließlich sensiblen
+    \ac{WRG},
+    \item eine Feuchteanforderung „ohne Toleranzbereich“ mit
+    entsprechend engerer Regelung der Zuluftfeuchte,
+    \item eine variable Volumenstromregelung (\ac{VAV}) mit
+    $f_{\mathrm{p}} \neq 1$ anstelle des bislang unterstellten
+    Sonderfalls konstanten Volumenstroms,
+    \item eine temperaturabhängige, nicht über das Jahr konstante
+    \ac{WRG} (z.\,B. ein Frostschutz-Bypass), wie sie die
+    Gradstundenanalyse in Abschnitt~\ref{sec:Referenzfall} für die
+    ursprüngliche Simulation der Norm nahelegt.
+\end{itemize}
+
+Erst mit diesen Erweiterungen ließe sich jede der 46 Anlagenvarianten
+der Norm mit einem passenden Gebäudeprofil im Tool nachbilden und
+direkt mit dem zugehörigen Kennwert vergleichen.
+
+Für eine methodisch sauberere Gegenüberstellung mit dem
+Kennwertverfahren sollte in künftigen Arbeiten außerdem dasselbe
+Referenzklima für beide Verfahren verwendet werden, etwa durch eine
+eigene Kennwertermittlung auf Basis des ortsgenauen \ac{TRY} anstelle
+der in der Norm hinterlegten, älteren Klimaregion. Darüber hinaus
+bietet es sich an, das Tool auf weitere Gebäudeprofile und Standorte
+auszuweiten und die Berechnung ergänzend mit extremen und
+prognostizierten Testreferenzjahren durchzuführen, um Aussagen zur
+Auslegung der Lüftungstechnik auch unter zukünftigen
+Klimabedingungen zu ermöglichen.
+
 \printbibliography
 
 \appendix

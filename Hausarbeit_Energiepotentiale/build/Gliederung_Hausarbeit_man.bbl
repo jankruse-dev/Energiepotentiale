@@ -63,7 +63,7 @@
         {Berlin}%
       }
       \list{publisher}{1}{%
-        {Beuth Verlag}%
+        {DIN Media}%
       }
       \strng{namehash}{86a137a6a4dc30add2f4777e72c378e3}
       \strng{fullhash}{86a137a6a4dc30add2f4777e72c378e3}
@@ -82,8 +82,8 @@
       \true{uniqueprimaryauthor}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
-      \field{title}{{DIN V 18599-10:2018-09} - Energetische Bewertung von Gebäuden - Berechnung des Nutz-, End- und Primärenergiebedarfs für Heizung, Kühlung, Lüftung, Trinkwarmwasser und Beleuchtung - Teil 10: Nutzungsrandbedingungen, Klimadaten}
-      \field{year}{2018}
+      \field{title}{{DIN/TS 18599-10:2025-10} - Energetische Bewertung von Gebäuden - Berechnung des Nutz-, End- und Primärenergiebedarfs für Heizung, Kühlung, Lüftung, Trinkwarmwasser und Beleuchtung - Teil 10: Nutzungsrandbedingungen, Klimadaten}
+      \field{year}{2025}
     \endentry
     \entry{DIN185992}{misc}{}{}
       \name{author}{1}{}{%
@@ -95,7 +95,7 @@
         {Berlin}%
       }
       \list{publisher}{1}{%
-        {Beuth Verlag}%
+        {DIN Media}%
       }
       \strng{namehash}{86a137a6a4dc30add2f4777e72c378e3}
       \strng{fullhash}{86a137a6a4dc30add2f4777e72c378e3}
@@ -114,8 +114,8 @@
       \true{uniqueprimaryauthor}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
-      \field{title}{{DIN V 18599-2:2018-09} - Energetische Bewertung von Gebäuden - Berechnung des Nutz-, End- und Primärenergiebedarfs für Heizung, Kühlung, Lüftung, Trinkwarmwasser und Beleuchtung - Teil 2: Nutzenergiebedarf für Heizen und Kühlen von Gebäudezonen}
-      \field{year}{2018}
+      \field{title}{{DIN/TS 18599-2:2025-10} - Energetische Bewertung von Gebäuden - Berechnung des Nutz-, End- und Primärenergiebedarfs für Heizung, Kühlung, Lüftung, Trinkwarmwasser und Beleuchtung - Teil 2: Nutzenergiebedarf für Heizen und Kühlen von Gebäudezonen}
+      \field{year}{2025}
     \endentry
     \entry{DIN185993}{misc}{}{}
       \name{author}{1}{}{%
@@ -127,7 +127,7 @@
         {Berlin}%
       }
       \list{publisher}{1}{%
-        {Beuth Verlag}%
+        {DIN Media}%
       }
       \strng{namehash}{86a137a6a4dc30add2f4777e72c378e3}
       \strng{fullhash}{86a137a6a4dc30add2f4777e72c378e3}
@@ -146,8 +146,8 @@
       \true{uniqueprimaryauthor}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
-      \field{title}{{DIN V 18599-3:2018-09} - Energetische Bewertung von Gebäuden - Berechnung des Nutz-, End- und Primärenergiebedarfs für Heizung, Kühlung, Lüftung, Trinkwarmwasser und Beleuchtung - Teil 3: Nutzenergiebedarf für die energetische Luftaufbereitung}
-      \field{year}{2018}
+      \field{title}{{DIN/TS 18599-3:2025-10} - Energetische Bewertung von Gebäuden - Berechnung des Nutz-, End- und Primärenergiebedarfs für Heizung, Kühlung, Lüftung, Trinkwarmwasser und Beleuchtung - Teil 3: Nutzenergiebedarf für die energetische Luftaufbereitung}
+      \field{year}{2025}
     \endentry
     \entry{DIN185997}{misc}{}{}
       \name{author}{1}{}{%
@@ -159,7 +159,7 @@
         {Berlin}%
       }
       \list{publisher}{1}{%
-        {Beuth Verlag}%
+        {DIN Media}%
       }
       \strng{namehash}{86a137a6a4dc30add2f4777e72c378e3}
       \strng{fullhash}{86a137a6a4dc30add2f4777e72c378e3}
@@ -178,8 +178,8 @@
       \true{uniqueprimaryauthor}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
-      \field{title}{{DIN V 18599-7:2018-09} - Energetische Bewertung von Gebäuden - Berechnung des Nutz-, End- und Primärenergiebedarfs für Heizung, Kühlung, Lüftung, Trinkwarmwasser und Beleuchtung - Teil 7: Endenergiebedarf von Raumlufttechnik- und Klimakältesystemen für den Nichtwohnungsbau}
-      \field{year}{2018}
+      \field{title}{{DIN/TS 18599-7:2025-10} - Energetische Bewertung von Gebäuden - Berechnung des Nutz-, End- und Primärenergiebedarfs für Heizung, Kühlung, Lüftung, Trinkwarmwasser und Beleuchtung - Teil 7: Endenergiebedarf von Raumlufttechnik- und Klimakältesystemen für den Nichtwohnungsbau}
+      \field{year}{2025}
     \endentry
     \entry{Krähenmann2016}{article}{}{}
       \name{author}{5}{}{%
@@ -313,7 +313,7 @@
         {Berlin}%
       }
       \list{publisher}{1}{%
-        {Beuth Verlag}%
+        {DIN Media}%
       }
       \strng{namehash}{86a137a6a4dc30add2f4777e72c378e3}
       \strng{fullhash}{86a137a6a4dc30add2f4777e72c378e3}
@@ -332,8 +332,8 @@
       \true{uniqueprimaryauthor}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
-      \field{title}{{DIN V 18599-10:2018-09} - Energetische Bewertung von Gebäuden - Berechnung des Nutz-, End- und Primärenergiebedarfs für Heizung, Kühlung, Lüftung, Trinkwarmwasser und Beleuchtung - Teil 10: Nutzungsrandbedingungen, Klimadaten}
-      \field{year}{2018}
+      \field{title}{{DIN/TS 18599-10:2025-10} - Energetische Bewertung von Gebäuden - Berechnung des Nutz-, End- und Primärenergiebedarfs für Heizung, Kühlung, Lüftung, Trinkwarmwasser und Beleuchtung - Teil 10: Nutzungsrandbedingungen, Klimadaten}
+      \field{year}{2025}
     \endentry
     \entry{DIN185992}{misc}{}{}
       \name{author}{1}{}{%
@@ -345,7 +345,7 @@
         {Berlin}%
       }
       \list{publisher}{1}{%
-        {Beuth Verlag}%
+        {DIN Media}%
       }
       \strng{namehash}{86a137a6a4dc30add2f4777e72c378e3}
       \strng{fullhash}{86a137a6a4dc30add2f4777e72c378e3}
@@ -364,8 +364,8 @@
       \true{uniqueprimaryauthor}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
-      \field{title}{{DIN V 18599-2:2018-09} - Energetische Bewertung von Gebäuden - Berechnung des Nutz-, End- und Primärenergiebedarfs für Heizung, Kühlung, Lüftung, Trinkwarmwasser und Beleuchtung - Teil 2: Nutzenergiebedarf für Heizen und Kühlen von Gebäudezonen}
-      \field{year}{2018}
+      \field{title}{{DIN/TS 18599-2:2025-10} - Energetische Bewertung von Gebäuden - Berechnung des Nutz-, End- und Primärenergiebedarfs für Heizung, Kühlung, Lüftung, Trinkwarmwasser und Beleuchtung - Teil 2: Nutzenergiebedarf für Heizen und Kühlen von Gebäudezonen}
+      \field{year}{2025}
     \endentry
     \entry{DIN185993}{misc}{}{}
       \name{author}{1}{}{%
@@ -377,7 +377,7 @@
         {Berlin}%
       }
       \list{publisher}{1}{%
-        {Beuth Verlag}%
+        {DIN Media}%
       }
       \strng{namehash}{86a137a6a4dc30add2f4777e72c378e3}
       \strng{fullhash}{86a137a6a4dc30add2f4777e72c378e3}
@@ -396,8 +396,8 @@
       \true{uniqueprimaryauthor}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
-      \field{title}{{DIN V 18599-3:2018-09} - Energetische Bewertung von Gebäuden - Berechnung des Nutz-, End- und Primärenergiebedarfs für Heizung, Kühlung, Lüftung, Trinkwarmwasser und Beleuchtung - Teil 3: Nutzenergiebedarf für die energetische Luftaufbereitung}
-      \field{year}{2018}
+      \field{title}{{DIN/TS 18599-3:2025-10} - Energetische Bewertung von Gebäuden - Berechnung des Nutz-, End- und Primärenergiebedarfs für Heizung, Kühlung, Lüftung, Trinkwarmwasser und Beleuchtung - Teil 3: Nutzenergiebedarf für die energetische Luftaufbereitung}
+      \field{year}{2025}
     \endentry
     \entry{DIN185997}{misc}{}{}
       \name{author}{1}{}{%
@@ -409,7 +409,7 @@
         {Berlin}%
       }
       \list{publisher}{1}{%
-        {Beuth Verlag}%
+        {DIN Media}%
       }
       \strng{namehash}{86a137a6a4dc30add2f4777e72c378e3}
       \strng{fullhash}{86a137a6a4dc30add2f4777e72c378e3}
@@ -428,8 +428,8 @@
       \true{uniqueprimaryauthor}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
-      \field{title}{{DIN V 18599-7:2018-09} - Energetische Bewertung von Gebäuden - Berechnung des Nutz-, End- und Primärenergiebedarfs für Heizung, Kühlung, Lüftung, Trinkwarmwasser und Beleuchtung - Teil 7: Endenergiebedarf von Raumlufttechnik- und Klimakältesystemen für den Nichtwohnungsbau}
-      \field{year}{2018}
+      \field{title}{{DIN/TS 18599-7:2025-10} - Energetische Bewertung von Gebäuden - Berechnung des Nutz-, End- und Primärenergiebedarfs für Heizung, Kühlung, Lüftung, Trinkwarmwasser und Beleuchtung - Teil 7: Endenergiebedarf von Raumlufttechnik- und Klimakältesystemen für den Nichtwohnungsbau}
+      \field{year}{2025}
     \endentry
     \entry{Krähenmann2016}{article}{}{}
       \name{author}{5}{}{%

@@ -1,19 +1,19 @@
 [0] Config.pm:328> INFO - This is Biber 2.21
 [0] Config.pm:331> INFO - Logfile is 'C:\Users\jkruse\PycharmProjects\Energiepotentiale\Hausarbeit_Energiepotentiale\build\Gliederung_Hausarbeit_man.blg'
-[198] biber-MSWIN64:342> INFO - === 
-[374] Biber.pm:421> INFO - Reading 'C:\Users\jkruse\PycharmProjects\Energiepotentiale\Hausarbeit_Energiepotentiale\build\Gliederung_Hausarbeit_man.bcf'
-[477] Biber.pm:1002> INFO - Found 7 citekeys in bib section 0
-[494] Biber.pm:4487> INFO - Processing section 0
-[530] Biber.pm:4678> INFO - Looking for bibtex file 'quellen_methodik.bib' for section 0
-[633] bibtex.pm:1713> INFO - LaTeX decoding ...
-[660] bibtex.pm:1519> INFO - Found BibTeX data source 'quellen_methodik.bib'
-[764] UCollate.pm:68> INFO - Overriding locale 'de-DE' defaults 'variable = shifted' with 'variable = non-ignorable'
-[764] UCollate.pm:68> INFO - Overriding locale 'de-DE' defaults 'normalization = NFD' with 'normalization = prenormalized'
-[764] Biber.pm:4307> INFO - Sorting list 'apa/apasortcite//global/global/global' of type 'entry' with template 'apa' and locale 'de-DE'
-[764] Biber.pm:4313> INFO - No sort tailoring available for locale 'de-DE'
-[781] UCollate.pm:68> INFO - Overriding locale 'de-DE' defaults 'variable = shifted' with 'variable = non-ignorable'
-[781] UCollate.pm:68> INFO - Overriding locale 'de-DE' defaults 'normalization = NFD' with 'normalization = prenormalized'
-[781] Biber.pm:4307> INFO - Sorting list 'apa/global//global/global/global' of type 'entry' with template 'apa' and locale 'de-DE'
-[781] Biber.pm:4313> INFO - No sort tailoring available for locale 'de-DE'
-[787] bbl.pm:676> INFO - Writing 'C:\Users\jkruse\PycharmProjects\Energiepotentiale\Hausarbeit_Energiepotentiale\build\Gliederung_Hausarbeit_man.bbl' with encoding 'UTF-8'
-[796] bbl.pm:779> INFO - Output to C:\Users\jkruse\PycharmProjects\Energiepotentiale\Hausarbeit_Energiepotentiale\build\Gliederung_Hausarbeit_man.bbl
+[268] biber-MSWIN64:342> INFO - === 
+[422] Biber.pm:421> INFO - Reading 'C:\Users\jkruse\PycharmProjects\Energiepotentiale\Hausarbeit_Energiepotentiale\build\Gliederung_Hausarbeit_man.bcf'
+[527] Biber.pm:1002> INFO - Found 7 citekeys in bib section 0
+[546] Biber.pm:4487> INFO - Processing section 0
+[575] Biber.pm:4678> INFO - Looking for bibtex file 'quellen_methodik.bib' for section 0
+[661] bibtex.pm:1713> INFO - LaTeX decoding ...
+[686] bibtex.pm:1519> INFO - Found BibTeX data source 'quellen_methodik.bib'
+[810] UCollate.pm:68> INFO - Overriding locale 'de-DE' defaults 'variable = shifted' with 'variable = non-ignorable'
+[810] UCollate.pm:68> INFO - Overriding locale 'de-DE' defaults 'normalization = NFD' with 'normalization = prenormalized'
+[810] Biber.pm:4307> INFO - Sorting list 'apa/apasortcite//global/global/global' of type 'entry' with template 'apa' and locale 'de-DE'
+[810] Biber.pm:4313> INFO - No sort tailoring available for locale 'de-DE'
+[822] UCollate.pm:68> INFO - Overriding locale 'de-DE' defaults 'normalization = NFD' with 'normalization = prenormalized'
+[822] UCollate.pm:68> INFO - Overriding locale 'de-DE' defaults 'variable = shifted' with 'variable = non-ignorable'
+[822] Biber.pm:4307> INFO - Sorting list 'apa/global//global/global/global' of type 'entry' with template 'apa' and locale 'de-DE'
+[822] Biber.pm:4313> INFO - No sort tailoring available for locale 'de-DE'
+[827] bbl.pm:676> INFO - Writing 'C:\Users\jkruse\PycharmProjects\Energiepotentiale\Hausarbeit_Energiepotentiale\build\Gliederung_Hausarbeit_man.bbl' with encoding 'UTF-8'
+[832] bbl.pm:779> INFO - Output to C:\Users\jkruse\PycharmProjects\Energiepotentiale\Hausarbeit_Energiepotentiale\build\Gliederung_Hausarbeit_man.bbl
